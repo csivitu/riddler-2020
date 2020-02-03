@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://gitlab.com/csivit/riddler/riddler/issues"
   },
-  "homepage": "https://gitlab.com/csivit/riddler/riddler#readme"
+  "homepage": "https://gitlab.com/csivit/riddler/riddler#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.8.11"
+  }
 }

@@ -15,7 +15,7 @@ const parseJwt = token => {
 
 router.get("/", (req, res) => {
   const Info = parseJwt(req.query.token);
-  res.render("pages/loginSuccess", { user: Info });
+  res.render("pages/home", { user: Info });
 });
 
 module.exports = router;

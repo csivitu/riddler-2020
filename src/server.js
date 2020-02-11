@@ -10,7 +10,7 @@ var session = require("express-session");
 const app = express();
 const port = process.env.PORT || 3000;
 
-const home = require("./controllers/homeController.js");
+const register = require("./controllers/registerController.js");
 const oauth = require("./controllers/outhHandler.js");
 
 app.use(express.json());
@@ -28,7 +28,7 @@ app.use(
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-app.use("/", home);
+app.use("/", register);
 app.use("/oauth/redirect", oauth);
 
 app.listen(port, () => {

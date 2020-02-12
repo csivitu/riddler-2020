@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-// login
+// register
 router.get("/", (req, res) => {
   res.render("pages/registerPage");
 });

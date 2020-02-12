@@ -50,6 +50,10 @@ var userSchema = new mongoose.Schema({
   },
   count: {
     type: Number
+  },
+  ipAddress: {
+    type: String,
+    required: true
   }
 });
 

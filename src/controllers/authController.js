@@ -1,6 +1,7 @@
 const express = require("express");
 const atob = require("atob");
 const router = express.Router();
+const loginValidation = require("../verification");
 const getApiData = require("../httpRequests");
 
 const parseJwt = token => {
@@ -18,7 +19,11 @@ router.get("/", (req, res) => {
   getApiData("https://api.ipify.org?format=json", { method: "GET" }).then(data => {
     console.log(data.ip);
     Info["ip"] = data.ip;
-    res.render("pages/home", { user: Info });
+    console.log(Info);
+    loginValidation(Info).then(err => {
+      if (err) res.send({ err: err.details[0].message });
+      else res.render("pages/home", { user: Info });
+    });
   });
 });
 

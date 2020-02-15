@@ -9,9 +9,10 @@ const getIpAddress = require("../getIpAddress");
 
 router.get("/", async (req, res) => {
   let temp = parseJwt(req.query.token);
+  const apiRes = await getIpAddress();
   let Info = {
     username: temp.username,
-    ip: getIpAddress()
+    ip: apiRes.ip,
   };
 
   const error = await loginValidation(Info);

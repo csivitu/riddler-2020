@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
     const dbUser = User.create(Info);
     res.render("home.ejs", { user: dbUser });
   } catch (err) {
-    res.status(400).json({ err: "User not saved to riddler database" });
+    res.status(400).json({ 'err': "User not saved to riddler database" });
   }
 
   //add a error html page in the future

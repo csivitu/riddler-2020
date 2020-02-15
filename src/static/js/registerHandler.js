@@ -44,16 +44,18 @@ $(document).ready(function() {
   backgroundMusic.play();
 
   const audioIcon = $(".controller");
-  /* audioIcon.on("click", function() {
-  if (audioIcon.dataset.mute === "true") {
-    backgroundMusic.play();
-    //audioIcon.style.backgroundImage = "url('/static/images/volume-on.png')";
-    audioIcon.dataset.mute = "false";
-  } else {
-    backgroundMusic.pause();
-    //audioIcon.style.backgroundImage = "url('/static/images/volume-off.png')";
-    audioIcon.dataset.mute = "true";
-  }
-  audioIcon.classList.toggle("is-success");
-  audioIcon.classList.toggle("is-error");*/
+  Music = document.getElementById("aud");
+
+  $("#vol").click(function(){
+    if($("#vIcon").hasClass("fa-volume-up")){
+        Music.pause();
+        $("#vIcon").removeClass("fa-volume-up");
+        $("#vIcon").addClass("fa-volume-mute");
+
+    }else{
+        Music.play();
+        $("#vIcon").addClass("fa-volume-up");
+        $("#vIcon").removeClass("fa-volume-mute");
+    }
+});
 });

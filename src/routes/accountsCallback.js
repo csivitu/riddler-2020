@@ -15,17 +15,17 @@ router.get("/", async (req, res) => {
     ip: apiRes.ip,
   };
 
-  const error = await loginValidation(Info);
-  if (error) return res.status(400).json({ "err": error.details[0].message });
+  const err = await loginValidation(Info);
+  if (err) return res.render("error", { error: err.details[0].message });
 
   const userExists = await User.findOne({ username: Info.username });
-  if (userExists) return res.status(404).json({ "err": "user exists" });
+  if (userExists) return res.render("error", { error: "You have already registered !" });
 
   try {
     const dbUser = User.create(Info);
     res.render("home.ejs", { user: dbUser });
   } catch (err) {
-    res.status(400).json({ 'err': "User not saved to riddler database" });
+    res.render("error", { error: "Opps Server Error!" });
   }
 
   //add a error html page in the future

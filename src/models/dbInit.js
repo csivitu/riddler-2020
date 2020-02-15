@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 mongoose.connect(
-  "mongodb://localhost:27017/RegisterDB",
+  process.env.DB_URL || "mongodb://localhost:27017/RegisterDB",
   { useNewUrlParser: true, useUnifiedTopology: true },
   err => {
     if (!err) console.log("DB connection successful");

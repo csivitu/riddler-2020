@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
 
   try {
     const dbUser = User.create(Info);
-    res.render("home.ejs", { user, dbUser });
+    res.render("home.ejs", { user: dbUser });
   } catch (err) {
     res.status(400).json({ err: "User not saved to riddler database" });
   }

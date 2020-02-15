@@ -29,8 +29,7 @@ var userSchema = new mongoose.Schema({
     type: Number
   },
   ip: {
-    type: String,
-    required: true
+    type: String
   }
 });
 

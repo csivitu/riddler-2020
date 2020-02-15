@@ -32,15 +32,15 @@ $(document).ready(function() {
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    $("p").html(days + "d " + hours + "h " + minutes + "m " + seconds + "s ");
+    $(".timer").html(days + "d " + hours + "h " + minutes + "m " + seconds + "s ");
 
     if (distance < 0) {
       clearInterval(x);
-      $("p").html("RiDdLe Me ThIs <br> RiDdLe Me ThAt");
+      $(".timer").html(". 尺ﾉりりﾚ乇尺 .");
     }
   }, 1000);
   $('[data-toggle="popover"]').popover();
-  
+
   const backgroundMusic = new Audio("../static/audio/Nightcall  Instrumental_cutted.mp3");
 
   backgroundMusic.play();

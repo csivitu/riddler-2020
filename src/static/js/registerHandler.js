@@ -1,25 +1,21 @@
-function getRandomIntInclusive(min, max) {
-    const minTemp = Math.ceil(min);
-    const maxTemp = Math.floor(max);
-    return Math.floor(
-        Math.random() * (maxTemp - minTemp + 1),
-    ) + minTemp; // The maximum is inclusive and the minimum is inclusive
+function getRandomState(length) {
+  let text = "";
+  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (let i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
 }
-
 window.onload = () => {
-    const login = document.getElementById('login');
-    login.addEventListener('click', () => {
-        const clientId = 'BF5B3C4BA4A68';
-        const redURL = 'http://localhost:3000/oauth/redirect';
+  const login = document.getElementById("login");
+  login.addEventListener("click", () => {
+    const clientId = "BF5B3C4BA4A68";
+    const redURL = "http://localhost:3000/oauth/redirect";
 
-        // random state
-        const array = new Uint32Array(10);
-        window.crypto.getRandomValues(array);
-        const index = getRandomIntInclusive(0, 9);
-        const state = array[index];
+    // random state
+    const state = getRandomState(16);
 
-
-        sessionStorage.setItem("stateClient",state);
-        document.location.href = `https://accounts.csivit.com/oauth/authorize?clientId=${clientId}&redirectUrl=${redURL}&state=${state}`;
-    });
+    sessionStorage.setItem("riddlerState", state);
+    document.location.href = `https://accounts.csivit.com/oauth/authorize?clientId=${clientId}&redirectUrl=${redURL}&state=${state}`;
+  });
 };

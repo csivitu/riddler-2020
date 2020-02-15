@@ -1,6 +1,6 @@
 // The first file accessed
 require("dotenv").config();
-//require("./models/dbInit");
+require("./models/dbInit");
 
 const express = require("express");
 const path = require("path");
@@ -14,18 +14,9 @@ const register = require("./controllers/registerController.js");
 const auth = require("./controllers/authController");
 
 app.use(express.json());
-app.use("/static", express.static(path.join(__dirname, "static")));
+app.use("/static", express.static(path.join(__dirname, "/static")));
 app.use(cors());
-app.use(
-  session({
-    secret: process.env.SECRECT,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
-  })
-);
 app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
 
 app.use("/", register);
 app.use("/oauth/redirect", auth);

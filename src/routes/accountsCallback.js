@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
   };
 
   const error = await loginValidation(Info);
-  if (error) return res.status(400).json({ "err": err.details[0].message });
+  if (error) return res.status(400).json({ "err": error.details[0].message });
 
   const userExists = await User.findOne({ username: Info.username });
   if (userExists) return res.status(404).json({ "err": "user exists" });

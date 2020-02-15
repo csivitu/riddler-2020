@@ -1,11 +1,11 @@
 
 @font-face{
     font-family: "BlenderPro";
-    src: url('Blender Pro Book.ttf');
+    src: url('../fonts/Blender\ Pro\ Book.ttf');
 }
 
 body{
-    background: linear-gradient(to bottom, #050c26, rgba(157, 28, 120, 0.34) 140%), url(bg.jpg);
+    background: linear-gradient(to bottom, #050c26, rgba(157, 28, 120, 0.34) 140%), url(../images/bg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     font-family: BlenderPro;
@@ -96,8 +96,8 @@ h4{
     z-index: 999;
 }
 .card{
-    width: 38rem; 
-    background-color: #d31970; 
+    width: 38rem;
+    background-color: #d31970;
     display: none;
 }
 /* Chrome, Safari, Edge, Opera */
@@ -119,7 +119,7 @@ h4{
 }
 
 
-  
+
 
 @media only screen and  (max-width: 770px) {
     .btn{

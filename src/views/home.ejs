@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="/static/css/style.css">
         <script src="https://kit.fontawesome.com/4f0a7ba7b8.js" crossorigin="anonymous"></script>
-        <title>Riddler 2020</title>
+        <title>. 尺ﾉりりﾚ乇尺 2020 .</title>
     </head>
     <body>
         <div class="bar" style="float: left;" >
@@ -17,11 +17,6 @@
         <div class="bar" style = "float: right;">
 
         </div>
-
-        <audio loop id="aud" autoplay="autoplay">
-          <source src="../static/audio/Nightcall_Instrumental_cutted.mp3" type="audio/mp3">
-          Your browser does not support audio playback.
-        </audio>
 
         <header>
             <div class="container">
@@ -41,7 +36,7 @@
             <div class="container">
               <% if (user) { %>
                 <h1 class="welcome">WELCOME to RIDDLER</h1>
-                <h2 class="name"><%= user.name %></h2>
+                <h2 class="name"><%= user.username %></h2>
                 <br />
                 <% } else {%>
                 <h2>ERROR:</h2>
@@ -57,7 +52,7 @@
                 <button type="button" class="controller" id="vol">
                     <i class="fas fa-volume-up" id="vIcon"></i>
                 </button>
-                <button class="controller" type="button" data-toggle="popover" title="RiDdLe Me ThIs RiDdLe Me ThAt" data-content="RIDDLER INFO" data-placement="top">
+                <button class="controller" type="button" data-toggle="popover" title=". 尺ﾉりりﾚ乇尺 ." data-content="Riddler is CSI's online cryptic hunt, where you crack puzzles and ciphers with all you have.Prepare for an onslaught of challenges unsolved. Can you reach your destination,without a hint involved? " data-placement="top">
                     <i class="fas fa-info-circle"></i>
                 </button>
             </div>

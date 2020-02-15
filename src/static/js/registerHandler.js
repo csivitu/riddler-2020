@@ -40,20 +40,19 @@ $(document).ready(function() {
     }
   }, 1000);
   $('[data-toggle="popover"]').popover();
+  
   const backgroundMusic = new Audio("../static/audio/Nightcall  Instrumental_cutted.mp3");
-  backgroundMusic.play();
 
-  const audioIcon = $(".controller");
-  Music = document.getElementById("aud");
+  backgroundMusic.play();
 
   $("#vol").click(function(){
     if($("#vIcon").hasClass("fa-volume-up")){
-        Music.pause();
+        backgroundMusic.pause();
         $("#vIcon").removeClass("fa-volume-up");
         $("#vIcon").addClass("fa-volume-mute");
 
     }else{
-        Music.play();
+        backgroundMusic.play();
         $("#vIcon").addClass("fa-volume-up");
         $("#vIcon").removeClass("fa-volume-mute");
     }

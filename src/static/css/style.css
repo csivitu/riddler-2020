@@ -12,6 +12,7 @@ body{
     margin: 0;
     padding: 0;
     overflow: hidden;
+    height: 100vh   ;
 }
 
 .bar{
@@ -228,7 +229,8 @@ p,h2,h1{
   /* Popover Body */
   .popover-body {
     color: #FFFFFF;
-    padding: 25px;
+    padding: 15px;
+    font-size: 20px;
   }
   /* Popover Arrow */
   .arrow {

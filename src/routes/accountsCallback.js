@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
   if (userExists) return res.render("error", { error: "You have already registered !" });
 
   try {
-    const dbUser = User.create(Info);
+    const dbUser = await User.create(Info);
     res.render("home.ejs", { user: dbUser });
   } catch (err) {
     res.render("error", { error: "Opps Server Error!" });

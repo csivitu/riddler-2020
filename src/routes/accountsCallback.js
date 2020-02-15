@@ -2,6 +2,7 @@ const router = require("express").Router();
 const loginValidation = require("../verification");
 const User = require("../models/User");
 const parseJwt = require("../parsejwtPayload");
+const getIpAddress = require("../getIpAddress");
 
 //this handles: Base-url/outh/redirect
 //i.e the callback from the accounts.csi website
@@ -9,7 +10,8 @@ const parseJwt = require("../parsejwtPayload");
 router.get("/", async (req, res) => {
   let temp = parseJwt(req.query.token);
   let Info = {
-    username: temp.username
+    username: temp.username,
+    ip: getIpAddress()
   };
 
   const error = await loginValidation(Info);

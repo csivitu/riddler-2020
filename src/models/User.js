@@ -8,7 +8,8 @@ var userSchema = new mongoose.Schema({
     index: true
   },
   ip: {
-    type: String
+    type: String,
+    required: true
   },
   key: {
     type: String
@@ -27,9 +28,6 @@ var userSchema = new mongoose.Schema({
   },
   count: {
     type: Number
-  },
-  ip: {
-    type: String
   }
 });
 

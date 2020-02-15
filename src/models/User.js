@@ -8,8 +8,7 @@ var userSchema = new mongoose.Schema({
     index: true
   },
   ip: {
-    type: String,
-    required: true
+    type: String
   },
   key: {
     type: String

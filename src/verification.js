@@ -7,7 +7,7 @@ const loginValidation = async data => {
       .required(), */
     username: Joi.string()
       .min(1)
-      .required(),
+      .required()
     /*  regNo: Joi.string().required(),
     gender: Joi.string(),
     email: Joi.string()
@@ -17,7 +17,7 @@ const loginValidation = async data => {
     exp: Joi.number(),
     mobile: Joi.number(),
     scope: Joi.array(), */
-    ip: Joi.string().required()
+    /*  ip: Joi.string().required() */
   });
   try {
     const obj = await schema.validateAsync(data);

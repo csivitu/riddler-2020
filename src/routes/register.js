@@ -1,13 +1,11 @@
 const router = require("express").Router();
 const path = require("path");
 
-//base url/
+//this handles base url/
 
 // register
 router.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../static", "/html/registerPage.html"));
+  res.render("registerPage.ejs");
 });
-
-router;
 
 module.exports = router;

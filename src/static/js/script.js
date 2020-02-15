@@ -22,6 +22,23 @@ $(document).ready(function(){
     }
 
     }, 1000);
+    $('[data-toggle="popover"]').popover();
+    const backgroundMusic = new Audio('../static/audio/Nightcall  Instrumental_cutted.mp3');
+    backgroundMusic.play();
 
 
-    });
+    const audioIcon = $(".controller");
+   /* audioIcon.on("click", function() {
+  if (audioIcon.dataset.mute === "true") {
+    backgroundMusic.play();
+    //audioIcon.style.backgroundImage = "url('/static/images/volume-on.png')";
+    audioIcon.dataset.mute = "false";
+  } else {
+    backgroundMusic.pause();
+    //audioIcon.style.backgroundImage = "url('/static/images/volume-off.png')";
+    audioIcon.dataset.mute = "true";
+  }
+  audioIcon.classList.toggle("is-success");
+  audioIcon.classList.toggle("is-error");*/
+});
+  });

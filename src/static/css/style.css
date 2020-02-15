@@ -163,3 +163,24 @@ h4{
         letter-spacing: 2.5px;
     }
 }
+.popover {
+    border: 2px red;
+    background-color: #d31970;
+    height: 50vh;
+  }
+  /* Popover Header */
+  .popover-header {
+    background-color: rgba(0, 0, 0, 0.19);
+    color: #FFFFFF;
+    font-size: 28px;
+    text-align:center;
+  }
+  /* Popover Body */
+  .popover-body {
+    color: #FFFFFF;
+    padding: 25px;
+  }
+  /* Popover Arrow */
+  .arrow {
+    border-right-color:#d31970 !important;
+  }

@@ -2,13 +2,13 @@ const Joi = require("@hapi/joi");
 
 const loginValidation = async data => {
   const schema = Joi.object({
-    name: Joi.string()
+    /*   name: Joi.string()
       .min(1)
-      .required(),
+      .required(), */
     username: Joi.string()
       .min(1)
       .required(),
-    regNo: Joi.string().required(),
+    /*  regNo: Joi.string().required(),
     gender: Joi.string(),
     email: Joi.string()
       .email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "in"] } })
@@ -16,7 +16,7 @@ const loginValidation = async data => {
     iat: Joi.number(),
     exp: Joi.number(),
     mobile: Joi.number(),
-    scope: Joi.array(),
+    scope: Joi.array(), */
     ip: Joi.string().required()
   });
   try {

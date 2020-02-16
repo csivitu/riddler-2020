@@ -53,7 +53,6 @@ img{
 }
 
 .btn{
-    padding: ;
     color: white;
     border: 4px solid #d31970;
     font-weight: bold;
@@ -73,6 +72,21 @@ h4{
     line-height: 0.76;
     letter-spacing: 4.63px;
     font-size: 1rem;
+    color: #fff;
+}
+
+h1{
+    line-height: 0.76;
+    letter-spacing: 4.63px;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+h2{
+    line-height: 0.76;
+    letter-spacing: 4.63px;
+    font-size: 1.5rem;
+    font-weight: bold;
     color: #fff;
 }
 
@@ -246,6 +260,7 @@ p,h2,h1,h3{
     }
 
 }
+
 
 @media only screen and  (max-width: 380px) {
     .btn{

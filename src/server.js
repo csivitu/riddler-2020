@@ -23,6 +23,10 @@ app.set("views", path.join(__dirname, "views"));
 app.use("/", register);
 app.use("/oauth/redirect", callback);
 
+app.use("*", (req, res) => {
+  res.render("error", { error: `${req.originalUrl} is not defined` });
+});
+
 app.listen(port, () => {
   console.log(`server started at ${port}`);
 });

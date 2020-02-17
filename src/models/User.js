@@ -7,29 +7,8 @@ var userSchema = new mongoose.Schema({
     unique: true,
     index: true
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    index: true
-  },
-  mobile: {
-    type: String,
-    required: true,
-    index: true
-  },
-  password: {
-    type: String,
-    required: true,
-    index: true
-  },
-  regNum: {
-    type: String,
-    required: true
-  },
-  key: {
-    type: String,
-    required: true
+  /*key: {
+    type: String
   },
   flag: {
     type: String
@@ -55,6 +34,6 @@ var userSchema = new mongoose.Schema({
     type: String,
     required: true
   }
-});
+});*/
 
 module.exports = mongoose.model("User", userSchema);

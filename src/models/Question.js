@@ -4,24 +4,23 @@ const questionSchema = new mongoose.Schema({
   question: {
     type: String
   },
-  qno: {
-    type: Number
-  },
-  track: {
-    type: String
-  },
   answer: {
     type: [String]
   },
-  solvedBy: {
-    type: Number
+  points: {
+    type: Integer
   },
-  hint: {
+  riddleID: {
     type: String
   },
-  story: {
-    track: String,
-    question: String
+  hints: {
+    type: [String]
+  },
+  usedHint: {
+    type: Boolean
+  },
+  successes: {
+    type: Integer
   }
 });
 

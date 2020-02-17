@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 
 const attemptSchema = new mongoose.Schema({
-  fullName: String,
-  attempt: String,
-  track: String,
-  qno: Number,
-  correct: Boolean
+  id: String,
+  maintrack: [String],    //progress of the user
+  finaltrack: [String],
+  totalpoints: Integer
 });
 
 module.exports = mongoose.model("Attempt", attemptSchema);

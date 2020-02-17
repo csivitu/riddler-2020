@@ -30,6 +30,26 @@ app.set("view engine", "ejs");
 app.use("/", register);
 app.use("/oauth/redirect", auth);
 
-app.listen(port, () => {
-  console.log(`server started at ${port}`);
+app.listen(port, function(err){
+  if(err){
+    console.log('error while starting the server');
+  }
+  else{
+    console.log(`server started at ${port}`);
+  }
 });
+
+/*
+app.get('/',function(req,res){
+  res.send("Riddler")
+})
+
+app.get('/question', function (req , res){
+  res.sendFile(__dirname+)
+})
+*/
+
+
+app.get('*',function(req,res){
+  res.sendFile(__dirname+'src/views/error.ejs');
+})

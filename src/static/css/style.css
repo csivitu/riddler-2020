@@ -71,9 +71,10 @@ img{
     background-image: url(../images/btn.svg);
     background-size: contain;
     background-repeat: no-repeat;
+    text-align: center;
     color: white;
     font-weight: bold;
-    font-size: 1.3rem;
+    font-size: 1.6rem;
     line-height: 0.76;
     letter-spacing: 4.63px;
     outline: none;
@@ -118,6 +119,30 @@ h3{
 .timer{
     font-size: 4rem;
 }
+
+.popover {
+    border: 2px red;
+    background-color: #d31970;
+    height: 50vh;
+}
+
+.popover-header {
+    background-color: rgba(0, 0, 0, 0.19);
+    color: #FFFFFF;
+    font-size: 1.1rem;
+    text-align:center;
+}
+
+.popover-body {
+    color: #FFFFFF;
+    padding: 15px;
+    font-size: 1rem;
+}
+
+.arrow {
+    border-right-color:#d31970 !important;
+} 
+  
 
 /* header{
     margin-top: 5vh;

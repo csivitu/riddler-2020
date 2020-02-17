@@ -1,5 +1,5 @@
 window.onload = () => {
-  //decoding the contents of the query string
+  //decoding the conetnts of the query string
   const res = decodeURI(window.location.search)
     .replace("?", "")
     .split("&")

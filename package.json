@@ -19,6 +19,7 @@
   },
   "homepage": "https://gitlab.com/csivit/riddler/riddler#readme",
   "dependencies": {
+    "@hapi/joi": "^17.1.0",
     "@types/csi-accounts-express": "^1.0.0",
     "atob": "^2.1.2",
     "body-parser": "^1.19.0",
@@ -28,9 +29,9 @@
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.11",
-    "node-fetch": "^2.6.0",
-    "path": "^0.12.7"
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

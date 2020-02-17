@@ -1,25 +1,25 @@
 const mongoose = require("mongoose");
 
 var userSchema = new mongoose.Schema({
-  fullName: {
+  username: {
     type: String,
     required: true,
     unique: true,
     index: true
   },
-  /*key: {
+  /*
+  ip: {
+    type: String,
+    required: true
+  },
+  key: {
     type: String
   },
   flag: {
     type: String
   },
   status: {
-    type: String,
-    required: true
-  },
-  vit: {
-    type: String,
-    required: true
+    type: String
   },
   gameData: {
     type: String
@@ -29,10 +29,6 @@ var userSchema = new mongoose.Schema({
   },
   count: {
     type: Number
-  },
-  ipAddress: {
-    type: String,
-    required: true
   }
 });*/
 

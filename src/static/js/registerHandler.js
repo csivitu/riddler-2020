@@ -23,17 +23,21 @@ $(document).ready(() => {
     const backgroundMusic = new Audio('../static/audio/moosic.mp3');
     const clickMusic = new Audio('../static/audio/click.mp3');
 
+    let ammo = true;
+    let count = 0;
     $(document.body).click(() => {
-        clickMusic.pause();
-        clickMusic.currentTime = 0;
-        clickMusic.play();
-
-        if (Math.random() <= 0.05) {
+        if (ammo) {
+            clickMusic.pause();
+            clickMusic.currentTime = 0;
+            clickMusic.play();
+            count += 1;
+        }
+        if (count > 50 && ammo) {
             // eslint-disable-next-line no-alert
-            alert('HEADSHOT');
+            alert('OUT OF AMMO');
+            ammo = false;
         }
     });
-    backgroundMusic.play();
 
     $('#vol').click(() => {
         if ($('#vIcon').hasClass('fa-volume-up')) {

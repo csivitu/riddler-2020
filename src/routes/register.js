@@ -1,4 +1,3 @@
-/* eslint-disable */
 const router = require('express').Router();
 
 // this handles base url/

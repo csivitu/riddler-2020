@@ -1,24 +1,3 @@
-function getRandomState(length) {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < length; i += 1) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-}
-window.onload = () => {
-    const login = document.getElementById('login');
-    login.addEventListener('click', () => {
-        const clientId = 'BF5B3C4BA4A68';
-        const redURL = 'http://localhost:3000/oauth/redirect';
-
-        // random state
-        const state = getRandomState(16);
-
-        sessionStorage.setItem('state', state);
-        document.location.href = `https://accounts.csivit.com/oauth/authorize?clientId=${clientId}&redirectUrl=${redURL}&state=${state}`;
-    });
-};
 $(document).ready(() => {
     const countDownDate = new Date('Feb 20, 2020 12:00:00').getTime();
 
@@ -44,7 +23,7 @@ $(document).ready(() => {
     const backgroundMusic = new Audio('../static/audio/moosic.mp3');
     const clickMusic = new Audio('../static/audio/click.mp3');
 
-    $(document.body).click((e) => {
+    $(document.body).click(() => {
         clickMusic.pause();
         clickMusic.currentTime = 0;
         clickMusic.play();

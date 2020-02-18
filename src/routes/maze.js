@@ -9,8 +9,8 @@ router.get('/', (req, res) => {
     res.render(pageToBeServed, { user: req.session.user });
 });
 
-router.post('/:riddleId', (req, res) => {
-    res.send('yay');
+router.get("/:riddleId", (req, res) => {
+    res.send(req.params.riddleId);
 });
 
 module.exports = router;

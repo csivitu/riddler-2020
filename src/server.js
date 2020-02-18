@@ -4,7 +4,6 @@ require('./models/dbInit');
 
 const express = require('express');
 const path = require('path');
-const cors = require('cors');
 const session = require('express-session');
 
 const app = express();
@@ -17,7 +16,6 @@ const maze = require('./routes/maze.js');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/static', express.static(path.join(__dirname, '/static')));
-app.use(cors());
 app.use(
     session({
         secret: 'eiffel tower on steoroids',

@@ -11,23 +11,18 @@ var userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  key: {
-    type: String
+  mainTracksProgress: {
+    type: [String],
+    required: true,
+    default: ["A0", "B0", "C0"]
   },
-  flag: {
-    type: String
+  bonusTrack: {
+    type: [String]
   },
-  status: {
-    type: String
-  },
-  gameData: {
-    type: String
-  },
-  revealedHints: {
-    type: Array
-  },
-  count: {
-    type: Number
+  score: {
+    type: Number,
+    required: true,
+    default: 0
   }
 });
 

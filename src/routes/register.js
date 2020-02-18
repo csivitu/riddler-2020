@@ -5,7 +5,7 @@ const path = require("path");
 
 // register
 router.get("/", (req, res) => {
-  res.render("registerPage.ejs");
+  res.render("registerPage");
 });
 
 module.exports = router;

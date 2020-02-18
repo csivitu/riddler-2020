@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
     res.render(pageToBeServed, { user: req.session.user });
 });
 
-router.get("/:riddleId", (req, res) => {
+router.get('/:riddleId', (req, res) => {
     res.send(req.params.riddleId);
 });
 

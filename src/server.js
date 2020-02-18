@@ -1,42 +1,40 @@
 // The first file accessed
-require("dotenv").config();
-require("./models/dbInit");
+require('dotenv').config();
+require('./models/dbInit');
 
-const express = require("express");
-const path = require("path");
-const cors = require("cors");
-const session = require("express-session");
+const express = require('express');
+const path = require('path');
+const session = require('express-session');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-const register = require("./routes/register.js");
-const callback = require("./routes/accountsCallback.js");
-const maze = require("./routes/maze.js");
+const register = require('./routes/register.js');
+const callback = require('./routes/accountsCallback.js');
+const maze = require('./routes/maze.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/static", express.static(path.join(__dirname, "/static")));
-app.use(cors());
+app.use('/static', express.static(path.join(__dirname, '/static')));
 app.use(
-  session({
-    secret: `eiffel tower on steoroids`,
-    resave: false,
-    saveUninitialized: true
-  })
+    session({
+        secret: 'eiffel tower on steoroids',
+        resave: false,
+        saveUninitialized: true,
+    }),
 );
 
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-app.use("/", register);
-app.use("/oauth/redirect", callback);
-app.use("/maze", maze);
+app.use('/', register);
+app.use('/oauth/redirect', callback);
+app.use('/maze', maze);
 
-app.use("*", (req, res) => {
-  res.render("error", { error: `${req.originalUrl} is not defined` });
+app.use('*', (req, res) => {
+    res.render('error', { error: `${req.originalUrl} is not defined` });
 });
 
 app.listen(port, () => {
-  console.log(`server started at ${port}`);
+    console.log(`server started at ${port}`);
 });

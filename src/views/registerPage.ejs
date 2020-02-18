@@ -1,78 +1,71 @@
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
     <script src="https://kit.fontawesome.com/4f0a7ba7b8.js" crossorigin="anonymous"></script>
     <title>. 尺ﾉりりﾚ乇尺 2020 .</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <!-- <div class="bar" style="float: left;" >
-
-        </div>
+          
+    </div>
         <div class="bar" style = "float: right;">
-
+            
         </div> -->
-
-    <div class="container">
-      <div class="mt-5">
-        <img src="/static/images/logov1.png" alt="Riddler" class="responsive" />
-        <img
-          src="/static/images/tagline.png"
-          alt="An online cryptic hunt"
-          srcset="/static/images/tagline@2x.png 2x, /static/images/tagline@3x.png 3x"
-          class="responsive tagline mt-3"
-          style="max-width: 60%"
-        />
-      </div>
-      <div class="timer"></div>
-      <div class="mb-5">
-        <button class="btn px-5 py-3" id="login">ENTER</button>
-      </div>
-      <div class="mb-5">
-        <h4>BY COMPUTER SOCIETY OF INDIA</h4>
-      </div>
+    <div class="mainContent">
+        <div class="container">
+            <div class="mt-5 topSection">
+                <div class="riddler-logo">
+                    <div class="logoContainer">
+                        <div class="glitch-image"></div>
+                        <div class="glitch-image"></div>
+                        <div class="glitch-image"></div>
+                        <div class="glitch-image"></div>
+                        <div class="glitch-image"></div>
+                        <div class="glitch-image"></div>
+                    </div>
+                </div>
+                <img src="/static/images/tagline.png" alt="An online cryptic hunt"
+                    srcset="/static/images/tagline@2x.png 2x,/static/images/tagline@3x.png 3x"
+                    class="responsive tagline mt-3" style="max-width: 60%">
+            </div>
+            <div class="timer"></div>
+            <div class="mb-5">
+                <button class="btn px-5 py-3" id="login">ENTER</button>
+            </div>
+            <div class="mb-5">
+                <h4>BY COMPUTER SOCIETY OF INDIA</h4>
+            </div>
+        </div>
     </div>
     <div class="btn-group">
-      <button type="button" class="controller" id="vol">
-        <i class="fas fa-volume-up" id="vIcon"></i>
-      </button>
-      <button
-        class="controller"
-        type="button"
-        id="info"
-        data-toggle="popover"
-        title=". 尺ﾉりりﾚ乇尺 ."
-        data-content="Riddler is CSI's online cryptic hunt, where you crack puzzles and ciphers with all you have. Prepare for an onslaught of challenges unsolved. Can you reach your final destination, without a hint involved?"
-        data-placement="top"
-        style="font-family:BlenderPro;"
-      >
-        <i class="fas fa-info-circle"></i>
-      </button>
+        <button type="button" class="controller" id="vol">
+            <i class="fas fa-volume-up" id="vIcon"></i>
+        </button>
+        <button class="controller" type="button" id="info" data-toggle="popover" title=". 尺ﾉりりﾚ乇尺 ."
+            data-content="Riddler is CSI's online cryptic hunt, where you crack puzzles and ciphers with all you have. Prepare for an onslaught of challenges unsolved. Can you reach your final destination, without a hint involved?"
+            data-placement="top" style="font-family:BlenderPro;">
+            <i class="fas fa-info-circle"></i>
+        </button>
     </div>
+    <div class="background"></div>
 
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      inte
-      grity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" inte
+        grity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
     <script type="text/javascript" src="/static/js/registerHandler.js"></script>
-  </body>
+
+</body>
+
 </html>

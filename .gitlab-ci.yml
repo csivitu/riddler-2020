@@ -31,8 +31,7 @@ test:
   only:
     - master
     - staging
-    - dev
-
+    
 deploy:
   stage: deploy
   script:

@@ -41,8 +41,19 @@ $(document).ready(() => {
     }, 1000);
     $('[data-toggle="popover"]').popover();
 
-    const backgroundMusic = new Audio('../static/audio/Nightcall  Instrumental_cutted.mp3');
+    const backgroundMusic = new Audio('../static/audio/moosic.mp3');
+    const clickMusic = new Audio('../static/audio/click.mp3');
 
+    $(document.body).click((e) => {
+        clickMusic.pause();
+        clickMusic.currentTime = 0;
+        clickMusic.play();
+
+        if (Math.random() <= 0.05) {
+            // eslint-disable-next-line no-alert
+            alert('HEADSHOT');
+        }
+    });
     backgroundMusic.play();
 
     $('#vol').click(() => {

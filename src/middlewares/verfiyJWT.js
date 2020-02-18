@@ -15,7 +15,7 @@ const decodeJWT = (req, res, next) => {
 
   try {
     req.participant = jwt.verify(token, process.env.JWT_SECRET);
-    if (req.participant.scope.includes("csi")) {
+    if (req.participant) {
       console.log(req.participant.scope);
       next();
     } else {

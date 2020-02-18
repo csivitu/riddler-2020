@@ -1,18 +1,18 @@
+/* eslint-disable */
 const router = require('express').Router();
-const path = require('path');
 
-//this handles base url/
+// this handles base url/
 
 // register
 router.get('/', (req, res) => {
-  res.render('registerPage');
+    res.render('registerPage');
 });
 
 
 // For all routes that need to template something on the frontend
-// and the page isn't ready yet, just make sure for now that the 
-// route queries the required data that needs to be templated from the database, later we 
-// can fill in the code to template it onto the page made by the 
+// and the page isn't ready yet, just make sure for now that the
+// route queries the required data that needs to be templated from the database, later we
+// can fill in the code to template it onto the page made by the
 // frontend team.
 
 // Routes should return {success: false, message: 'serverError'} whenever some exception

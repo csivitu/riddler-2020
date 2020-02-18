@@ -3,6 +3,7 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
+    jquery: true,
   },
   extends: [
     'airbnb-base',
@@ -19,6 +20,4 @@ module.exports = {
     "indent": ["error", 4],
      "no-console":"warn"
   },
-  
 };
-

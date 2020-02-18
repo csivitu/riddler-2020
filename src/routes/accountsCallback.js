@@ -15,6 +15,7 @@ router.use(
 );
 
 router.get('/', async (req, res) => {
+    req.session.user = req.user;
     const temp = req.user;
     const apiRes = await getIpAddress();
     const Info = {
@@ -27,22 +28,20 @@ router.get('/', async (req, res) => {
 
     const userExists = await User.findOne({ username: Info.username });
 
-    if (userExists) {
-        // Existing user
-        req.session.user = userExists;
-        res.redirect('/maze');
-    } else {
+    if (!userExists) {
         // New user
         try {
-            const dbUser = await User.create(Info);
-            req.session.user = dbUser;
-            res.redirect('/maze');
+            await User.create(Info);
         } catch (err2) {
-            res.render('error', { error: 'Opps Server Error!' });
+            res.render('error', { error: 'Oops Server Error!' });
         }
     }
-    return res.send('');
-    // add a error html page in the future
+
+    if (req.session.user.scope.indexOf('csi') > -1) {
+        res.redirect('/maze');
+    } else {
+        res.redirect('/');
+    }
 });
 
 module.exports = router;

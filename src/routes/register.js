@@ -5,7 +5,11 @@ const router = require('express').Router();
 
 // register
 router.get('/', (req, res) => {
-    res.render('registerPage');
+    res.render('registerPage', {user: req.session.user});
+
+    if (req.session.user) {
+        req.session.destroy();
+    }
 });
 
 

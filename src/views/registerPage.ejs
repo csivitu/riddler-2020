@@ -34,7 +34,16 @@
                     srcset="/static/images/tagline@2x.png 2x,/static/images/tagline@3x.png 3x"
                     class="responsive tagline mt-3" style="max-width: 60%">
             </div>
+            <% if (user) { %>
+            <div>
+                <h3><%= user.username %>, you have sucesfully registered for Riddler</h3>
+                <br>
+                <h3>The hunt begins in</h3>
+                <div class="timer"></div>
+            </div>
+            <% } else {%>
             <div class="timer"></div>
+            <% }%>
             <div class="mb-5">
                 <button class="btn px-5 py-3" id="login">ENTER</button>
             </div>

@@ -2,9 +2,25 @@ const router = require('express').Router();
 
 // this handles base url/
 
+function getRandomState(length) {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < length; i += 1) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+}
+
 // register
 router.get('/', (req, res) => {
-    res.render('registerPage');
+    const state = getRandomState(16);
+
+    const accountsUrl = `https://accounts.csivit.com/oauth/authorize?clientId=${process.env.CLIENT_ID}&redirectUrl=${process.env.REDIRECT_URL}&state=${state}`;
+    res.render('registerPage', { user: req.session.user, accountsUrl });
+
+    if (req.session.user) {
+        req.session.destroy();
+    }
 });
 
 

@@ -20,7 +20,7 @@ const loginValidation = async (data) => {
     scope: Joi.array(), */
     });
     try {
-        const obj = await schema.validateAsync(data);
+        await schema.validateAsync(data);
         return undefined;
     } catch (err) {
         return err;

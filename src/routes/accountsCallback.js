@@ -10,8 +10,7 @@ const getIpAddress = require('../getIpAddress');
 router.use(
     authorize({
         secret: process.env.SECRECT,
-        token: (req, res, next) => req.query.token, // If the token is stored in a session variable, for example
-
+        token: (req) => req.query.token,
     }),
 );
 
@@ -29,20 +28,20 @@ router.get('/', async (req, res) => {
     const userExists = await User.findOne({ username: Info.username });
 
     if (userExists) {
-    // Existing user
+        // Existing user
         req.session.user = userExists;
         res.redirect('/maze');
     } else {
-    // New user
+        // New user
         try {
             const dbUser = await User.create(Info);
             req.session.user = dbUser;
             res.redirect('/maze');
-        } catch (err) {
+        } catch (err2) {
             res.render('error', { error: 'Opps Server Error!' });
         }
     }
-
+    return res.send('');
     // add a error html page in the future
 });
 

@@ -28,6 +28,7 @@ router.get("/", async (req, res) => {
   if (err) return res.render("error", { error: err.details[0].message });
 
   const userExists = await User.findOne({ username: Info.username });
+
   if (userExists) {
     //Existing user
     req.session.user = userExists;

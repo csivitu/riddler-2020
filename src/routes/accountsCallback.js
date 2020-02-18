@@ -42,6 +42,8 @@ router.get('/', async (req, res) => {
     } else {
         res.redirect('/');
     }
+
+    return true;
 });
 
 module.exports = router;

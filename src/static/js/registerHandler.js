@@ -23,7 +23,7 @@ $(document).ready(() => {
     const backgroundMusic = new Audio('../static/audio/moosic.mp3');
     const clickMusic = new Audio('../static/audio/click.mp3');
 
-    $(document.body).click((e) => {
+    $(document.body).click(() => {
         clickMusic.pause();
         clickMusic.currentTime = 0;
         clickMusic.play();

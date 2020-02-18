@@ -43,6 +43,7 @@ app.get('/question', function (req , res){
 */
 
 
-app.get('*',function(req,res){
+/*app.get('*',function(req,res){
   res.sendFile(__dirname+'src/views/error.ejs');
 })
+*/

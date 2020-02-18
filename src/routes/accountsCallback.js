@@ -9,7 +9,7 @@ const getIpAddress = require('../getIpAddress');
 
 router.use(
     authorize({
-        secret: process.env.SECRECT,
+        secret: process.env.SECRET,
         token: (req) => req.query.token,
     }),
 );

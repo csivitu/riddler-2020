@@ -141,16 +141,16 @@ router.post('/hint', async (req, res) => {
 
     // stop if all hints are used up
     const hints = currentUser.hintsUsed
-        .map((used, index) => ((used === 0) ? riddle.hints[index] : null))
+        .map((used, index) => ((used === process.env.noOfQuestions) ? riddle.hints[index] : null))
         .filter((hint) => hint != null);
     if (hints.length === 0) return res.json({ success: true, message: 'used up all hints' });
 
 
     // searches for the first unused hint and serves it
     // updated hintsused value from 0 to 1
-    const index = currentUser.hintsUsed.indexOf(0);
+    const index = parseInt(rId[1], 10);
     const servedHint = riddle.hint[index];
-    currentUser.hintsUsed[index] = 1;
+    currentUser.hintsUsed[index] = currentUser.hintsUsed[index] + 1;
 
 
     req.riddlerUser.hintsUsed = currentUser.hintsUsed;
@@ -191,13 +191,13 @@ router.post('/hint', async (req, res) => {
 
 router.get('/reset', async (req, res) => {
     const progressOverall = req.riddleuser.mainTracksProgress;
-    const noOfQuestions = 7;
+
 
 
     // completed all tracks
     let edgeCase = true;
     progressOverall.forEach((ele) => {
-        if (ele.charAt(1) !== noOfQuestions) {
+        if (ele.charAt(1) !== process.env.noOfQuestions) {
             edgeCase = false;
         }
     });

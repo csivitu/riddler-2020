@@ -25,7 +25,7 @@ router.use(verifyUser);
 
 
 router.get('/', (req, res) => {
-    res.render("dashboard", { user: req.riddlerUser });
+    res.render('dashboard', { user: req.riddlerUser });
 });
 
 
@@ -149,7 +149,8 @@ router.post('/hint', async (req, res) => {
     // updated hintsused value from 0 to 1
     const index = parseInt(rId[1], 10);
     const servedHint = riddle.hint[index];
-    currentUser.hintsUsed[index] = currentUser.hintsUsed[index] + 1;
+    const temp = currentUser.hintsUsed[index];
+    currentUser.hintsUsed[index] = temp + 1;
 
 
     req.riddlerUser.hintsUsed = currentUser.hintsUsed;
@@ -190,7 +191,6 @@ router.post('/hint', async (req, res) => {
 
 router.get('/reset', async (req, res) => {
     const progressOverall = req.riddleuser.mainTracksProgress;
-
 
 
     // completed all tracks

@@ -1,15 +1,16 @@
 // Merge the two arrays: left and right
 function merge(left, right) {
-    let resultArray = [], leftIndex = 0, rightIndex = 0;
+    const resultArray = []; let leftIndex = 0; let
+        rightIndex = 0;
 
     // We will concatenate values into the resultArray in order
     while (leftIndex < left.length && rightIndex < right.length) {
         if (left[leftIndex] < right[rightIndex]) {
             resultArray.push(left[leftIndex]);
-            leftIndex++; // move left array cursor
+            leftIndex += 1; // move left array cursor
         } else {
             resultArray.push(right[rightIndex]);
-            rightIndex++; // move right array cursor
+            rightIndex += 1; // move right array cursor
         }
     }
 
@@ -35,7 +36,7 @@ function mergeSort(unsortedArray) {
 
     // Using recursion to combine the left and right
     return merge(
-        mergeSort(left), mergeSort(right)
+        mergeSort(left), mergeSort(right),
     );
 }
 

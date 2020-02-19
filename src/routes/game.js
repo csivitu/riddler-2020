@@ -3,7 +3,7 @@ const Riddle = require('../models/Riddle');
 const verifyUser = require('../middlewares/verifyUser');
 const User = require('../models/User');
 const getCurrentRiddleId = require('../getCurrentRiddleID');
-const mergeSort = require("../mergeSort");
+const mergeSort = require('../mergeSort');
 
 // This handles Baseurl/maze
 // this handle Base url/maze/riddleId POST req from
@@ -25,14 +25,14 @@ router.use((req, res, next) => {
 router.use(verifyUser);
 
 
-router.get('/', (req, res) => {
-    /* const pageToBeServed = !req.session.user.currentRiddle ? 'trackSelector' : 'question'; */
+/* router.get('/', (req, res) => {
+     const pageToBeServed = !req.session.user.currentRiddle ? 'trackSelector' : 'question';
     // res.render("question", { user: req.session.user });
-});
+}); */
 
 
 router.get('/question', async (req, res) => {
-    const currentUser = req.riddlerUser; //from middleware verifyUser
+    const currentUser = req.riddlerUser; // from middleware verifyUser
     console.log('Current Riddle', currentUser);
 
     // is starter or on the first question
@@ -40,7 +40,7 @@ router.get('/question', async (req, res) => {
         try {
             // find all riddleId that ends with 0
             const starterRiddle = await Riddle.find({ riddleId: /^.*0$/ });
-            if (starterRiddle) return res.render("question", { riddle: starterRiddle });
+            if (starterRiddle) return res.render('question', { riddle: starterRiddle });
         } catch (err) {
             console.log('starter ridle not found [game.js]');
             res.render('error', { error: err });
@@ -51,11 +51,13 @@ router.get('/question', async (req, res) => {
     // existing user
     try {
         const currentRiddle = await getCurrentRiddleId(req, res);
-        if (currentRiddle) return res.render("question", { riddle: currentRiddle });
+        if (currentRiddle) return res.render('question', { riddle: currentRiddle });
     } catch (err) {
         console.log('Riddle not found [game.js]');
         res.render('error', { error: err });
     }
+
+    return true;
 });
 
 
@@ -63,10 +65,11 @@ router.get('/leaderboard', async (req, res) => {
     try {
         let lb = await User.find({});
         lb = mergeSort(lb);
-        res.render("leaderboard", { leaderboard: lb });
+        res.render('leaderboard', { leaderboard: lb });
     } catch (err) {
-        res.render("error", { error: err });
+        res.render('error', { error: err });
     }
+    return true;
 });
 
 router.post('/answer', async (req, res) => {
@@ -86,29 +89,31 @@ router.post('/answer', async (req, res) => {
 
     // crreating the new riddleID
     const track = currentUser.riddleId.charAt(0);
-    let newQuestion = parseInt(currentUser.riddleId.charAt(1)) + 1;
+    let newQuestion = parseInt(currentUser.riddleId.charAt(1), 10) + 1;
     newQuestion = newQuestion.toString();
 
-    // creating the query + new data 
+    // creating the query + new data
     const query = { username: req.user.username };
     const newRiddleID = `${track}${newQuestion}`;
     req.riddlerUser.riddleId = newRiddleID;
     const progressOverall = req.riddleuser.mainTracksProgress;
-    progressOverall.forEach(ele, index => {
-        if (ele.charAt(0) == newRiddleID.charAt(0))
+    progressOverall.forEach((ele, index) => {
+        if (ele.charAt(0) === newRiddleID.charAt(0)) {
             req.riddlerUser.mainTracksProgress[index] = newRiddleID;
-    })
+        }
+    });
     req.riddlerUser.points += riddle.pointsForSuccess;
 
     // updating the user database
     try {
-        User.findOneAndUpdate(query, req.riddlerUser, { upsert: true }, (err, doc) => {
+        User.findOneAndUpdate(query, req.riddlerUser, { upsert: true }, (err) => {
             if (err) return res.render('error', { error: err });
             return res.json({ success: true, correct: true, points: riddle.pointsForSuccess });
         });
     } catch (error) {
         res.render('error', { error: '[game.js] Unable to update riddle' });
     }
+    return true;
 });
 
 router.post('/hint', async (req, res) => {
@@ -123,13 +128,11 @@ router.post('/hint', async (req, res) => {
     if (!riddle) return res.render({ error: 'riddle not found' });
 
 
-
-
-    //stop if all hints are used up
+    // stop if all hints are used up
     const hints = riddle.hintsUsed
-        .map(used, index => (used === 0) ? riddle.hints[index] : null)
-        .filter(hint => hint != null);
-    if (hints.length == 0) return res.json({ success: true, message: "used up all hints" });
+        .map((used, index) => ((used === 0) ? riddle.hints[index] : null))
+        .filter((hint) => hint != null);
+    if (hints.length === 0) return res.json({ success: true, message: 'used up all hints' });
 
 
     // searches for the first unused hint and serves it
@@ -142,13 +145,15 @@ router.post('/hint', async (req, res) => {
     // /update in db [only thing that changes is hintsused array]
     // return value
     try {
-        Riddle.findOneAndUpdate({ riddleId: rId }, riddle, { upsert: true }, (err, doc) => {
+        Riddle.findOneAndUpdate({ riddleId: rId }, riddle, { upsert: true }, (err) => {
             if (err) return res.render('error', { error: err });
             return res.json({ success: true, message: 'hintRequested', hint: servedHint });
         });
     } catch (error) {
         res.render('error', { error: '[game.js] Unable to update riddle' });
     }
+
+    return true;
 
 
     // The frontend will send no extra data, it will just send a post request on this route
@@ -161,7 +166,7 @@ router.post('/hint', async (req, res) => {
     // {success:true, messaage: 'hintRequested', hint: '<thehint>'}
     // If no, then return back {success: true, message: 'notEnoughPoints'}
 });
-
+/*
 router.get('/reset', (req, res) => {
 
 
@@ -173,6 +178,6 @@ router.get('/reset', (req, res) => {
     // {success: true, message: 'resetNotAllowed'}
     // In that case, don't allow the reset back and return back
 });
-
+ */
 
 module.exports = router;

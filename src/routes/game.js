@@ -20,7 +20,7 @@ router.use((req, res, next) => {
 });
 
 // checks for unauthorized requests
-// if authorized riddlerDB data on req.riddlerUser
+// if authorized riddlerDB data on req.session.riddlerUser
 router.use(verifyUser);
 
 
@@ -31,7 +31,7 @@ router.use(verifyUser);
 
 
 router.get('/question', async (req, res) => {
-    const currentUser = req.riddlerUser; // from middleware verifyUser
+    const currentUser = req.session.riddlerUser; // from middleware verifyUser
     console.log('Current Riddle', currentUser);
 
     // is starter or on the first question
@@ -85,7 +85,7 @@ router.get('/leaderboard', async (req, res) => {
 
 router.post('/answer', async (req, res) => {
     const userAnswer = req.body.answer;
-    const currentUser = req.riddlerUser;
+    const currentUser = req.session.riddlerUser;
 
 
     const rId = await getCurrentRiddleId(req, res);
@@ -104,20 +104,20 @@ router.post('/answer', async (req, res) => {
     newQuestion = newQuestion.toString();
 
     // creating the query + new data
-    const query = { username: req.user.username };
+    const query = { username: req.session.user.username };
     const newRiddleID = `${track}${newQuestion}`;
-    req.riddlerUser.riddleId = newRiddleID;
+    req.session.riddlerUser.riddleId = newRiddleID;
     const progressOverall = currentUser.mainTracksProgress;
     progressOverall.forEach((ele, index) => {
         if (ele.charAt(0) === newRiddleID.charAt(0)) {
-            req.riddlerUser.mainTracksProgress[index] = newRiddleID;
+            req.session.riddlerUser.mainTracksProgress[index] = newRiddleID;
         }
     });
-    req.riddlerUser.points += riddle.pointsForSuccess;
+    req.session.riddlerUser.points += riddle.pointsForSuccess;
 
     // updating the user database
     try {
-        User.findOneAndUpdate(query, req.riddlerUser, { upsert: true }, (err) => {
+        User.findOneAndUpdate(query, req.session.riddlerUser, { upsert: true }, (err) => {
             if (err) return res.render('error', { error: err });
             return res.json({ success: true, correct: true, points: riddle.pointsForSuccess });
         });
@@ -129,7 +129,7 @@ router.post('/answer', async (req, res) => {
 
 router.post('/hint', async (req, res) => {
     console.log(req, res);
-    const currentUser = req.riddlerUser;
+    const currentUser = req.session.riddlerUser;
 
 
     const rId = await getCurrentRiddleId(req, res);
@@ -153,13 +153,13 @@ router.post('/hint', async (req, res) => {
     currentUser.hintsUsed[index] += 1;
 
 
-    req.riddlerUser.hintsUsed = currentUser.hintsUsed;
-    req.riddlerUser.points -= riddle.pointsDeductedPerHint;
+    req.session.riddlerUser.hintsUsed = currentUser.hintsUsed;
+    req.session.riddlerUser.points -= riddle.pointsDeductedPerHint;
 
 
     // /update in dbs
     User.findOneAndUpdate({ username: currentUser.username },
-        req.riddlerUser, { upsert: true },
+        req.session.riddlerUser, { upsert: true },
         (err, doc) => {
             if (err) return res.render('error', { error: err });
             console.log('user saved successfully', doc);
@@ -213,17 +213,17 @@ router.get('/reset', async (req, res) => {
     const riddle = await Riddle.findOne({ riddleId: currentRI });
 
     for (let i = 1; i <= currentRI[1]; i += 1) {
-        req.riddlerUser.points -= riddle.pointsForSuccess;
+        req.session.riddlerUser.points -= riddle.pointsForSuccess;
     }
 
     progressOverall.forEach((ele, index) => {
         if (ele.charAt(0) === currentRI.charAt(0)) {
-            req.riddlerUser.mainTracksProgress[index] = `${currentRI[0]}0`;
+            req.session.riddlerUser.mainTracksProgress[index] = `${currentRI[0]}0`;
         }
     });
 
-    User.findOneAndUpdate({ username: req.riddlerUser.username },
-        req.riddlerUser, { upsert: true },
+    User.findOneAndUpdate({ username: req.session.riddlerUser.username },
+        req.session.riddlerUser, { upsert: true },
         (err) => {
             if (err) return res.render('error', { error: err });
             return res.send({ success: true, message: 'resetDone' });

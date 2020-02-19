@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const User = require("./models/User");
 
 
 const getCurrentRiddleID = async (req, res) => {

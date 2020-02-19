@@ -107,7 +107,7 @@ router.post('/answer', async (req, res) => {
     }
 });
 
-router.post('/hint', (req, res) => {
+router.post('/hint', async (req, res) => {
     console.log(req, res);
 
     const rId = await getCurrentRiddleId(req, res);

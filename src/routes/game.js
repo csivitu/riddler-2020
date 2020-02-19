@@ -50,7 +50,8 @@ router.get('/question', async (req, res) => {
 
     // existing user
     try {
-        const currentRiddle = await getCurrentRiddleId(req, res);
+        const currentRiddleID = await getCurrentRiddleId(req, res);
+        const currentRiddle = await Riddle.find({ riddleId: currentRiddleID });
         if (currentRiddle) return res.render('question', { riddle: currentRiddle });
     } catch (err) {
         console.log('Riddle not found [game.js]');
@@ -64,6 +65,7 @@ router.get('/question', async (req, res) => {
 router.get('/leaderboard', async (req, res) => {
     try {
         let users = await User.find({});
+        const lb =
         // const lb = mergeSort(Object.values(users.));
         // res.render('leaderboard', { leaderboard: lb });
     } catch (err) {

@@ -59,7 +59,7 @@ router.get('/question', async (req, res) => {
 });
 
 
-router.get('/leaderboard', (req, res) => {
+router.get('/leaderboard', async (req, res) => {
     try {
         let lb = await User.find({});
         lb = mergeSort(lb);

@@ -8,13 +8,10 @@ const getIpAddress = require('../getIpAddress');
 // i.e the callback from the accounts.csi websites
 
 
-
 router.use(
     authorize({
         secret: process.env.SECRET,
-        token: (req) => {
-            return req.query.token;
-        },
+        token: (req) => req.query.token,
     }),
 );
 
@@ -42,9 +39,7 @@ router.get('/', async (req, res) => {
     }
 
 
-
-    const redirectUrl =
-        (req.session.user.scope.indexOf('csi') > -1) ? '/game' : '/';
+    const redirectUrl = (req.session.user.scope.indexOf('csi') > -1) ? '/game' : '/';
     res.redirect(redirectUrl);
 
 

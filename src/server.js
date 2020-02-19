@@ -12,7 +12,7 @@ const port = process.env.PORT || 5000;
 const register = require('./routes/register.js');
 const callback = require('./routes/accountsCallback.js');
 const game = require('./routes/game.js');
-const admin = require("./routes/admin.js");
+const admin = require('./routes/admin.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

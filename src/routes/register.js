@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
     const state = getRandomState(16);
 
     const accountsUrl = `https://accounts.csivit.com/oauth/authorize?clientId=${process.env.CLIENT_ID}&redirectUrl=${process.env.REDIRECT_URL}&state=${state}`;
-    res.render('registerPage', { user: req.session.user, accountsUrl });
+    res.render('questionsPage', { user: req.session.user, accountsUrl });
 
     if (req.session.user) {
         req.session.destroy();
@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
 
 router.get('/dashboard', (req, res) => {
     console.log(req, res);
-    //query out the user #task1 
+    // query out the user #task1
     // Only accessible if the user is logged into riddler. It should
     // return a page which shows information like the user's current
     // progress (the track he's on currently, the question no on the track,

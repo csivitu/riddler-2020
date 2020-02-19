@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const Riddle = require("../models/Riddle");
-const verifyUser = require("../middlewares/verifyUser");
-const User = require("../models/User");
-const getCurrentRiddleId = require("../getCurrentRiddleID");
+const Riddle = require('../models/Riddle');
+const verifyUser = require('../middlewares/verifyUser');
+const User = require('../models/User');
+const getCurrentRiddleId = require('../getCurrentRiddleID');
 
 // This handles Baseurl/maze
 // this handle Base url/maze/riddleId POST req from
@@ -19,46 +19,42 @@ router.use((req, res, next) => {
     }
 });
 
-//checks for unauthorized requests
-//if authorized riddlerDB data on req.riddlerUser
+// checks for unauthorized requests
+// if authorized riddlerDB data on req.riddlerUser
 router.use(verifyUser);
-
 
 
 router.get('/', (req, res) => {
     /* const pageToBeServed = !req.session.user.currentRiddle ? 'trackSelector' : 'question'; */
-    //res.render("question", { user: req.session.user });
+    // res.render("question", { user: req.session.user });
 });
-
 
 
 router.get('/question', async (req, res) => {
     const currentUser = req.riddlerUser;
-    console.log("Current Riddle", currentUser);
+    console.log('Current Riddle', currentUser);
 
-    //is starter or on the first question
+    // is starter or on the first question
     if (!currentUser.riddleId || currentQuestion.charAt(1) === '0') {
         try {
-            //find all riddleId that ends with 0
+            // find all riddleId that ends with 0
             const starterRiddle = await Riddle.find({ riddleId: /^.*0$/ });
             if (starterRiddle) return res.send(starterRiddle);
         } catch (err) {
-            console.log("starter ridle not found [game.js]")
-            res.render("error", { error: err });
+            console.log('starter ridle not found [game.js]');
+            res.render('error', { error: err });
         }
     }
 
 
-    //existing user
+    // existing user
     try {
         const currentRiddle = await getCurrentRiddleId(req, res);
         if (currentRiddle) return res.send(currentRiddle);
     } catch (err) {
-        console.log("Riddle not found [game.js]");
-        res.render("error", { error: err });
+        console.log('Riddle not found [game.js]');
+        res.render('error', { error: err });
     }
-
-
 });
 
 
@@ -76,34 +72,34 @@ router.post('/answer', async (req, res) => {
 
 
     const rId = await getCurrentRiddleId(req, res);
-    if (rId != currentUser.riddleId) return res.render("error", { error: "trying to skip ahead are we ?" });
+    if (rId != currentUser.riddleId) return res.render('error', { error: 'trying to skip ahead are we ?' });
 
     const riddle = await Riddle.findOne({ riddleId: rId });
-    if (!riddle) return res.render({ error: "riddle not found" });
+    if (!riddle) return res.render({ error: 'riddle not found' });
 
-    let correct = riddle.answer.find((ele) => ele === userAnswer);
+    const correct = riddle.answer.find((ele) => ele === userAnswer);
     if (!correct) return res.json({ correct: false, points: 0 });
 
 
-    //crreating the new riddleID
+    // crreating the new riddleID
     const track = currentUser.riddleId.charAt(0);
     let newQuestion = parseInt(currentUser.riddleId.charAt(1)) + 1;
     newQuestion = newQuestion.toString();
 
-    //creating the query
-    let query = { 'username': req.user.username };
-    let newRiddleID = `${track}${newQuestion}`;
+    // creating the query
+    const query = { username: req.user.username };
+    const newRiddleID = `${track}${newQuestion}`;
     req.riddlerUser.riddleId = newRiddleID;
     req.riddlerUser.points += riddle.pointsForSuccess;
 
-    //updating the user database
+    // updating the user database
     try {
-        User.findOneAndUpdate(query, req.riddlerUser, { upsert: true }, function (err, doc) {
-            if (err) return res.render("error", { error: err });
+        User.findOneAndUpdate(query, req.riddlerUser, { upsert: true }, (err, doc) => {
+            if (err) return res.render('error', { error: err });
             return res.json({ correct: true, points: riddle.pointsForSuccess });
         });
     } catch (error) {
-        res.render("error", { error: "[game.js] Unable to update riddle" });
+        res.render('error', { error: '[game.js] Unable to update riddle' });
     }
 });
 
@@ -111,16 +107,16 @@ router.post('/hint', async (req, res) => {
     console.log(req, res);
 
     const rId = await getCurrentRiddleId(req, res);
-    if (rId != currentUser.riddleId) return res.render("error", { error: "trying to skip ahead are we ?" });
+    if (rId != currentUser.riddleId) return res.render('error', { error: 'trying to skip ahead are we ?' });
 
     const riddle = await Riddle.findOne({ riddleId: rId });
-    if (!riddle) return res.render({ error: "riddle not found" });
+    if (!riddle) return res.render({ error: 'riddle not found' });
 
 
-    //only return the hints the user has not used
+    // only return the hints the user has not used
     const hints = riddle.hintsUsed
-        .map(used, index => (used === 0) ? riddle.hints[index] : null)
-        .filter(hint => hint != null);
+        .map(used, (index) => ((used === 0) ? riddle.hints[index] : null))
+        .filter((hint) => hint != null);
     res.send(hints);
 
 

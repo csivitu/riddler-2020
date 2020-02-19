@@ -186,7 +186,6 @@ router.post('/hint', async (req, res) => {
 });
 
 router.get('/reset', async (req, res) => {
-    let currentRoute = await getCurrentRiddleId(req, res);
     const progressOverall = req.riddleuser.mainTracksProgress;
     const noOfQuestions = 7;
 
@@ -203,9 +202,12 @@ router.get('/reset', async (req, res) => {
         message: "Reset not allowed"
     });
 
+
+    //reset Current track progress
+    let currentRoute = await getCurrentRiddleId(req, res);
     progressOverall.forEach((ele, index) => {
         if (ele.charAt(0) === currentRoute.charAt(0)) {
-            req.riddlerUser.mainTracksProgress[index] = newRiddleID;
+            req.riddlerUser.mainTracksProgress[index] = currentRoute + "0";
         }
     });
     // If you get a request on this route, that means the user wants to reset back from the track

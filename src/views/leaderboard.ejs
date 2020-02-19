@@ -10,10 +10,14 @@
 
 <body>
     <table>
-        <% for(var i=0; i < data.length; i++) { %>
         <tr>
-            <td><%= data[i].id %></td>
-            <td><%= data[i].name %></td>
+            <th>Username</th>
+            <th>Score</th>
+        </tr>
+        <% for(var i = 0; i < leaderboard.length; i++) { %>
+        <tr>
+            <td><%= leaderboard[i].username %></td>
+            <td><%= leaderboard[i].score %></td>
         </tr>
         <% } %>
     </table>

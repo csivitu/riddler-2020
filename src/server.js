@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/static', express.static(path.join(__dirname, '/static')));
 app.use(
     session({
-        secret: 'eiffel tower on steoroids',
+        secret: process.env.SESSION_SECRET || 'eiffel tower on steoroids',
         resave: false,
         saveUninitialized: true,
     }),

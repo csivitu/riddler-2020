@@ -25,7 +25,7 @@ router.use(verifyUser);
 
 
 router.get('/', (req, res) => {
-    res.render('dashboard', { user: req.riddlerUser });
+    res.render('dashboard', { user: req.session.riddlerUser });
 });
 
 
@@ -60,7 +60,7 @@ router.get('/question', async (req, res) => {
 });
 
 function GetSortOrder(prop) {
-    return function (a, b) {
+    return (a, b) => {
         if (a[prop] > b[prop]) {
             return 1;
         } if (a[prop] < b[prop]) {

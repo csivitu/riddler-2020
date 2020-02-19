@@ -21,6 +21,9 @@ const riddleSchema = new mongoose.Schema({
     pointsForSuccess: {
         type: Number,
     },
+    pointsDeductedPerHint: {
+        type: Number,
+    }
 });
 
 module.exports = mongoose.model('Riddle', riddleSchema);

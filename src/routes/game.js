@@ -120,12 +120,10 @@ router.post('/hint', async (req, res) => {
     if (!riddle) return res.render({ error: "riddle not found" });
 
 
-    //only return the hints the user has not used
+    //stop if all hints are used up
     const hints = riddle.hintsUsed
         .map(used, index => (used === 0) ? riddle.hints[index] : null)
         .filter(hint => hint != null);
-
-    //stop if all hints are used up
     if (hints.length == 0) return res.json({ success: true, message: "used up all hints" });
 
 

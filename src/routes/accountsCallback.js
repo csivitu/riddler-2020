@@ -5,7 +5,9 @@ const User = require('../models/User');
 const getIpAddress = require('../getIpAddress');
 
 // this handles: Base-url/outh/redirect
-// i.e the callback from the accounts.csi website
+// i.e the callback from the accounts.csi websites
+
+
 
 router.use(
     authorize({
@@ -36,12 +38,10 @@ router.get('/', async (req, res) => {
             res.render('error', { error: 'Oops Server Error!' });
         }
     }
+    const redirectUrl =
+        (req.session.user.scope.indexOf('csi') > -1) ? '/maze' : '/';
+    res.redirect(redirectUrl);
 
-    if (req.session.user.scope.indexOf('csi') > -1) {
-        res.redirect('/maze');
-    } else {
-        res.redirect('/');
-    }
 
     return true;
 });

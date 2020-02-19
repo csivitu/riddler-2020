@@ -50,7 +50,7 @@ router.get('/question', async (req, res) => {
     // existing user
     try {
         const currentRiddle = await getCurrentRiddleId(req, res);
-        if (currentRiddle) return res.send(currentRiddle);
+        if (currentRiddle) return res.render("question", { riddle: currentRiddle });
     } catch (err) {
         console.log('Riddle not found [game.js]');
         res.render('error', { error: err });

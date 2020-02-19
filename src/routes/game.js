@@ -105,6 +105,8 @@ router.post('/answer', async (req, res) => {
 
 router.post('/hint', async (req, res) => {
     console.log(req, res);
+    const currentUser = req.riddleId;
+
 
     const rId = await getCurrentRiddleId(req, res);
     if (rId !== currentUser.riddleId) return res.render('error', { error: 'trying to skip ahead are we ?' });
@@ -117,7 +119,28 @@ router.post('/hint', async (req, res) => {
     const hints = riddle.hintsUsed
         .map(used, (index) => ((used === 0) ? riddle.hints[index] : null))
         .filter((hint) => hint != null);
-    res.send(hints);
+
+    // stop if all hints are used up
+    if (hints.length == 0) return res.json({ success: true, message: 'used up all hints' });
+
+
+    // searches for the first unused hint and serves it
+    // updated hintsused value from 0 to 1
+    const index = riddle.hintsUsed.indexOf(0);
+    const servedHint = riddle.hint[index];
+    riddle.hintsUsed[index] = 1;
+
+
+    // /update in db [only thing that changes is hintsused array]
+    // return value
+    try {
+        Riddle.findOneAndUpdate({ riddleId: rId }, riddle, { upsert: true }, (err, doc) => {
+            if (err) return res.render('error', { error: err });
+            return res.json({ success: true, message: 'hintRequested', hint: servedHint });
+        });
+    } catch (error) {
+        res.render('error', { error: '[game.js] Unable to update riddle' });
+    }
 
 
     // The frontend will send no extra data, it will just send a post request on this route

@@ -32,5 +32,5 @@ router.get('/', (req, res) => {
 
 // Routes should return {success: false, message: 'serverError'} whenever some exception
 // occurs on the route (like a mongodb operation fails, for exam[le])
-\
+
 module.exports = router;

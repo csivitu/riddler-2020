@@ -72,7 +72,7 @@ router.post('/answer', (req, res) => {
     const currentUser = req.session.user;
 
 
-    const riddleId =
+    const riddleId = await getCurrentRiddleId(req, res);
 
     // The frontend will send just the answer to the current question. The backend
     // needs to determine the current question the user is on, and then check if the

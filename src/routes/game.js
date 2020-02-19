@@ -158,14 +158,20 @@ router.post('/hint', async (req, res) => {
 
 
     // /update in dbs
-    Riddle.findOneAndUpdate({ riddleId: rId }, riddle, { upsert: true }, (err) => {
-        if (err) return res.render('error', { error: err });
-        return res.json({ success: true, message: 'hintRequested', hint: servedHint });
-    });
-    User.findOneAndUpdate({ username: currentUser.username }, req.riddlerUser, { upsert: true },
+    User.findOneAndUpdate({ username: currentUser.username },
+        req.riddlerUser, { upsert: true },
         (err, doc) => {
             if (err) return res.render('error', { error: err });
-            console.log(doc);
+            console.log('user saved successfully', doc);
+            return true;
+        });
+
+
+    Riddle.findOneAndUpdate({ riddleId: rId },
+        riddle, { upsert: true },
+        (err) => {
+            if (err) return res.render('error', { error: err });
+            return res.json({ success: true, message: 'hintRequested', hint: servedHint });
         });
 
 
@@ -205,23 +211,26 @@ router.get('/reset', async (req, res) => {
 
     // reset Current track progress
     const currentRI = await getCurrentRiddleId(req, res);
-    const riddle = await Riddle.findOne({ riddleId: rId });
+    const riddle = await Riddle.findOne({ riddleId: currentRI });
 
-    for (let i = 1; i <= currentRI[1]; i += 1) req.riddlerUser.points -= riddle.pointsForSuccess;
+    for (let i = 1; i <= currentRI[1]; i += 1) {
+        req.riddlerUser.points -= riddle.pointsForSuccess;
+    }
 
     progressOverall.forEach((ele, index) => {
-        if (ele.charAt(0) === currentRoute.charAt(0)) {
+        if (ele.charAt(0) === currentRI.charAt(0)) {
             req.riddlerUser.mainTracksProgress[index] = `${currentRI[0]}0`;
         }
     });
 
-    User.findOneAndUpdate({ username: req.riddlerUser.username }, req.riddlerUser, { upsert: true },
-        (err, doc) => {
+    User.findOneAndUpdate({ username: req.riddlerUser.username },
+        req.riddlerUser, { upsert: true },
+        (err) => {
             if (err) return res.render('error', { error: err });
-            res.send({ success: true, message: 'resetDone' });
+            return res.send({ success: true, message: 'resetDone' });
         });
 
-
+    return true;
     // If you get a request on this route, that means the user wants to reset back from the track
     // onto the first question (the one with the three choices). Thus, you need to do the required
     // to deduce points for the same for the user, and also update the progress of the user.

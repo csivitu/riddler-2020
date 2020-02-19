@@ -6,12 +6,11 @@ $(document).ready(() => {
 
         const distance = countDownDate - now;
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        $('.timer').html(`${days}d ${hours}h ${minutes}m ${seconds}s `);
+        $('.timer').html(`${hours}h ${minutes}m ${seconds}s `);
 
         if (distance < 0) {
             clearInterval(x);
@@ -38,11 +37,11 @@ $(document).ready(() => {
             ammo = false;
         }
     });
-    backgroundMusic.addEventListener('ended', function() {
+    backgroundMusic.addEventListener('ended', function autoplay() {
         this.currentTime = 0;
         this.play();
     }, false);
-    backgroundMusic.play();
+
     $('#vol').click(() => {
         if ($('#vIcon').hasClass('fa-volume-up')) {
             backgroundMusic.pause();

@@ -12,7 +12,9 @@ const getIpAddress = require('../getIpAddress');
 router.use(
     authorize({
         secret: process.env.SECRET,
-        token: (req) => req.query.token,
+        token: (req) => {
+            return req.query.token;
+        },
     }),
 );
 
@@ -33,11 +35,15 @@ router.get('/', async (req, res) => {
     if (!userExists) {
         // New user
         try {
-            await User.create(Info);
+            const dbUser = await User.create(Info);
+            req.session.user = dbUser;
         } catch (err2) {
             res.render('error', { error: 'Oops Server Error!' });
         }
     }
+
+
+
     const redirectUrl =
         (req.session.user.scope.indexOf('csi') > -1) ? '/maze' : '/';
     res.redirect(redirectUrl);

@@ -38,7 +38,11 @@ $(document).ready(() => {
             ammo = false;
         }
     });
-
+    backgroundMusic.addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.play();
+    }, false);
+    backgroundMusic.play();
     $('#vol').click(() => {
         if ($('#vIcon').hasClass('fa-volume-up')) {
             backgroundMusic.pause();

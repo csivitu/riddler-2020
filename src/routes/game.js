@@ -31,15 +31,15 @@ router.get('/', (req, res) => {
 
 
 router.get('/question', async (req, res) => {
-    const currentUser = req.riddlerUser;
+    const currentUser = req.riddlerUser; //from middleware verifyUser
     console.log('Current Riddle', currentUser);
 
     // is starter or on the first question
-    if (!currentUser.riddleId || currentQuestion.charAt(1) === '0') {
+    if (!currentUser.riddleId || currentUser.riddleId.charAt(1) === '0') {
         try {
             // find all riddleId that ends with 0
             const starterRiddle = await Riddle.find({ riddleId: /^.*0$/ });
-            if (starterRiddle) return res.send(starterRiddle);
+            if (starterRiddle) return res.render("question", { riddle: starterRiddle });
         } catch (err) {
             console.log('starter ridle not found [game.js]');
             res.render('error', { error: err });
@@ -118,6 +118,8 @@ router.post('/hint', async (req, res) => {
 
     const riddle = await Riddle.findOne({ riddleId: rId });
     if (!riddle) return res.render({ error: 'riddle not found' });
+
+
 
 
     //stop if all hints are used up

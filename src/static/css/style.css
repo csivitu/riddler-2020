@@ -467,7 +467,7 @@ h3{
 .popover {
     border: 2px red;
     background-color: #B102B9;
-    height: 50vh;
+    min-height: 50vh;
 }
 
 .popover-header {

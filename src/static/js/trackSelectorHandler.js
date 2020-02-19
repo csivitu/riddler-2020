@@ -1,9 +1,18 @@
 window.onload = () => {
-    const tracks = document.getElementsByTagName('button');
+    const tracksDOM = document.getElementsByTagName('button');
+    const question = document.querySelector('#question');
+
+    // Starter questiosn are hardcoded
+    const questions = ['a', 'b', 'c'];
+    const tracks = Object.values(tracksDOM);
+    console.log(tracks);
     tracks.forEach((btn) => {
         btn.addEventListener('click', (e) => {
-            const trackSelected = tracks.findIndex(e.target);
-            // will return if track 1 2 3,
+            let trackSelected = 1;
+            for (let i = 0; i < tracks.length; i += 1) {
+                if (tracks[i] === e.target) trackSelected = i;
+            }
+
             let riddleID;
             switch (trackSelected) {
             case 0:
@@ -18,7 +27,11 @@ window.onload = () => {
             default:
                 riddleID = 'A0';
             }
-            const url = `http://localhost/maze?id=${riddleID}`;
+            question.innerHTML = questions[trackSelected];
+            console.log(riddleID);
+            const url = `${window.location.origin}/game?id=${encodeURI(riddleID)}`;
+            console.log(url);
+
             window.location.href = url;
         });
     });

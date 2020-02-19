@@ -7,18 +7,19 @@ const path = require('path');
 const session = require('express-session');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 const register = require('./routes/register.js');
 const callback = require('./routes/accountsCallback.js');
-const maze = require('./routes/maze.js');
+const game = require('./routes/game.js');
+const admin = require('./routes/admin.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/static', express.static(path.join(__dirname, '/static')));
 app.use(
     session({
-        secret: 'eiffel tower on steoroids',
+        secret: process.env.SESSION_SECRET || 'eiffel tower on steoroids',
         resave: false,
         saveUninitialized: true,
     }),
@@ -29,7 +30,8 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use('/', register);
 app.use('/oauth/redirect', callback);
-app.use('/maze', maze);
+app.use('/game', game);
+app.use('/admin', admin);
 
 app.use('*', (req, res) => {
     res.render('error', { error: `${req.originalUrl} is not defined` });

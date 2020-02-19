@@ -20,6 +20,7 @@ router.use((req, res, next) => {
 });
 
 //checks for unauthorized requests
+//if authorized riddlerDB data on req.riddlerUser
 router.use(verifyUser);
 
 
@@ -32,7 +33,7 @@ router.get('/', (req, res) => {
 
 
 router.get('/question', async (req, res) => {
-    const currentUser = req.riddleUser;
+    const currentUser = req.riddlerUser;
     console.log("Current Riddle", currentUser);
 
     //is starter or on the first question

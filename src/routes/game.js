@@ -3,6 +3,7 @@ const Riddle = require('../models/Riddle');
 const verifyUser = require('../middlewares/verifyUser');
 const User = require('../models/User');
 const getCurrentRiddleId = require('../getCurrentRiddleID');
+const mergeSort = require("../mergeSort");
 
 // This handles Baseurl/maze
 // this handle Base url/maze/riddleId POST req from
@@ -59,11 +60,13 @@ router.get('/question', async (req, res) => {
 
 
 router.get('/leaderboard', (req, res) => {
-    console.log(req, res);
-
-    // Backend has to simply request all users, and sort them by points, and then template im
-    // this into a HTML table on the frontend.
-    // The table has two columns, the username, and the points
+    try {
+        let lb = await User.find({});
+        lb = mergeSort(lb);
+        res.render("leaderboard", { leaderboard: lb });
+    } catch (err) {
+        res.render("error", { error: err });
+    }
 });
 
 router.post('/answer', async (req, res) => {

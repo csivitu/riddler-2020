@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     bonusTrack: {
         type: [String],
     },
-    score: {
+    points: {
         type: Number,
         required: true,
         default: 0,

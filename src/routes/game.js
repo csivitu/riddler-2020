@@ -3,7 +3,6 @@ const Riddle = require('../models/Riddle');
 const verifyUser = require('../middlewares/verifyUser');
 const User = require('../models/User');
 const getCurrentRiddleId = require('../getCurrentRiddleID');
-const mergeSort = require('../mergeSort');
 
 // This handles Baseurl/maze
 // this handle Base url/maze/riddleId POST req from
@@ -61,13 +60,23 @@ router.get('/question', async (req, res) => {
     return true;
 });
 
+function GetSortOrder(prop) {
+    return function (a, b) {
+        if (a[prop] > b[prop]) {
+            return 1;
+        } else if (a[prop] < b[prop]) {
+            return -1;
+        }
+        return 0;
+    }
+}
+
 
 router.get('/leaderboard', async (req, res) => {
     try {
-        let users = await User.find({});
-        const lb =
-        // const lb = mergeSort(Object.values(users.));
-        // res.render('leaderboard', { leaderboard: lb });
+        let lb = await User.find({});
+        lb.sort(GetSortOrder("points"));
+        res.render('leaderboard', { leaderboard: lb });
     } catch (err) {
         res.render('error', { error: err });
     }

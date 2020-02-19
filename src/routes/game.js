@@ -19,11 +19,14 @@ router.use((req, res, next) => {
     }
 });
 
+//checks for unauthorized requests
 router.use(verifyUser);
+
+
 
 router.get('/', (req, res) => {
     /* const pageToBeServed = !req.session.user.currentRiddle ? 'trackSelector' : 'question'; */
-    res.render("question", { user: req.session.user });
+    //res.render("question", { user: req.session.user });
 });
 
 

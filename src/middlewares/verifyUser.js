@@ -6,6 +6,7 @@ const verifyUser = async (res, req, next) => {
     const userExists = await User.findOne({ username: currentUser.username });
     if (!userExists) return res.render("error", { error: "Not even Donald Trump is allowed in here !" });
 
+    req.riddleUser = userExists
     next();
 }
 

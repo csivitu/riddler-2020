@@ -32,14 +32,13 @@ router.get('/', (req, res) => {
 
 
 router.get('/question', async (req, res) => {
-    const currentUser = req.session.user;
-    console.log("Current Riddle", currentQuestion);
-
+    const currentUser = req.riddleUser;
+    console.log("Current Riddle", currentUser);
 
     //is starter or on the first question
-    if (!currentUser.currentRidlle || currentQuestion.charAt(1) === '0') {
+    if (!currentUser.riddleId || currentQuestion.charAt(1) === '0') {
         try {
-            //find all riddleId taht ends with 0
+            //find all riddleId that ends with 0
             const starterRiddle = await Riddle.find({ riddleId: /^.*0$/ });
             if (starterRiddle) return res.send(starterRiddle);
         } catch (err) {

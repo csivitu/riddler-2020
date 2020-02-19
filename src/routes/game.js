@@ -86,17 +86,22 @@ router.post('/answer', async (req, res) => {
     let newQuestion = parseInt(currentUser.riddleId.charAt(1)) + 1;
     newQuestion = newQuestion.toString();
 
-    // creating the query
+    // creating the query + new data 
     const query = { username: req.user.username };
     const newRiddleID = `${track}${newQuestion}`;
     req.riddlerUser.riddleId = newRiddleID;
+    const progressOverall = req.riddleuser.mainTracksProgress;
+    progressOverall.forEach(ele, index => {
+        if (ele.charAt(0) == newRiddleID.charAt(0))
+            req.riddlerUser.mainTracksProgress[index] = newRiddleID;
+    })
     req.riddlerUser.points += riddle.pointsForSuccess;
 
     // updating the user database
     try {
         User.findOneAndUpdate(query, req.riddlerUser, { upsert: true }, (err, doc) => {
             if (err) return res.render('error', { error: err });
-            return res.json({ correct: true, points: riddle.pointsForSuccess });
+            return res.json({ success: true, correct: true, points: riddle.pointsForSuccess });
         });
     } catch (error) {
         res.render('error', { error: '[game.js] Unable to update riddle' });
@@ -153,7 +158,7 @@ router.post('/hint', async (req, res) => {
 });
 
 router.get('/reset', (req, res) => {
-    console.log(req, res);
+
 
     // If you get a request on this route, that means the user wants to reset back from the track
     // onto the first question (the one with the three choices). Thus, you need to do the required

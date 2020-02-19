@@ -1,7 +1,7 @@
 const User = require('../models/User');
 
 // eslint-disable-next-line consistent-return
-const verifyUser = async (res, req, next) => {
+const verifyUser = async (req, res, next) => {
     const currentUser = req.session.user;
 
     const userExists = await User.findOne({ username: currentUser.username });

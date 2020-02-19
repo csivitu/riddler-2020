@@ -23,7 +23,7 @@ const riddleSchema = new mongoose.Schema({
     },
     pointsDeductedPerHint: {
         type: Number,
-    }
+    },
 });
 
 module.exports = mongoose.model('Riddle', riddleSchema);

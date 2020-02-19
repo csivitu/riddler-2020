@@ -150,7 +150,10 @@ router.post('/hint', async (req, res) => {
     // updated hintsused value from 0 to 1
     const index = currentUser.hintsUsed.indexOf(0);
     const servedHint = riddle.hint[index];
-    riddle.hintsUsed[index] = 1;
+    currentUser.hintsUsed[index] = 1;
+
+
+    req.riddlerUser.hintsUsed = currentUser.hintsUsed;
 
 
     // /update in db [only thing that changes is hintsused array]
@@ -159,6 +162,10 @@ router.post('/hint', async (req, res) => {
         Riddle.findOneAndUpdate({ riddleId: rId }, riddle, { upsert: true }, (err) => {
             if (err) return res.render('error', { error: err });
             return res.json({ success: true, message: 'hintRequested', hint: servedHint });
+        });
+        User.findOneAndUpdate({ username: currentUser.username }, req.riddlerUser, { upsert: true }, (err, doc) => {
+            if (err) return res.render('error', { error: err });
+            console.log(doc);
         });
     } catch (error) {
         res.render('error', { error: '[game.js] Unable to update riddle' });
@@ -177,7 +184,7 @@ router.post('/hint', async (req, res) => {
     // {success:true, messaage: 'hintRequested', hint: '<thehint>'}
     // If no, then return back {success: true, message: 'notEnoughPoints'}
 });
-/*
+
 router.get('/reset', (req, res) => {
 
 
@@ -189,6 +196,6 @@ router.get('/reset', (req, res) => {
     // {success: true, message: 'resetNotAllowed'}
     // In that case, don't allow the reset back and return back
 });
- */
+
 
 module.exports = router;

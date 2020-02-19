@@ -32,17 +32,5 @@ router.get('/', (req, res) => {
 
 // Routes should return {success: false, message: 'serverError'} whenever some exception
 // occurs on the route (like a mongodb operation fails, for exam[le])
-
-router.get('/dashboard', (req, res) => {
-    console.log(req, res);
-    // query out the user #task1
-    // Only accessible if the user is logged into riddler. It should
-    // return a page which shows information like the user's current
-    // progress (the track he's on currently, the question no on the track,
-    // the no of points he has currently, no of questions he has anwered
-    // correctly). All this needs to be templated onto a page, and shown
-    // to the user. There should be a button called "Resume Game" which
-    // linkes to the /game route.
-});
-
+\
 module.exports = router;

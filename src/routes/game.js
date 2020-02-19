@@ -24,10 +24,9 @@ router.use((req, res, next) => {
 router.use(verifyUser);
 
 
-/* router.get('/', (req, res) => {
-     const pageToBeServed = !req.session.user.currentRiddle ? 'trackSelector' : 'question';
-    // res.render("question", { user: req.session.user });
-}); */
+router.get('/', (req, res) => {
+    res.render("dashboard", { user: req.session.user });
+});
 
 
 router.get('/question', async (req, res) => {

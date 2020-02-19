@@ -110,6 +110,20 @@ router.post('/answer', async (req, res) => {
 router.post('/hint', (req, res) => {
     console.log(req, res);
 
+    const rId = await getCurrentRiddleId(req, res);
+    if (rId != currentUser.riddleId) return res.render("error", { error: "trying to skip ahead are we ?" });
+
+    const riddle = await Riddle.findOne({ riddleId: rId });
+    if (!riddle) return res.render({ error: "riddle not found" });
+
+
+    //only return the hints the user has not used
+    const hints = riddle.hintsUsed
+        .map(used => (used === 0) ? hint : null)
+        .filter(hint => hint != null);
+    res.send(hints);
+
+
     // The frontend will send no extra data, it will just send a post request on this route
     // The backend has to assume that the hint is requested for the current question the user
     // is on. Thus it must first determine the current question the user is on, and then

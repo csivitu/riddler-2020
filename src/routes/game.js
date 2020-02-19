@@ -25,7 +25,7 @@ router.use(verifyUser);
 
 
 router.get('/', (req, res) => {
-    res.render("dashboard", { user: req.session.user });
+    res.render("dashboard", { user: req.riddlerUser });
 });
 
 

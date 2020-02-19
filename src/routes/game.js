@@ -64,18 +64,18 @@ function GetSortOrder(prop) {
     return function (a, b) {
         if (a[prop] > b[prop]) {
             return 1;
-        } else if (a[prop] < b[prop]) {
+        } if (a[prop] < b[prop]) {
             return -1;
         }
         return 0;
-    }
+    };
 }
 
 
 router.get('/leaderboard', async (req, res) => {
     try {
-        let lb = await User.find({});
-        lb.sort(GetSortOrder("points"));
+        const lb = await User.find({});
+        lb.sort(GetSortOrder('points'));
         res.render('leaderboard', { leaderboard: lb });
     } catch (err) {
         res.render('error', { error: err });
@@ -129,7 +129,7 @@ router.post('/answer', async (req, res) => {
 
 router.post('/hint', async (req, res) => {
     console.log(req, res);
-    const currentUser = req.riddleId;
+    const currentUser = req.riddlerUser;
 
 
     const rId = await getCurrentRiddleId(req, res);
@@ -140,7 +140,7 @@ router.post('/hint', async (req, res) => {
 
 
     // stop if all hints are used up
-    const hints = riddle.hintsUsed
+    const hints = currentUser.hintsUsed
         .map((used, index) => ((used === 0) ? riddle.hints[index] : null))
         .filter((hint) => hint != null);
     if (hints.length === 0) return res.json({ success: true, message: 'used up all hints' });

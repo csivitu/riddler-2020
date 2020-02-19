@@ -27,6 +27,9 @@ const userSchema = new mongoose.Schema({
     currentRiddle: {
         type: String,
     },
+    hintsUsed: {
+        type: [Number],
+    },
 });
 
 module.exports = mongoose.model('User', userSchema);

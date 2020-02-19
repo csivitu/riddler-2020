@@ -85,7 +85,7 @@ router.get('/leaderboard', async (req, res) => {
 
 router.post('/answer', async (req, res) => {
     const userAnswer = req.body.answer;
-    const currentUser = req.riddlerUser;
+    let currentUser = req.riddlerUser;
 
 
     const rId = await getCurrentRiddleId(req, res);
@@ -129,7 +129,7 @@ router.post('/answer', async (req, res) => {
 
 router.post('/hint', async (req, res) => {
     console.log(req, res);
-    const currentUser = req.riddlerUser;
+    let currentUser = req.riddlerUser;
 
 
     const rId = await getCurrentRiddleId(req, res);
@@ -185,9 +185,29 @@ router.post('/hint', async (req, res) => {
     // If no, then return back {success: true, message: 'notEnoughPoints'}
 });
 
-router.get('/reset', (req, res) => {
+router.get('/reset', async (req, res) => {
+    let currentRoute = await getCurrentRiddleId(req, res);
+    const progressOverall = req.riddleuser.mainTracksProgress;
+    const noOfQuestions = 7;
 
 
+    //completed all tracks
+    const edgeCase = true;
+    progressOverall.forEach((ele, index) => {
+        if (ele.charAt(1) != noOfQuestions) {
+            edgeCase = false;
+        }
+    });
+    if (edgeCase) return res.json({
+        sucess: true,
+        message: "Reset not allowed"
+    });
+
+    progressOverall.forEach((ele, index) => {
+        if (ele.charAt(0) === currentRoute.charAt(0)) {
+            req.riddlerUser.mainTracksProgress[index] = newRiddleID;
+        }
+    });
     // If you get a request on this route, that means the user wants to reset back from the track
     // onto the first question (the one with the three choices). Thus, you need to do the required
     // to deduce points for the same for the user, and also update the progress of the user.

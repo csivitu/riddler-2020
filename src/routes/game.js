@@ -64,7 +64,7 @@ router.get('/question', async (req, res) => {
 router.get('/leaderboard', async (req, res) => {
     try {
         let lb = await User.find({});
-        lb = mergeSort(lb);
+        lb = mergeSort(Object.values(lb));
         res.render('leaderboard', { leaderboard: lb });
     } catch (err) {
         res.render('error', { error: err });

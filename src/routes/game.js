@@ -1,5 +1,8 @@
 const router = require('express').Router();
-const Ridddle = require("../models/Riddle");
+const Riddle = require("../models/Riddle");
+const verifyUser = require("../middlewares/verifyUser");
+const User = require("../models/User");
+const getCurrentRiddleId = require("../getCurrentRiddleID");
 
 // This handles Baseurl/maze
 // this handle Base url/maze/riddleId POST req from
@@ -15,13 +18,44 @@ router.use((req, res, next) => {
         res.redirect('/');
     }
 });
+
+router.use(verifyUser);
+
 router.get('/', (req, res) => {
-    const pageToBeServed = !req.session.user.currentRiddle ? 'trackSelector' : 'question';
-    res.render(pageToBeServed, { user: req.session.user });
+    /* const pageToBeServed = !req.session.user.currentRiddle ? 'trackSelector' : 'question'; */
+    res.render("question", { user: req.session.user });
 });
 
-router.get('/:riddleId', (req, res) => {
-    res.send(req.params.riddleId);
+
+
+router.get('/question', async (req, res) => {
+    const currentUser = req.session.user;
+    console.log("Current Riddle", currentQuestion);
+
+
+    //is starter or on the first question
+    if (!currentUser.currentRidlle || currentQuestion.charAt(1) === '0') {
+        try {
+            //find all riddleId taht ends with 0
+            const starterRiddle = await Riddle.find({ riddleId: /^.*0$/ });
+            if (starterRiddle) return res.send(starterRiddle);
+        } catch (err) {
+            console.log("starter ridle not found [game.js]")
+            res.render("error", { error: err });
+        }
+    }
+
+
+    //existing user
+    try {
+        const currentRiddle = await getCurrentRiddleId(req, res);
+        if (currentRiddle) return res.send(currentRiddle);
+    } catch (err) {
+        console.log("Riddle not found [game.js]");
+        res.render("error", { error: err });
+    }
+
+
 });
 
 
@@ -34,7 +68,11 @@ router.get('/leaderboard', (req, res) => {
 });
 
 router.post('/answer', (req, res) => {
-    console.log(req, res);
+    const answer = req.body.answer;
+    const currentUser = req.session.user;
+
+
+    const riddleId =
 
     // The frontend will send just the answer to the current question. The backend
     // needs to determine the current question the user is on, and then check if the
@@ -66,8 +104,8 @@ router.get('/reset', (req, res) => {
     // to deduce points for the same for the user, and also update the progress of the user.
     // After the reset has occured on the backend, return back {success:true, message: 'resetDone'}
     // There is an edge case to handle, when user tries to reset after he has finished all 3 tracks
-    // In that case, don't allow the reset back and return back
     // {success: true, message: 'resetNotAllowed'}
+    // In that case, don't allow the reset back and return back
 });
 
 

@@ -2,7 +2,7 @@ window.onload = () => {
     const tracksDOM = document.getElementsByTagName('button');
     const question = document.querySelector("#question");
 
-    //Starter questiosn are hardcoded
+    //Starter questiosn are hardcoded   
     const questions = ["a", "b", "c"];
     const tracks = Object.values(tracksDOM);
     console.log(tracks);

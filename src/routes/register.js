@@ -35,6 +35,7 @@ router.get('/', (req, res) => {
 
 router.get('/dashboard', (req, res) => {
     console.log(req, res);
+    //query out the user #task1 
     // Only accessible if the user is logged into riddler. It should
     // return a page which shows information like the user's current
     // progress (the track he's on currently, the question no on the track,

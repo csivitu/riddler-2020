@@ -189,8 +189,8 @@ router.get('/reset', async (req, res) => {
 
 
     // completed all tracks
-    const edgeCase = true;
-    progressOverall.forEach((ele, index) => {
+    let edgeCase = true;
+    progressOverall.forEach((ele) => {
         if (ele.charAt(1) !== noOfQuestions) {
             edgeCase = false;
         }
@@ -215,10 +215,11 @@ router.get('/reset', async (req, res) => {
         }
     });
 
-    User.findOneAndUpdate({ username: req.riddlerUser.username }, req.riddlerUser, { upsert: true }, (err, doc) => {
-        if (err) return res.render('error', { error: err });
-        res.send({ success: true, message: 'resetDone' });
-    });
+    User.findOneAndUpdate({ username: req.riddlerUser.username }, req.riddlerUser, { upsert: true },
+        (err, doc) => {
+            if (err) return res.render('error', { error: err });
+            res.send({ success: true, message: 'resetDone' });
+        });
 
 
     // If you get a request on this route, that means the user wants to reset back from the track

@@ -148,7 +148,7 @@ router.post('/hint', async (req, res) => {
 
     // searches for the first unused hint and serves it
     // updated hintsused value from 0 to 1
-    const index = riddle.hintsUsed.indexOf(0);
+    const index = currentUser.hintsUsed.indexOf(0);
     const servedHint = riddle.hint[index];
     riddle.hintsUsed[index] = 1;
 

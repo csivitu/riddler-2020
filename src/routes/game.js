@@ -70,19 +70,41 @@ router.get('/leaderboard', (req, res) => {
     // The table has two columns, the username, and the points
 });
 
-router.post('/answer', (req, res) => {
-    const answer = req.body.answer;
-    const currentUser = req.session.user;
+router.post('/answer', async (req, res) => {
+    const userAnswer = req.body.answer;
+    const currentUser = req.riddlerUser;
 
 
-    const riddleId = await getCurrentRiddleId(req, res);
+    const rId = await getCurrentRiddleId(req, res);
+    if (rId != currentUser.riddleId) return res.render("error", { error: "trying to skip ahead are we ?" });
 
-    // The frontend will send just the answer to the current question. The backend
-    // needs to determine the current question the user is on, and then check if the
-    // answer sent is correct. If it is, it needs to the required to update the points/
-    // progress of the user in the database, and then return back the json
-    // {success: true, correct: true, points: <pointsGained>}. Otherwise, it should
-    // send back {success: true, correct: false, points: 0}
+    const riddle = await Riddle.findOne({ riddleId: rId });
+    if (!riddle) return res.render({ error: "riddle not found" });
+
+    let correct = riddle.answer.find((ele) => ele === userAnswer);
+    if (!correct) return res.json({ correct: false, points: 0 });
+
+
+    //crreating the new riddleID
+    const track = currentUser.riddleId.charAt(0);
+    let newQuestion = parseInt(currentUser.riddleId.charAt(1)) + 1;
+    newQuestion = newQuestion.toString();
+
+    //creating the query
+    let query = { 'username': req.user.username };
+    let newRiddleID = `${track}${newQuestion}`;
+    req.riddlerUser.riddleId = newRiddleID;
+    req.riddlerUser.points += riddle.pointsForSuccess;
+
+    //updating the user database
+    try {
+        User.findOneAndUpdate(query, req.riddlerUser, { upsert: true }, function (err, doc) {
+            if (err) return res.render("error", { error: err });
+            return res.json({ correct: true, points: riddle.pointsForSuccess });
+        });
+    } catch (error) {
+        res.render("error", { error: "[game.js] Unable to update riddle" });
+    }
 });
 
 router.post('/hint', (req, res) => {

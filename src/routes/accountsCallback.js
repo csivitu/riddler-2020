@@ -35,8 +35,7 @@ router.get('/', async (req, res) => {
     if (!userExists) {
         // New user
         try {
-            const dbUser = await User.create(Info);
-            req.session.user = dbUser;
+            await User.create(Info);
         } catch (err2) {
             res.render('error', { error: 'Oops Server Error!' });
         }
@@ -45,7 +44,7 @@ router.get('/', async (req, res) => {
 
 
     const redirectUrl =
-        (req.session.user.scope.indexOf('csi') > -1) ? '/maze' : '/';
+        (req.session.user.scope.indexOf('csi') > -1) ? '/game' : '/';
     res.redirect(redirectUrl);
 
 

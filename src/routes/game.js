@@ -119,7 +119,7 @@ router.post('/hint', (req, res) => {
 
     //only return the hints the user has not used
     const hints = riddle.hintsUsed
-        .map(used => (used === 0) ? hint : null)
+        .map(used, index => (used === 0) ? riddle.hints[index] : null)
         .filter(hint => hint != null);
     res.send(hints);
 

@@ -118,24 +118,24 @@ router.post('/answer', async (req, res) => {
     newQuestion = newQuestion.toString();
 
     // creating the query + new data
-    const query = { username: currentUser.username };
     const newRiddleID = `${track}${newQuestion}`;
     currentUser.riddleId = newRiddleID;
     const progressOverall = currentUser.mainTracksProgress;
     progressOverall.forEach((ele, index) => {
-        if (ele.charAt(0) === newRiddleID.charAt(0)) {
+        if (ele[0] === newRiddleID[0]) {
             currentUser.mainTracksProgress[index] = newRiddleID;
         }
     });
     currentUser.points += riddle.pointsForSuccess;
 
-    // updating the user database
-    User.findOneAndUpdate(query, currentUser, { upsert: true }, (err) => {
-        if (err) return res.render('error', { error: err });
-        return res.json({ success: true, correct: true, points: riddle.pointsForSuccess });
+    currentUser.markModified('mainTracksProgress');
+    currentUser.markModified('points');
+    await currentUser.save();
+    return res.json({
+        success: true,
+        correct: true,
+        points: riddle.pointsForSuccess,
     });
-
-    return true;
 });
 
 router.get('/hint', async (req, res) => {

@@ -31,24 +31,25 @@ router.get('/', async (req, res) => {
 
 
 router.get('/question', async (req, res) => {
-    const riddleId = req.riddlerUser.currentRiddle;
+    let riddleId = req.riddlerUser.currentRiddle;
     const { hintsUsed } = req.riddlerUser;
     // is starter or on the first question
-    if (!riddleId || riddleId === '0') {
-        try {
-            // find all riddleId that ends with 0
-            const riddles = (await Riddle.find({ riddleId: /^.*0$/ })).map((r) => r.question);
-            return res.render('question',
-                {
-                    riddles, user: req.session.user, riddleId, hint: undefined,
-                });
-        } catch (err) {
-            console.log('starter ridle not found [game.js]');
-            return res.render('error', { error: err });
+    if (riddleId === '0' || riddleId === 'A0' || riddleId === 'B0' || riddleId === 'C0') {
+        if (req.query.setTrack) {
+            req.riddlerUser.currentRiddle = req.query.setTrack;
+            riddleId = req.query.setTrack;
+            await req.riddlerUser.save();
         }
     }
 
-
+    if (riddleId === '0') {
+        return res.render('question', {
+            riddle: '',
+            riddleId,
+            user: req.session.user,
+            hint: '',
+        });
+    }
     // existing user
     try {
         const currentRiddle = await Riddle.findOne({ riddleId });
@@ -57,7 +58,7 @@ router.get('/question', async (req, res) => {
         return res.render(
             'question',
             {
-                riddles: [currentRiddle.question],
+                riddle: currentRiddle.question,
                 riddleId,
                 user: req.session.user,
                 hint,
@@ -144,7 +145,17 @@ router.post('/hint', async (req, res) => {
 
     const riddle = await Riddle.findOne({ riddleId });
     if (!riddle) return res.render({ error: 'riddle not found' });
-    return true;
+
+    if (currentUser.hintsUsed.indexOf(riddleId) === -1) {
+        // TODO: For first question, there are 3 questions with hints
+        if (currentUser.points >= 100) {
+            currentUser.hintsUsed.push(riddleId);
+            currentUser.points -= 100;
+            await currentUser.save();
+        }
+    }
+
+    return res.redirect('/question');
 });
 
 router.get('/reset', async (req, res) => {

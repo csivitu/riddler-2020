@@ -1,6 +1,6 @@
 @font-face {
-    src:url("../../static/fonts/FSEX300.woff");
-    font-family: FixedSys;
+    font-family: "BlenderPro";
+    src: url('../fonts/Blender\ Pro\ Book.ttf');
 }
 html, body {
     background-color:#000;

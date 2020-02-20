@@ -178,55 +178,21 @@ router.get('/hint', async (req, res) => {
 
 router.get('/reset', async (req, res) => {
     const currentUser = req.riddlerUser;
-    const progressOverall = currentUser.mainTracksProgress;
+    const riddleId = currentUser.currentRiddle;
 
-
-    // completed all tracks
-    let edgeCase = true;
-    progressOverall.forEach((ele) => {
-        if (ele.charAt(1) !== process.env.noOfQuestions) {
-            edgeCase = false;
+    if (riddleId === '0' || riddleId[1] === '0') {
+        res.redirect('/game');
+    } else {
+        const question = riddleId[1];
+        let resetDeduct = ((9 - question) * 50);
+        if (resetDeduct > currentUser.points) {
+            resetDeduct = currentUser.points;
         }
-    });
-    if (edgeCase) {
-        return res.json({
-            sucess: true,
-            message: 'Reset not allowed',
-        });
+        currentUser.points -= resetDeduct;
+        currentUser.currentRiddle = '0';
+        await currentUser.save();
+        res.redirect('/game');
     }
-
-
-    // reset Current track progress
-    const currentRI = req.riddlerUser.riddleId;
-    const riddle = await Riddle.findOne({ riddleId: currentRI });
-
-    for (let i = 1; i <= currentRI[1]; i += 1) {
-        currentUser.points -= riddle.pointsForSuccess;
-    }
-
-    progressOverall.forEach((ele, index) => {
-        if (ele.charAt(0) === currentRI.charAt(0)) {
-            currentUser.mainTracksProgress[index] = `${currentRI[0]}0`;
-        }
-    });
-
-    // reset hints
-
-    User.findOneAndUpdate({ username: currentUser.username },
-        currentUser, { upsert: true },
-        (err) => {
-            if (err) return res.render('error', { error: err });
-            return res.send({ success: true, message: 'resetDone' });
-        });
-
-    return true;
-    // If you get a request on this route, that means the user wants to reset back from the track
-    // onto the first question (the one with the three choices). Thus, you need to do the required
-    // to deduce points for the same for the user, and also update the progress of the user.
-    // After the reset has occured on the backend, return back {success:true, message: 'resetDone'}
-    // There is an edge case to handle, when user tries to reset after he has finished all 3 tracks
-    // {success: true, message: 'resetNotAllowed'}
-    // In that case, don't allow the reset back and return back
 });
 
 

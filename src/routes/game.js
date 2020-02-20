@@ -25,8 +25,9 @@ router.use((req, res, next) => {
 router.use(verifyUser);
 
 
-router.get('/', (req, res) => {
-    res.render('dashboard', { user: await getCurrentRiddlerUser(req, res) });
+router.get('/', async (req, res) => {
+    const currentUser = await getCurrentRiddlerUser(req, res);
+    res.render('dashboard', { user: currentUser });
 });
 
 

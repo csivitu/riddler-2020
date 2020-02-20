@@ -5,23 +5,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>. 尺ﾉりりﾚ乇尺 2020 .</title>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="/static/images/favicon.png" />
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <style>
+        button {
+            margin: 10px !important;
+        }
+    </style>
+    <title>Welcome to . 尺ﾉりりﾚ乇尺 2020 .</title>
 </head>
 
 <body>
-    Dashboard <br>
-    <%= user.username %> <br>
-    <%= user.mainTracksProgress%> <br>
-    <%= user.ip%> <br></br>
-    <button id="question">Question</button>
-    <script>
-        window.onload = () => {
-            const btn = document.querySelector("#question");
-            btn.addEventListener("click", () => {
-                location.href = `${location.origin}/game/question`;
-            });
-        }
-    </script>
+    <%- include('partials/navbar') %>
+
+    <div id="mainContentContainer">
+        <div id="mainContent">
+            <div style="height:100%;width:100%;" class="nes-container is-rounded is-dark rank">
+                <div id="instructionsContainer" class="dontOverlap">
+                    <h1> Welcome <%= user.username %>!</h1><br>
+                    <div align="center">
+                        <button type="button" class="nes-btn is-success"
+                            onclick="window.location.href='/game/question'">Resume Riddler</button>
+                        <button type="button" class="nes-btn" onclick="window.location.href='/game/leaderboard'"> View
+                            Leader Board</button>
+                    </div>
+                    <br>
+                    <h2>STUCK ON A TRACK?</h2>
+                    Try taking a hint or go back to question zero.<br>
+                    Every path comes at a price!<br><br>
+                    Every answer will fetch you 100 points.<br>
+                    If you use a hint you lose a 100 points.<br>
+                    <span class="resetProgres">If you reset, you will be warned of the number of points you are going to
+                        lose.</span>
+                    <div align="center">
+                        <button type="button" id="resetBtn" class="nes-btn is-error"
+                            onclick="document.getElementById('resetProg').showModal();">RESET</button>
+                    </div>
+                </div>
+            </div>
+            <script>
+                const scrollBar = new SimpleBar($("#instructionsContainer")[0], { autoHide: false });
+                if (question >= 8 || question === 0) {
+                    $(".resetProgres").hide()
+                    $("#resetBtn").hide()
+                }
+            </script>
 </body>
 
 </html>

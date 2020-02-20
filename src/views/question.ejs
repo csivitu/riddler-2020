@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!--Send the Riddle ID in the req.body along with answer-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +22,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
     <script type="text/javascript" src="/static/js/questions.js"></script>
-    <link rel="shortcut icon" type="image/ico" href="/static/images/favicon_io/favicon.ico"/>
+    <link rel="shortcut icon" type="image/ico" href="/static/images/favicon_io/favicon.ico" />
 
     <title>. 尺ﾉりりﾚ乇尺 2020 .</title>
 </head>
@@ -29,21 +31,23 @@
 
     <div class="pos-f-t">
         <nav class="navbar navbar-dark bg">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </nav>
-          <div class="collapse" id="navbarToggleExternalContent">
-          <div class="bg p-4 text-center">
-              <a class="text-white h5" href="">Dashboard</a></br>
-              <a class="text-white h5" href="">Instruction</a></br>
-              <a class="text-white h5" href="">Leaderboard</a></br>
-              <a class="text-white h5" href="">Logout</a></br>
-              <h5 class="text-white">Points: 0</span>
-          </div>
+        <div class="collapse" id="navbarToggleExternalContent">
+            <div class="bg p-4 text-center">
+                <a class="text-white h5" href="">Dashboard</a></br>
+                <a class="text-white h5" href="">Instruction</a></br>
+                <a class="text-white h5" href="">Leaderboard</a></br>
+                <a class="text-white h5" href="">Logout</a></br>
+                <h5 class="text-white">Points: 0</span>
+            </div>
         </div>
 
-      </div>
+    </div>
 
 
     <div class="questionbox panel">
@@ -54,15 +58,15 @@
             <div class="question">
                 <p>
                     <%if(Array.isArray(question)) {%>
-                        <%= question[0] %>
-                        <%= question[1] %>
-                        <%= question[2] %>
-                        <% } else {%>
-                        <%= question %>
-                        <%}%>
+                    <%= question[0] %>
+                    <%= question[1] %>
+                    <%= question[2] %>
+                    <% } else {%>
+                    <%= question %>
+                    <%}%>
                 </p>            </div>
             <div class="form-group">
-                <form method="POST" class="row" action="/answer">
+                <form method="POST" class="row" action="/game/answer">
                     <input type="text" class="answer mr-2 mb-2">
                     <button class="submitbtn"><i class="fas fa-chevron-right" id="submiticon"></i></button>
                 </form>

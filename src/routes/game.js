@@ -97,16 +97,16 @@ router.post('/answer', async (req, res) => {
     const userRiddle = req.body.riddleId;
     const currentUser = await getCurrentRiddlerUser(req, res);
 
+    // if on the starter
+    if (!currentUser.riddleId) currentUser.riddleId = userRiddle;
+
 
     const riddle = await Riddle.findOne({ riddleId: currentUser.riddleId });
-    if (!riddle) return res.render({ error: 'riddle not found' });
+    if (!riddle) return res.render('error', { error: 'riddle not found' });
 
     const correct = riddle.answer.find((ele) => ele === userAnswer);
     if (!correct) return res.json({ success: true, correct: false, points: 0 });
 
-
-    // if on the starter
-    if (!currentUser.riddleId) currentUser.riddleId = userRiddle;
 
     // creating the new riddleID
     const track = currentUser.riddleId.charAt(0);

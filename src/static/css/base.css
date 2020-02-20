@@ -1,0 +1,276 @@
+@font-face {
+    src:url("../../static/fonts/FSEX300.woff");
+    font-family: FixedSys;
+}
+html, body {
+    background-color:#000;
+    width:100%;
+    height:100%;
+    overflow: hidden;
+    font-family: FixedSys;
+    font-size:30px;
+    color: #FFF;
+}
+
+#navbar {
+    box-sizing: border-box;
+    width:80vw;
+    height:80px;
+    padding:0 40px 0 40px;
+    position:absolute;
+    top:0;
+    left:10vw;
+    margin:auto;
+    perspective: 180px;
+    align-items: center;
+    justify-content: space-around;
+    z-index:5;
+    display: flex;
+    flex-direction: column;
+}
+#trackDisplay{
+    font-size:30px;
+    text-align: center;
+    position: absolute;
+    vertical-align: middle;
+    margin:0;
+    z-index:4;
+}
+
+#riddlerBrand {
+    position: absolute;
+    right:50px;
+    font-size:25px;
+    z-index:6;
+}
+
+#trackDisplay>span {
+    position:relative;
+}
+
+#openMenu {
+    position: absolute;
+    left:50px;
+    width:32px;
+    z-index:6;
+    opacity:0.8;
+}
+
+#openMenu:hover {
+    cursor: crosshair;
+    opacity:1;
+}
+
+.nes-dialog {
+    background-image:url(/static/images/formBackground.jpg);
+    background-size: cover;
+    background-position: center top;
+}
+
+.nes-dialog.is-rounded {
+    border-image-source: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8" ?><svg version="1.1" width="8" height="8" xmlns="http://www.w3.org/2000/svg"><path d="M3 1 h1 v1 h-1 z M4 1 h1 v1 h-1 z M2 2 h1 v1 h-1 z M5 2 h1 v1 h-1 z M1 3 h1 v1 h-1 z M6 3 h1 v1 h-1 z M1 4 h1 v1 h-1 z M6 4 h1 v1 h-1 z M2 5 h1 v1 h-1 z M5 5 h1 v1 h-1 z M3 6 h1 v1 h-1 z M4 6 h1 v1 h-1 z" fill="rgb(203,17,228)" /></svg>');
+    color:#FFF;
+}
+#navbar:after {
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background:#212529c0;
+    border-left:7px solid white;
+    border-right:7px solid white;
+    border-bottom:5px solid white;
+    content: '';    
+    top: 0;
+    left:0;
+    z-index: -1;
+    /* -webkit-transform: rotateX(20deg) rotateY(0deg); */
+    transform: rotateX(-20deg) rotateY(0deg);
+}
+
+.nes-container.is-dark {
+    background-color:#212529e6;
+}
+/* #navbar div {
+    flex-grow: 1;
+    flex-basis: 0;
+} */
+
+#mainContentContainer {
+    box-sizing: border-box;
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    padding-top:90px;
+    border:3px solid white;
+    background-image:url("https://i.imgur.com/kZn7d4b.jpg");
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+
+#questionContainer img{
+    width:50%;
+}
+
+#mainContent {
+    position:absolute;
+    width:80%;
+    height:80%;
+    left:10%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.dontOverlap {
+    height:99%;
+}
+.nes-container {
+    border-radius: 40px;
+}
+
+.link {
+    display:block;
+    text-decoration: none !important;
+    color: #FFF !important;
+}
+
+.link:hover {
+    cursor: crosshair !important;
+    color:yellow !important;
+}
+
+.links {
+    padding-top:80px;
+}
+.links, .points {
+    text-align: center;
+    width:100vw;
+}
+
+.link, .points {
+    padding-bottom: 7px;
+}
+
+#navbarDropDown {
+    z-index:4;
+    background-color: #a327a7e3;
+    position:absolute;
+    top:0;
+    left:0;
+    border: 3px solid white;
+    display:none;
+}
+
+#CSILogo {
+    position:absolute;
+    bottom:0px;
+    text-align:right;
+    padding-right:4px;
+    font-size:16px;
+    z-index:5;
+    width:100%;
+}
+#CSILogo > span {
+    margin:0;
+    padding:0;
+    background-color: black;
+}
+
+
+@media (max-width: 800px) {
+    html, body {
+        font-size:20px;
+    }
+
+    #questionContainer img{
+        width:100%;
+    }
+
+    #trackDisplay {
+        font-size:20px;
+    }
+
+    #openMenu {
+        vertical-align: middle;
+        width:20px;
+        left:20px;
+    }
+
+    #riddlerBrand {
+        font-size:15px;
+        right:11px;
+        width:50px;
+        line-height: 20px;
+    }
+    #CSILogo {
+        text-align: center;
+    }
+}
+
+#points {
+    width:100px;
+    display:inline-block;
+    vertical-align: middle;
+}
+
+#track {
+    color:yellow;
+}
+#mainContent * {
+    margin:0;
+    font-size:22px;
+}
+
+#instructions {
+    font-size:1em;
+    overflow-x:hidden;
+}
+#instructions * {
+    margin:0px;
+    /* line-height: initial !important; */
+    line-height: 35px;
+}
+
+#instructions ul {
+    padding-left: 0px;
+}
+
+dialog {
+    position: absolute;
+    left: 0; right: 0;
+    width: -moz-fit-content;
+    width: -webkit-fit-content;
+    width: fit-content;
+    height: -moz-fit-content;
+    height: -webkit-fit-content;
+    height: fit-content;
+    margin: auto;
+    border: solid;
+    padding: 1em;
+    background: white;
+    color: black;
+    display: block;
+  }
+  
+  dialog:not([open]) {
+    display: none;
+  }
+  
+  dialog + .backdrop {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: rgba(0,0,0,0.1);
+  }
+  
+  ._dialog_overlay {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+  }
+  
+  dialog.fixed {
+    position: fixed;
+    top: 50%;
+    transform: translate(0, -50%);
+  }

@@ -27,28 +27,18 @@
                         <h2>
                             <%= riddles[0] %>
                         </h2>
-                        <div style="display:none;" id="firstQuestion">
+                        <div id="firstQuestion">
                             <h2>Choose your adventure:</h2>
                             <br>
                             <button
-                                onclick="$('.specialQ').fadeOut();$('#gameQ').fadeIn();questionScrollBar.recalculate()"
+                                onclick="window.location.href='/game/question?setTrack=A0'"
                                 class="nes-btn chooseBtn is-warning">Adverts</button>
                             <button
-                                onclick="$('.specialQ').fadeOut();$('#artQ').fadeIn();questionScrollBar.recalculate();"
+                                onclick="window.location.href='/game/question?setTrack=B0'"
                                 class="nes-btn chooseBtn is-primary">Disney Pixar</button>
                             <button
-                                onclick="$('.specialQ').fadeOut();$('#crimeQ').fadeIn();questionScrollBar.recalculate();"
+                                onclick="window.location.href='/game/question?setTrack=C0'"
                                 class="nes-btn chooseBtn is-error">Sci-fi</button>
-                            <br><br>
-                            <h3 style="display:none" class="specialQ" id="gameQ">
-                                <%= riddles[0] %>
-                            </h3>
-                            <h3 style="display:none" class="specialQ" id="artQ">
-                                <%= riddles[1] %>
-                            </h3>
-                            <h3 style="display:none" class="specialQ" id="crimeQ">
-                                <%= riddles[2] %>
-                            </h3>
                         </div>
                         <br>
                         <% if (hint) { %>
@@ -58,16 +48,15 @@
                         <% } %>
                     </span>
                     <div id="content" align="center">
-                        <form id="answerForm" action="/game/answer" method="POST">
-                            <div id="ans">
-                                <input style="border-radius:5px;" type="text" name="answer" id="error_field"
-                                    class="nes-input" placeholder="Enter Your Answer">
-                            </div>
-                            <br>
-                            <button id="submitAnsBtn" type="button" class="nes-btn is-warning">Submit</button>
-                            <button type="button" id="hintBtn" class="nes-btn is-success"
-                                onclick="$('#dialog-rounded')[0].showModal();">Hint</button>
-                            <br>
+                        <div id="ans">
+                            <input style="border-radius:5px;" type="text" name="answer" id="error_field"
+                                class="nes-input" placeholder="Enter Your Answer">
+                        </div>
+                        <br>
+                        <button id="submitAnsBtn" type="button" class="nes-btn is-warning">Submit</button>
+                        <button type="button" id="hintBtn" class="nes-btn is-success"
+                            onclick="$('#dialog-rounded')[0].showModal();">Hint</button>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -102,8 +91,10 @@
         $(function () {
             questionScrollBar = new SimpleBar($("#questionContainer")[0], { autoHide: false });
             let riddleId = "<%= riddleId %>";
-            if (riddleId === '0') {
-                $('.specialQ').show();
+            if (riddleId === '0' || riddleId === 'A0' || riddleId === 'B0' || riddleId === 'C0') {
+                $("#firstQuestion").show();
+            } else {
+                $("firstQuestion").hide();
             }
         })
         function sendAns() {

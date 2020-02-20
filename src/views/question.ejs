@@ -25,129 +25,38 @@
                         <div id="qNo" style="font-size:40px; margin-bottom:10px;" class="nes-text is-warning">Question
                             <%= riddleId %></div>
                         <h2>
-                            <%= riddles[0] %>
+                            <%= riddle %>
                         </h2>
-                        <div style="display:none;" id="firstQuestion">
+                        <div id="firstQuestion">
                             <h2>Choose your adventure:</h2>
                             <br>
                             <button
-                                onclick="$('.specialQ').fadeOut();$('#gameQ').fadeIn();questionScrollBar.recalculate()"
+                                onclick="window.location.href='/game/question?setTrack=A0'"
                                 class="nes-btn chooseBtn is-warning">Adverts</button>
                             <button
-                                onclick="$('.specialQ').fadeOut();$('#artQ').fadeIn();questionScrollBar.recalculate();"
+                                onclick="window.location.href='/game/question?setTrack=B0'"
                                 class="nes-btn chooseBtn is-primary">Disney Pixar</button>
                             <button
-                                onclick="$('.specialQ').fadeOut();$('#crimeQ').fadeIn();questionScrollBar.recalculate();"
+                                onclick="window.location.href='/game/question?setTrack=C0'"
                                 class="nes-btn chooseBtn is-error">Sci-fi</button>
-                            <br><br>
-                            <h3 style="display:none" class="specialQ" id="gameQ">
-                                - Your Bander-what?<br>
-                                - Bandersnatch.<br>
-                                - You're always flicking backwards<br>
-                                and forwards in that.<br>
-                                - It's a "Choose Your Own Adventure" book.<br>
-                                -So, Worth it?<br>
-                                -I wish I could say yes<br>
-                                but it's frustrating.<br>
-                                -It's as if the creator simply gave up<br>
-                                halfway through.<br>
-                                -If we had second chances in life,<br>
-                                I'd hope they'd choose differently<br>
-                                but, er, sadly we don't.<br>
-                                -And nor do they. If that makes sense?<br>
-                                - So your verdict?<br>
-                                - Two and a half stars out of five.<br>
-                                -Disappointing.<br>
-
-                                Name the game's creator
-                            </h3>
-                            <h3 style="display:none" class="specialQ" id="artQ">
-                                - Your Bander-what?<br>
-                                - Bandersnatch.<br>
-                                - You're always flicking backwards<br>
-                                and forwards in that.<br>
-                                - It's a book about a writers’ group and their ingenious process in literature, you can
-                                get it on Amazon.<br>
-                                This is the same place where the group met.<br>
-                                - How about you decide<br>
-                                what you want for a drink?<br>
-                                Where are Stefan and his father?
-                            </h3>
-                            <h3 style="display:none" class="specialQ" id="crimeQ">
-                                - Your Bander-what?<br>
-                                - Bandersnatch.<br>
-                                - You're always flicking backwards<br>
-                                and forwards in that. <br>
-                                - It's a "Choose Your Own Adventure" book.<br>
-                                -Wasn’t the writer of the book psychotic?<br>
-                                -Towards the end of his life,<br>
-
-                                Davies was apparently self-administering<br>
-                                hallucinogens on a daily basis.<br>
-
-                                This, coupled with his attempts<br>
-
-                                to complete the complex multiple<br>
-                                narratives of Bandersnatch<br>
-
-                                was to prove the final straw.<br>
-
-                                He became obsessed<br>
-                                with bizarre symbols<br>
-
-                                and the limitations<br>
-                                of his own free will.<br>
-
-                                In his notes,<br>
-                                Davies repeatedly sketched a glyph<br>
-
-                                which to him represented multiple fates,<br>
-                                potential realities splitting in two.<br>
-
-                                It was the start<br>
-                                of his complete mental collapse.<br>
-
-                                Davies became convinced<br>
-                                he had no control over his fate<br>
-
-                                because his wife was spiking him<br>
-                                with psychoactive drugs<br>
-
-                                at behest of a demon called Pax,<br>
-                                a sort of lion figure<br>
-
-                                who he claimed he'd seen in a vision,<br>
-
-                                and who ended up<br>
-                                being incorporated into the book.<br>
-
-                                It was this that led him to kill her.<br>
-
-                                He decapitated her and daubed the<br>
-                                glyph symbol on the walls with her blood.<br>
-
-                                “who is Jerome F. Davies and is he a real author?”<br>
-                                He could be based on a sci-fi writer<br>
-                            </h3>
                         </div>
                         <br>
-                        <!-- <% //if (hint) { %>
+                        <% if (hint) { %>
                         <div id="hintDiv"><span class="nes-text is-success">Hint: <br></span
-                                style="color:white"><%= //hint[0] %></div>
+                                style="color:white"><%= hint %></div>
                         <br>
-                        <% //} %> -->
+                        <% } %>
                     </span>
                     <div id="content" align="center">
-                        <form id="answerForm" action="/game/answer" method="POST">
-                            <div id="ans">
-                                <input style="border-radius:5px;" type="text" name="answer" id="error_field"
-                                    class="nes-input" placeholder="Enter Your Answer">
-                            </div>
-                            <br>
-                            <button id="submitAnsBtn" type="button" class="nes-btn is-warning">Submit</button>
-                            <button type="button" id="hintBtn" class="nes-btn is-success"
-                                onclick="$('#dialog-rounded')[0].showModal();">Hint</button>
-                            <br>
+                        <div id="ans">
+                            <input style="border-radius:5px;" type="text" name="answer" id="error_field"
+                                class="nes-input" placeholder="Enter Your Answer">
+                        </div>
+                        <br>
+                        <button id="submitAnsBtn" type="button" class="nes-btn is-warning">Submit</button>
+                        <button type="button" id="hintBtn" class="nes-btn is-success"
+                            onclick="$('#dialog-rounded')[0].showModal();">Hint</button>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -159,7 +68,8 @@
         <dialog class="nes-dialog is-rounded" id="dialog-rounded" style="width:90%;">
             <form method="dialog">
                 <p class="title nes-text is-error">WARNING</p>
-                <p style="color: black;">Taking a hint costs 100 points! You currently have <span class="nes-text is-error"><%= user.points %></span>
+                <p style="color: black;">Taking a hint costs 100 points! You currently have <span
+                        class="nes-text is-error"><%= user.points %></span>
                     points.</p>
                 <menu align="center" class="dialog-menu" style="padding-left: 0px;">
                     <button class="nes-btn">Cancel</button>
@@ -180,18 +90,11 @@
         var questionScrollBar;
         $(function () {
             questionScrollBar = new SimpleBar($("#questionContainer")[0], { autoHide: false });
-            const check = "{{check}}";
-            $("#submitAnsBtn").click(sendAns);
-            switch (check) {
-                case "2art":
-                    $("#justQuestion").css("color", "#b4d455");
-                    $("#questionPanel").css("background-color", "#b4d455").css("border-radius", "0px");
-                    $("#qNo").css("color", "#000000");
-                    $("#hintDiv").css("color", "#000000");
-                    break;
-                case "0":
-                    $("#firstQuestion").show();
-                    break;
+            let riddleId = "<%= riddleId %>";
+            if (riddleId === '0' || riddleId === 'A0' || riddleId === 'B0' || riddleId === 'C0') {
+                $("#firstQuestion").show();
+            } else {
+                $("firstQuestion").hide();
             }
         })
         function sendAns() {

@@ -113,7 +113,7 @@ router.post('/answer', async (req, res) => {
     }
     const riddle = await Riddle.findOne({ riddleId });
 
-    const correct = riddle.answer.find((ele) => ele === userAnswer);
+    const correct = riddle.answer.find((ele) => ele.toLowerCase() === userAnswer.toLowerCase());
     if (!correct) {
         return res.render('answer', {
             correct: false,

@@ -47,7 +47,8 @@
             </div>
             <script>
                 const scrollBar = new SimpleBar($("#instructionsContainer")[0], { autoHide: false });
-                if (question >= 8 || question === 0) {
+                const riddleId = '<%= riddleId %>';
+                if (riddleId > 8 || riddleId === 0) {
                     $(".resetProgres").hide()
                     $("#resetBtn").hide()
                 }

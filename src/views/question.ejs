@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="/static/images/favicon.ico" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
     <title>Question <%= riddleId %></title>
     <style>
         #bigText {
@@ -70,7 +72,11 @@
                     points.</p>
                 <menu align="center" class="dialog-menu" style="padding-left: 0px;">
                     <button class="nes-btn">Cancel</button>
-                    <button onclick="window.location.href='/game/hint'" class="nes-btn is-error">Show Hint</button>
+                    <% if (user.points >= 100) { %>
+                    <button onclick="window.location.href='/game/hint'" class="nes-btn is-error" style="cursor: crosshair;">Show Hint</button>
+                    <% } else { %>
+                        <button onclick="window.location.href='/gam/hint'" class="nes-btn is-error" disabled>Show Hint</button>
+                    <% } %>
                 </menu>
             </form>
         </dialog>

@@ -1,11 +1,15 @@
 <link href="/static/css/base.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
 <div id="navbar">
     <img onclick="$('#navbarDropDown').slideToggle();" src="/static/images/bars.svg" id="openMenu">
     <div id="trackDisplay" class="nes-badge">
         <span id="trackName"></span>
     </div>
-    <div id="riddlerBrand"><FONT COLOR="#FF0000">R</FONT><FONT COLOR="#FF8000">i</FONT><FONT COLOR="#FFff00">d</FONT><FONT COLOR="#7Fff00">d</FONT><FONT COLOR="#00ff00">l</FONT><FONT COLOR="#00ff80">e</FONT><FONT COLOR="#00ffff">r</FONT><FONT COLOR="#0080ff"> </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#7F00ff">0</FONT><FONT COLOR="#FF00ff">2</FONT><FONT COLOR="#FF0080">0</FONT></div>
+    <div id="riddlerBrand" style="color: white">
+        Riddler 2020
+    </div>
 </div>
 <div id="navbarDropDown">
     <div onclick="$('#navbarDropDown').hide();" class="links">
@@ -13,7 +17,8 @@
         <a onclick="document.getElementById('helpPopup').showModal();" class="link">Instructions</a>
         <a href="/game/leaderboard" class="link">Leaderboard</a>
         <a href="/logout" class="link">Logout</a>
-        <a onclick="document.getElementById('resetProg').showModal();" id="resetProgress" class="link">Reset Progress</a>
+        <a onclick="document.getElementById('resetProg').showModal();" id="resetProgress" class="link">Reset
+            Progress</a>
     </div>
     <div class="points">Points: <div id="points"></div>
     </div>
@@ -26,12 +31,14 @@
     <dialog class="nes-dialog is-rounded" id="resetProg" style="color: black">
         <form id="reset" method="dialog">
             <p class="title" style="font-size:40px;color:red">WARNING</p>
-            <p id="message">Are you sure you want to reset to the first question? It will cost you <span class="resetPoints"></span>
+            <p id="message">Are you sure you want to reset to the first question? It will cost you <span
+                    class="resetPoints"></span>
                 points.</p>
             <p id="new"></p>
             <menu class="dialog-menu" align="center">
                 <button class="nes-btn is-primary">Cancel</button>
-                <button id="continueBtn" class="nes-btn is-error" onclick="window.location.href='/game/reset'">Continue</button>
+                <button id="continueBtn" class="nes-btn is-error"
+                    onclick="window.location.href='/game/reset'">Continue</button>
             </menu>
         </form>
     </dialog>
@@ -43,8 +50,11 @@
 <script src="https://brandonlwhite.github.io/sevenSeg.js/sevenSeg.js"></script>
 <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.5.0/dialog-polyfill.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
 <script>
-     const scrollBar2 = new SimpleBar($("#instructions")[0], {autoHide: false});
+    const scrollBar2 = new SimpleBar($("#instructions")[0], { autoHide: false });
     $("#points").sevenSeg({
         digits: 5,
         value: "<%= user.points %>",
@@ -62,36 +72,37 @@
         default: track = 'General';
     }
     let resetDeduct = ((9 - question) * 50);
-    if(resetDeduct>points)
-    resetDeduct = points
+    if (resetDeduct > points)
+        resetDeduct = points
     $(".resetPoints").text(resetDeduct.toString()).css("color", "red");
     const colors = {
         "Adverts": "rgba(247, 213, 29, 0.9)",
         "Disney Pixar": "rgba(32, 156, 238, 0.9)",
-        "Scifi":"rgba(231, 110, 85, 0.9)",
+        "Scifi": "rgba(231, 110, 85, 0.9)",
         "General": "rgba(118, 196, 66, 0.9)"
     }
     const classes = {
         "Adverts": "is-warning",
         "Disney Pixar": "is-primary",
-        "Scifi":"is-error",
+        "Scifi": "is-error",
         "General": "is-success"
     }
     $("#trackName").addClass(classes[track]);
     $("#trackName").html(`Track: ${track}`);
     $("#navbarDropDown").css("background-color", colors[track]);
-    
-    $(function() {
+
+    $(function () {
         const images = {
-        "Adverts": "/static/images/advertsBack.gif",
-        "Disney Pixar": "/static/images/disneyPixarBack.gif",
-        "Scifi": "/static/images/scifiBack.webp",
-        "General": "/static/images/generalBack.gif"
-    }
-     $("#mainContentContainer").css("background-image", "url('"+images[track]+"')");
-     $('dialog').each(function(i, obj) {
-         dialogPolyfill.registerDialog(obj);
+            "Adverts": "/static/images/advertsBack.gif",
+            "Disney Pixar": "/static/images/disneyPixarBack.gif",
+            "Scifi": "/static/images/scifiBack.webp",
+            "General": "/static/images/generalBack.gif"
+        }
+        if (!$('#leaderboardContainer').length)
+        $("#mainContentContainer").css("background-image", "url('" + images[track] + "')");
+        $('dialog').each(function (i, obj) {
+            dialogPolyfill.registerDialog(obj);
         });
     })
-    
+
 </script>

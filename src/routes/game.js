@@ -2,7 +2,6 @@ const router = require('express').Router();
 const Riddle = require('../models/Riddle');
 const verifyUser = require('../middlewares/verifyUser');
 const User = require('../models/User');
-const getCurrentRiddlerUser = require('../getCurrentRidderUser');
 
 // This handles Baseurl/maze
 // this handle Base url/maze/riddleId POST req from
@@ -46,7 +45,7 @@ router.get('/question', async (req, res) => {
         return res.render('question', {
             riddle: '',
             riddleId,
-            user: req.session.user,
+            user: req.riddlerUser,
             hint: '',
         });
     }
@@ -60,7 +59,7 @@ router.get('/question', async (req, res) => {
             {
                 riddle: currentRiddle.question,
                 riddleId,
-                user: req.session.user,
+                user: req.riddlerUser,
                 hint,
             },
         );
@@ -75,9 +74,9 @@ router.get('/question', async (req, res) => {
 function GetSortOrder(prop) {
     return (a, b) => {
         if (a[prop] > b[prop]) {
-            return 1;
-        } if (a[prop] < b[prop]) {
             return -1;
+        } if (a[prop] < b[prop]) {
+            return 1;
         }
         return 0;
     };
@@ -98,54 +97,73 @@ router.get('/leaderboard', async (req, res) => {
 });
 
 router.post('/answer', async (req, res) => {
+    const m = {
+        A: 0,
+        B: 1,
+        C: 2,
+    };
     const userAnswer = req.body.answer;
-    const userRiddle = req.body.riddleId;
-    const currentUser = await getCurrentRiddlerUser(req, res);
-
-    // if on the starter
-    if (!currentUser.riddleId) currentUser.riddleId = userRiddle;
-
-
-    const riddle = await Riddle.findOne({ riddleId: currentUser.riddleId });
-    if (!riddle) return res.render('error', { error: 'riddle not found' });
+    const currentUser = req.riddlerUser;
+    const riddleId = currentUser.currentRiddle;
+    if (!userAnswer || riddleId === '0') {
+        return res.status(401).json({
+            success: false,
+            message: 'invalidRequest',
+        });
+    }
+    const riddle = await Riddle.findOne({ riddleId });
 
     const correct = riddle.answer.find((ele) => ele === userAnswer);
-    if (!correct) return res.json({ success: true, correct: false, points: 0 });
+    if (!correct) {
+        return res.render({
+            correct: false,
+            trackAlreadyAnswered: false,
+            coupon: false,
+            solvedBy: 1,
+        });
+    }
+    const track = riddleId[0];
+    let qno = parseInt(riddleId[1], 10);
 
+    if (qno === 0) {
+        const trackProgress = parseInt(currentUser.mainTracksProgress[m[track]][1], 10);
+        if (trackProgress === 0) {
+            currentUser.points += riddle.pointsForSuccess;
+            qno = 1;
+        } else if (trackProgress < 9) {
+            qno = trackProgress;
+        }
+    } else if (qno <= 8) {
+        qno += 1;
+        currentUser.points += riddle.pointsForSuccess;
+    }
 
-    // creating the new riddleID
-    const track = currentUser.riddleId.charAt(0);
-    let newQuestion = parseInt(currentUser.riddleId.charAt(1), 10) + 1;
-    newQuestion = newQuestion.toString();
 
     // creating the query + new data
-    const query = { username: currentUser.username };
-    const newRiddleID = `${track}${newQuestion}`;
-    currentUser.riddleId = newRiddleID;
-    const progressOverall = currentUser.mainTracksProgress;
-    progressOverall.forEach((ele, index) => {
-        if (ele.charAt(0) === newRiddleID.charAt(0)) {
-            currentUser.mainTracksProgress[index] = newRiddleID;
-        }
-    });
-    currentUser.points += riddle.pointsForSuccess;
+    const newRiddleID = `${track}${qno}`;
+    currentUser.mainTracksProgress[m[track]] = newRiddleID;
 
-    // updating the user database
-    User.findOneAndUpdate(query, currentUser, { upsert: true }, (err) => {
-        if (err) return res.render('error', { error: err });
-        return res.json({ success: true, correct: true, points: riddle.pointsForSuccess });
-    });
+    if (qno === 9) {
+        currentUser.currentRiddle = '0';
+    }
 
-    return true;
+    currentUser.markModified('mainTracksProgress');
+    currentUser.markModified('points');
+    await currentUser.save();
+    return res.render({
+        correct: true,
+        trackAlreadyAnswered: false,
+        coupon: false,
+        solvedBy: 1,
+    });
 });
 
-router.post('/hint', async (req, res) => {
+router.get('/hint', async (req, res) => {
     const currentUser = req.riddlerUser;
     const riddleId = currentUser.currentRiddle;
 
     const riddle = await Riddle.findOne({ riddleId });
     if (!riddle) return res.render({ error: 'riddle not found' });
-
     if (currentUser.hintsUsed.indexOf(riddleId) === -1) {
         // TODO: For first question, there are 3 questions with hints
         if (currentUser.points >= 100) {
@@ -155,60 +173,26 @@ router.post('/hint', async (req, res) => {
         }
     }
 
-    return res.redirect('/question');
+    return res.redirect('/game/question');
 });
 
 router.get('/reset', async (req, res) => {
     const currentUser = req.riddlerUser;
-    const progressOverall = currentUser.mainTracksProgress;
+    const riddleId = currentUser.currentRiddle;
 
-
-    // completed all tracks
-    let edgeCase = true;
-    progressOverall.forEach((ele) => {
-        if (ele.charAt(1) !== process.env.noOfQuestions) {
-            edgeCase = false;
+    if (riddleId === '0' || riddleId[1] === '0') {
+        res.redirect('/game');
+    } else {
+        const question = riddleId[1];
+        let resetDeduct = ((9 - question) * 50);
+        if (resetDeduct > currentUser.points) {
+            resetDeduct = currentUser.points;
         }
-    });
-    if (edgeCase) {
-        return res.json({
-            sucess: true,
-            message: 'Reset not allowed',
-        });
+        currentUser.points -= resetDeduct;
+        currentUser.currentRiddle = '0';
+        await currentUser.save();
+        res.redirect('/game');
     }
-
-
-    // reset Current track progress
-    const currentRI = req.riddlerUser.riddleId;
-    const riddle = await Riddle.findOne({ riddleId: currentRI });
-
-    for (let i = 1; i <= currentRI[1]; i += 1) {
-        currentUser.points -= riddle.pointsForSuccess;
-    }
-
-    progressOverall.forEach((ele, index) => {
-        if (ele.charAt(0) === currentRI.charAt(0)) {
-            currentUser.mainTracksProgress[index] = `${currentRI[0]}0`;
-        }
-    });
-
-    // reset hints
-
-    User.findOneAndUpdate({ username: currentUser.username },
-        currentUser, { upsert: true },
-        (err) => {
-            if (err) return res.render('error', { error: err });
-            return res.send({ success: true, message: 'resetDone' });
-        });
-
-    return true;
-    // If you get a request on this route, that means the user wants to reset back from the track
-    // onto the first question (the one with the three choices). Thus, you need to do the required
-    // to deduce points for the same for the user, and also update the progress of the user.
-    // After the reset has occured on the backend, return back {success:true, message: 'resetDone'}
-    // There is an edge case to handle, when user tries to reset after he has finished all 3 tracks
-    // {success: true, message: 'resetNotAllowed'}
-    // In that case, don't allow the reset back and return back
 });
 
 

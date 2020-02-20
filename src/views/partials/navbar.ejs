@@ -3,7 +3,7 @@
 <div id="navbar">
     <img onclick="$('#navbarDropDown').slideToggle();" src="/static/images/bars.svg" id="openMenu">
     <div id="trackDisplay" class="nes-badge">
-        <span id="trackName">Track</span>
+        <span id="trackName"></span>
     </div>
     <div id="riddlerBrand"><FONT COLOR="#FF0000">R</FONT><FONT COLOR="#FF8000">i</FONT><FONT COLOR="#FFff00">d</FONT><FONT COLOR="#7Fff00">d</FONT><FONT COLOR="#00ff00">l</FONT><FONT COLOR="#00ff80">e</FONT><FONT COLOR="#00ffff">r</FONT><FONT COLOR="#0080ff"> </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#7F00ff">0</FONT><FONT COLOR="#FF00ff">2</FONT><FONT COLOR="#FF0080">0</FONT></div>
 </div>
@@ -50,13 +50,13 @@
         colorOn: "Lime",
         colorOff: "#003200"
     });
-    let question = parseInt("{{gameData.currentQuestion}}");
+    let question = parseInt("<%= //riddles[0] %>");
     if (question >= 8 || question === 0) {
         $("#resetProgress").hide()
     }
-    let question2 = parseInt("{{gameData.currentQuestion}}");
+    let question2 = parseInt("<%= //riddles[0] %>");
     let points = "<%= user.points %>";
-    let riddleId = 'A0';
+    let riddleId = 'B0';
     let track = 'General';
     switch (riddleId.charAt(0).toLowerCase()) {
         case 'a': track = 'Adverts'; break;
@@ -86,14 +86,15 @@
         "General": "is-success"
     }
     $("#trackName").addClass(classes[track]);
+    $("#trackName").html(`Track: ${track}`);
     $("#navbarDropDown").css("background-color", colors[track]);
     
     $(function() {
         const images = {
-        "Adverts": "/static/images/gameBack.gif",
+        "Adverts": "/static/images/advertsBack.gif",
         "Disney Pixar": "/static/images/disneyPixarBack.gif",
-        "Scifi": "/static/images/scifiBack.gif",
-        "General": "/static/images/gameBack.gif"
+        "Scifi": "/static/images/scifiBack.webp",
+        "General": "/static/images/generalBack.gif"
     }
      $("#mainContentContainer").css("background-image", "url('"+images[track]+"')");
      $('dialog').each(function(i, obj) {

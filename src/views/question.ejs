@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet">
-    <link rel="shortcut icon" type="image/png" href="/static/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="/static/images/favicon.ico" />
     <title>Question {{gameData.currentQuestion}}</title>
     <style>
         #bigText {
@@ -23,22 +23,22 @@
                 <div id="questionContainer" class="dontOverlap">
                     <span id="justQuestion">
                         <div id="qNo" style="font-size:40px; margin-bottom:10px;" class="nes-text is-warning">Question
-                            <%= user.currentRiddle %></div>
+                            <%= //riddleId %></div>
                         <h2>
-                            <%= riddle %>
+                            <%= //riddles[0] %>
                         </h2>
                         <div style="display:none;" id="firstQuestion">
                             <h2>Choose your adventure:</h2>
                             <br>
                             <button
                                 onclick="$('.specialQ').fadeOut();$('#gameQ').fadeIn();questionScrollBar.recalculate()"
-                                class="nes-btn chooseBtn is-warning">Game</button>
+                                class="nes-btn chooseBtn is-warning">Adverts</button>
                             <button
                                 onclick="$('.specialQ').fadeOut();$('#artQ').fadeIn();questionScrollBar.recalculate();"
-                                class="nes-btn chooseBtn is-primary">Art</button>
+                                class="nes-btn chooseBtn is-primary">Disney Pixar</button>
                             <button
                                 onclick="$('.specialQ').fadeOut();$('#crimeQ').fadeIn();questionScrollBar.recalculate();"
-                                class="nes-btn chooseBtn is-error">Crime</button>
+                                class="nes-btn chooseBtn is-error">Sci-fi</button>
                             <br><br>
                             <h3 style="display:none" class="specialQ" id="gameQ">
                                 - Your Bander-what?<br>
@@ -131,11 +131,11 @@
                             </h3>
                         </div>
                         <br>
-                        {{#if hint}}
+                        <!-- <% //if (hint) { %>
                         <div id="hintDiv"><span class="nes-text is-success">Hint: <br></span
-                                style="color:white">{{{hint}}}</div>
+                                style="color:white"><%= //hint[0] %></div>
                         <br>
-                        {{/if}}
+                        <% //} %> -->
                     </span>
                     <div id="content" align="center">
                         <form id="answerForm" action="/game/answer" method="POST">
@@ -159,7 +159,7 @@
         <dialog class="nes-dialog is-rounded" id="dialog-rounded" style="width:90%;">
             <form method="dialog">
                 <p class="title nes-text is-error">WARNING</p>
-                <p>Taking a hint costs 100 points! You currently have <span class="nes-text is-error">{{points}}</span>
+                <p style="color: black;">Taking a hint costs 100 points! You currently have <span class="nes-text is-error"><%= user.points %></span>
                     points.</p>
                 <menu align="center" class="dialog-menu" style="padding-left: 0px;">
                     <button class="nes-btn">Cancel</button>

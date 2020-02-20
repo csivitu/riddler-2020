@@ -56,7 +56,7 @@
     }
     let question2 = parseInt("<%= //riddles[0] %>");
     let points = "<%= user.points %>";
-    let riddleId = '0';
+    let riddleId = 'B0';
     let track = 'General';
     switch (riddleId.charAt(0).toLowerCase()) {
         case 'a': track = 'Adverts'; break;
@@ -93,7 +93,7 @@
         const images = {
         "Adverts": "/static/images/advertsBack.gif",
         "Disney Pixar": "/static/images/disneyPixarBack.gif",
-        "Scifi": "/static/images/scifiBack.gif",
+        "Scifi": "/static/images/scifiBack.webp",
         "General": "/static/images/generalBack.gif"
     }
      $("#mainContentContainer").css("background-image", "url('"+images[track]+"')");

@@ -9,11 +9,19 @@
 </head>
 
 <body>
-    Dash board <br>
+    Dashboard <br>
     <%= user.username %> <br>
     <%= user.mainTracksProgress%> <br>
     <%= user.ip%> <br></br>
-
+    <button id="question">Question</button>
+    <script>
+        window.onload = () => {
+            const btn = document.querySelector("#question");
+            btn.addEventListener("click", () => {
+                location.href = `${location.origin}/game/question`;
+            });
+        }
+    </script>
 </body>
 
 </html>

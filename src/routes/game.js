@@ -31,13 +31,14 @@ router.get('/', (req, res) => {
 
 router.get('/question', async (req, res) => {
     const currentUser = req.session.riddlerUser; // from middleware verifyUser
-    console.log('Current Riddle', currentUser);
+    console.log('Current User', currentUser);
 
     // is starter or on the first question
     if (!currentUser.riddleId || currentUser.riddleId.charAt(1) === '0') {
         try {
             // find all riddleId that ends with 0
             const starterRiddle = await Riddle.find({ riddleId: /^.*0$/ });
+            console.log(starterRiddle);
             if (starterRiddle) return res.render('question', { riddle: starterRiddle });
         } catch (err) {
             console.log('starter ridle not found [game.js]');
@@ -115,14 +116,11 @@ router.post('/answer', async (req, res) => {
     req.session.riddlerUser.points += riddle.pointsForSuccess;
 
     // updating the user database
-    try {
-        User.findOneAndUpdate(query, req.session.riddlerUser, { upsert: true }, (err) => {
-            if (err) return res.render('error', { error: err });
-            return res.json({ success: true, correct: true, points: riddle.pointsForSuccess });
-        });
-    } catch (error) {
-        res.render('error', { error: '[game.js] Unable to update riddle' });
-    }
+    User.findOneAndUpdate(query, req.session.riddlerUser, { upsert: true }, (err) => {
+        if (err) return res.render('error', { error: err });
+        return res.json({ success: true, correct: true, points: riddle.pointsForSuccess });
+    });
+
     return true;
 });
 

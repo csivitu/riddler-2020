@@ -5,13 +5,13 @@
 <% if(!correct) { %>
 <div style="font-size:50px; color:yellow">Oops!</div>
 <div style="font-size:30px;">Your answer is incorrect! </div><br>
-<% if (solvedBy) %>
+<% if (solvedBy) { %>
 <div class="solvedByDiv" style="margin: 30px auto">This question has been solved by <% solvedBy %> people.</div>
 <% } %>
 <menu class="dialog-menu" align="center" style="padding-left: 0px;">
     <button class="nes-btn is-error">Back to Question</button>
 </menu>
-<% else { %>
+<% } else { %>
 <div style="font-size:30px;" class="nes-text is-warning">Fabulous!</div>
 <div style="font-size:20px;">You answered correct! </div>
 <div class="nes-text is-success" style="font-size:50px;">+100 Points!</div>

@@ -38,7 +38,10 @@ router.get('/question', async (req, res) => {
         try {
             // find all riddleId that ends with 0
             const riddles = (await Riddle.find({ riddleId: /^.*0$/ })).map((r) => r.question);
-            return res.render('question', { riddles, user: req.session.user, riddleId });
+            return res.render('question',
+                {
+                    riddles, user: req.session.user, riddleId, hint: undefined,
+                });
         } catch (err) {
             console.log('starter ridle not found [game.js]');
             return res.render('error', { error: err });
@@ -136,73 +139,12 @@ router.post('/answer', async (req, res) => {
 });
 
 router.post('/hint', async (req, res) => {
-    console.log(req, res);
-    const currentUser = await getCurrentRiddlerUser(req, res);
+    const currentUser = req.riddlerUser;
+    const riddleId = currentUser.currentRiddle;
 
-    const riddle = await Riddle.findOne({ riddleId: currentUser.currentRiddle });
+    const riddle = await Riddle.findOne({ riddleId });
     if (!riddle) return res.render({ error: 'riddle not found' });
-
-
-    // creating hint index
-    const routeChar = currentUser.currentRiddle[0];
-    const qno = currentUser.currentRiddle[1];
-    let route;
-    switch (routeChar) {
-    case 'A': route = 0;
-        break;
-    case 'B': route = 1;
-        break;
-    case 'C': route = 2;
-        break;
-    default: return res.render('error', { error: 'Invalid Riddle Id' });
-    }
-    const hintIndex = currentUser.hintsUsed[route][qno];
-
-    // invalid hintsUsed index detected
-    if (!hintIndex) return res.json({ sucess: true, message: 'no hint available' });
-
-    // user used up all hints
-    if (hintIndex === process.env.noOfHints) return res.json({ success: true, message: 'used up all hints' });
-
-
-    // searches for the first unused hint and serves it
-    // updated hintsused value from 0 to 1
-
-    const servedHint = riddle.hint[hintIndex];
-    currentUser.hintsUsed[route][qno] += 1;
-    currentUser.points -= riddle.pointsDeductedPerHint;
-
-
-    // /update in dbs
-    User.findOneAndUpdate({ username: currentUser.username },
-        currentUser, { upsert: true },
-        (err, doc) => {
-            if (err) return res.render('error', { error: err });
-            console.log('user saved successfully', doc);
-            return true;
-        });
-
-
-    Riddle.findOneAndUpdate({ riddleId: currentUser.currentRiddle },
-        riddle, { upsert: true },
-        (err) => {
-            if (err) return res.render('error', { error: err });
-            return res.json({ success: true, message: 'hintRequested', hint: servedHint });
-        });
-
-
     return true;
-
-
-    // The frontend will send no extra data, it will just send a post request on this route
-    // The backend has to assume that the hint is requested for the current question the user
-    // is on. Thus it must first determine the current question the user is on, and then
-    // check if the user hasn't already requested a hint for that question. If the user has
-    // already requested the hint, just return back {success: true, message: 'hintAlreadyRequested'}
-    // If the user hasn't requested the hint yet, check if the user has enough points to take
-    // the hint. If yes, then deduce the points, and grant the hint, and return back
-    // {success:true, messaage: 'hintRequested', hint: '<thehint>'}
-    // If no, then return back {success: true, message: 'notEnoughPoints'}
 });
 
 router.get('/reset', async (req, res) => {

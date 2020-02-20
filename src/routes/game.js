@@ -37,9 +37,12 @@ router.get('/question', async (req, res) => {
     if (!currentUser.riddleId || currentUser.riddleId.charAt(1) === '0') {
         try {
             // find all riddleId that ends with 0
-            const starterRiddle = await Riddle.find({ riddleId: /^.*0$/ });
-            console.log(starterRiddle);
-            if (starterRiddle) return res.render('question', { riddle: starterRiddle });
+            const starterRiddles = await Riddle.find({ riddleId: /^.*0$/ });
+            const questions = starterRiddles.map(riddle => {
+                return riddle.question;
+            });
+            console.log(questions);
+            if (starterRiddles) return res.render('question', { question: questions });
         } catch (err) {
             console.log('starter ridle not found [game.js]');
             res.render('error', { error: err });
@@ -51,7 +54,7 @@ router.get('/question', async (req, res) => {
     try {
         const currentRiddleID = await getCurrentRiddleId(req, res);
         const currentRiddle = await Riddle.find({ riddleId: currentRiddleID });
-        if (currentRiddle) return res.render('question', { riddle: currentRiddle });
+        if (currentRiddle) return res.render('question', { riddle: currentRiddle.question });
     } catch (err) {
         console.log('Riddle not found [game.js]');
         res.render('error', { error: err });

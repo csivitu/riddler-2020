@@ -8,10 +8,8 @@ const User = require('../models/User');
 
 router.use((req, res, next) => {
     if (req.session.user) {
-        if (req.session.user.scope.indexOf('csi') > -1) {
+        if (req.session.user) {
             next();
-        } else {
-            res.redirect('/');
         }
     } else {
         res.redirect('/');

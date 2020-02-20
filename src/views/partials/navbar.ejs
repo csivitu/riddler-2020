@@ -51,10 +51,9 @@
         colorOff: "#003200"
     });
     let points = "<%= user.points %>";
-    let riddleId = "<%= user.currentRiddle %>";
-    if (riddleId >= 9 || riddleId === 0) {
-        $("#resetProgress").hide()
-    }
+    let riddleId = "<%= riddleId %>";
+    let question = parseInt(riddleId.charAt(1));
+    console.log(riddleId)
     let track = 'General';
     switch (riddleId.charAt(0).toLowerCase()) {
         case 'a': track = 'Adverts'; break;
@@ -62,12 +61,7 @@
         case 'c': track = 'Scifi'; break;
         default: track = 'General';
     }
-    if(riddleId==0)
-    {
-        $("#message").text("You are already on the first question.");
-        $("#continueBtn").hide();
-    }
-    let resetDeduct = ((8 - question2) * 50);
+    let resetDeduct = ((9 - question) * 50);
     if(resetDeduct>points)
     resetDeduct = points
     $(".resetPoints").text(resetDeduct.toString()).css("color", "red");

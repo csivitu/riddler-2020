@@ -9,6 +9,19 @@
 </head>
 
 <body>
+
+    <!--if the starter questions is displayed,
+        frontend needs to send the create the riddle id depending on which button click 
+        i.e A0,B0,C0
+        and send it in the req.body
+        req.body {
+            answer:userAnswer,
+            riddleId: Depding on btn click
+        }--->
+    <!---If not starter question
+            riddleId will be passed to tbe template along with question 
+            so you can directly take form there
+       -->
     <%if(Array.isArray(question)) {%>
     <%= question[0] %>
     <%= question[1] %>

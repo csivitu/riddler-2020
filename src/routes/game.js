@@ -43,7 +43,7 @@ router.get('/question', async (req, res) => {
             // find all riddleId that ends with 0
             const starterRiddles = await Riddle.find({ riddleId: /^.*0$/ });
             const questions = starterRiddles.map((riddle) => riddle.question);
-            if (starterRiddles) return res.render('question', { question: questions });
+            if (starterRiddles) return res.render('question', { question: questions, user: req.session.user });
         } catch (err) {
             console.log('starter ridle not found [game.js]');
             return res.render('error', { error: err });

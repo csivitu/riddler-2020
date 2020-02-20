@@ -97,44 +97,64 @@ router.get('/leaderboard', async (req, res) => {
 });
 
 router.post('/answer', async (req, res) => {
+    const m = {
+        A: 0,
+        B: 1,
+        C: 2,
+    };
     const userAnswer = req.body.answer;
     const currentUser = req.riddlerUser;
-
-    if (!userAnswer || currentUser.currentRiddle === '0') {
+    const riddleId = currentUser.currentRiddle;
+    if (!userAnswer || riddleId === '0') {
         return res.status(401).json({
             success: false,
             message: 'invalidRequest',
         });
     }
-    const riddle = await Riddle.findOne({ riddleId: currentUser.riddleId });
+    const riddle = await Riddle.findOne({ riddleId });
 
     const correct = riddle.answer.find((ele) => ele === userAnswer);
-    if (!correct) return res.json({ success: true, correct: false, points: 0 });
+    if (!correct) {
+        return res.render({
+            correct: false,
+            trackAlreadyAnswered: false,
+            coupon: false,
+            solvedBy: 1,
+        });
+    }
+    const track = riddleId[0];
+    let qno = parseInt(riddleId[1], 10);
 
+    if (qno === 0) {
+        const trackProgress = parseInt(currentUser.mainTracksProgress[m[track]][1], 10);
+        if (trackProgress === 0) {
+            currentUser.points += riddle.pointsForSuccess;
+            qno = 1;
+        } else if (trackProgress < 9) {
+            qno = trackProgress;
+        }
+    } else if (qno <= 8) {
+        qno += 1;
+        currentUser.points += riddle.pointsForSuccess;
+    }
 
-    // creating the new riddleID
-    const track = currentUser.riddleId[0];
-    let newQuestion = parseInt(currentUser.riddleId.charAt(1), 10) + 1;
-    newQuestion = newQuestion.toString();
 
     // creating the query + new data
-    const newRiddleID = `${track}${newQuestion}`;
-    currentUser.riddleId = newRiddleID;
-    const progressOverall = currentUser.mainTracksProgress;
-    progressOverall.forEach((ele, index) => {
-        if (ele[0] === newRiddleID[0]) {
-            currentUser.mainTracksProgress[index] = newRiddleID;
-        }
-    });
-    currentUser.points += riddle.pointsForSuccess;
+    const newRiddleID = `${track}${qno}`;
+    currentUser.mainTracksProgress[m[track]] = newRiddleID;
+
+    if (qno === 9) {
+        currentUser.currentRiddle = '0';
+    }
 
     currentUser.markModified('mainTracksProgress');
     currentUser.markModified('points');
     await currentUser.save();
-    return res.json({
-        success: true,
+    return res.render({
         correct: true,
-        points: riddle.pointsForSuccess,
+        trackAlreadyAnswered: false,
+        coupon: false,
+        solvedBy: 1,
     });
 });
 

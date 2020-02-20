@@ -56,7 +56,14 @@
     }
     let question2 = parseInt("{{gameData.currentQuestion}}");
     let points = "<%= user.points %>";
-    let track = "<%= user.track %>";
+    let riddleId = "<%= riddleId %>";
+    let track = 'General';
+    switch (riddleId.charAt(0).toLowerCase()) {
+        case 'a': track = 'Adverts'; break;
+        case 'b': track = 'Disney Pixar'; break;
+        case 'c': track = 'Scifi'; break;
+        default: track = 'General';
+    }
     if(question2==0)
     {
         $("#message").text("You are already on the first question.");

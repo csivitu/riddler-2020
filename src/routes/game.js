@@ -27,6 +27,7 @@ router.use(verifyUser);
 
 router.get('/', async (req, res) => {
     const currentUser = await getCurrentRiddlerUser(req, res);
+    console.log(currentUser);
     res.render('dashboard', { user: currentUser });
 });
 
@@ -146,13 +147,13 @@ router.post('/hint', async (req, res) => {
     const qno = currentUser.currentRiddle[1];
     let route;
     switch (routeChar) {
-        case 'A': route = 0;
-            break;
-        case 'B': route = 1;
-            break;
-        case 'C': route = 2;
-            break;
-        default: return res.render('error', { error: 'Invalid Riddle Id' });
+    case 'A': route = 0;
+        break;
+    case 'B': route = 1;
+        break;
+    case 'C': route = 2;
+        break;
+    default: return res.render('error', { error: 'Invalid Riddle Id' });
     }
     const hintIndex = currentUser.hintsUsed[route][qno];
 

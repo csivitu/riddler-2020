@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint \"src/**/*.{ts,js,jsx}\"",
-    "start": "npm run lint && node src/server.js"
+    "start": "npm run lint && nodemon src/server.js"
   },
   "repository": {
     "type": "git",
@@ -41,6 +41,7 @@
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.1",
-    "husky": "^4.2.3"
+    "husky": "^4.2.3",
+    "nodemon": "^2.0.2"
   }
 }

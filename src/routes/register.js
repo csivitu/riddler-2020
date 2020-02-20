@@ -18,11 +18,18 @@ router.get('/', (req, res) => {
     const accountsUrl = `https://accounts.csivit.com/oauth/authorize?clientId=${process.env.CLIENT_ID}&redirectUrl=${process.env.REDIRECT_URL}&state=${state}`;
     res.render('registerPage', { user: req.session.user, accountsUrl });
 
+    // if (req.session.user) {
+    //     req.session.destroy();
+    // }
+});
+
+
+router.get('/logout', (req, res) => {
     if (req.session.user) {
         req.session.destroy();
     }
+    res.redirect('/');
 });
-
 
 // For all routes that need to template something on the frontend
 // and the page isn't ready yet, just make sure for now that the

@@ -38,16 +38,15 @@
             <% if (user) { %>
             <div>
                 <h3><%= user.username %>, you have successfully registered for Riddler</h3>
-                <br>
-                <h3>The hunt begins in</h3>
                 <div class="timer"></div>
+                <a class="btn px-5 py-3" id="login" href="/game">PLAY</a>
             </div>
             <% } else {%>
-            <div class="timer"></div>
+                <div class="timer"></div>
+                <div class="mb-5">
+                    <a href="<%= accountsUrl %>" class="btn px-5 py-3" id="login">ENTER</a>
+                </div>
             <% }%>
-            <div class="mb-5">
-                <a href="<%= accountsUrl %>" class="btn px-5 py-3" id="login">ENTER</a>
-            </div>
             <div>
                 <h4>BY <a href="https://csivit.com">COMPUTER SOCIETY OF INDIA</a></h4>
             </div>

@@ -5,22 +5,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Riddler - Leaderboard</title>
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="/static/images/favicon.png" />
+
+
+    <style>
+        #mainContent td,
+        #mainContent th {
+            padding: 5px;
+        }
+
+        #leaderboardTable {
+            margin: 0 auto;
+            width: 100%;
+            text-align: center;
+            font-size: 1em;
+        }
+
+        tr {
+            width: 100%;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #212529c0;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #191b1dc0;
+        }
+
+        #mainContent td {
+            font-size: 20px;
+        }
+
+        thead {
+            width: 100%;
+        }
+
+        #leaderboardContainer {
+            width: 100%;
+            height: 100%;
+        }
+
+        html,
+        body {
+            counter-reset: tableCount;
+        }
+
+        .counterCell:before {
+            content: counter(tableCount);
+            counter-increment: tableCount;
+        }
+    </style>
 </head>
 
 <body>
-    <table>
-        <tr>
-            <th>Username</th>
-            <th>Score</th>
-        </tr>
-        <% for(var i = 0; i < leaderboard.length; i++) { %>
-        <tr>
-            <td><%= leaderboard[i].username %></td>
-            <td><%= leaderboard[i].score %></td>
-        </tr>
-        <% } %>
-    </table>
+
+    <%- include('partials/navbar') %>
+
+    <div id="mainContentContainer">
+        <div style="display:block;" id="mainContent">
+            <div data-simplebar data-simplebar-auto-hide="false" id="leaderboardContainer">
+                <table id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Username</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i = 0; i < leaderboard.length; i++) { %>
+                        <tr>
+                            <td><%= i %></td>
+                            <td><%= leaderboard[i].username %></td>
+                            <td><%= leaderboard[i].score %></td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

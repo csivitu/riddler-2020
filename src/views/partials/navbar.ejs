@@ -67,15 +67,15 @@
     resetDeduct = points
     $(".resetPoints").text(resetDeduct.toString()).css("color", "red");
     const colors = {
-        "Games": "rgba(247, 213, 29, 0.9)",
-        "Art": "rgba(32, 156, 238, 0.9)",
-        "Crime":"rgba(231, 110, 85, 0.9)",
+        "Adverts": "rgba(247, 213, 29, 0.9)",
+        "Disney Pixar": "rgba(32, 156, 238, 0.9)",
+        "Scifi":"rgba(231, 110, 85, 0.9)",
         "General": "rgba(118, 196, 66, 0.9)"
     }
     const classes = {
-        "Games": "is-warning",
-        "Art": "is-primary",
-        "Crime":"is-error",
+        "Adverts": "is-warning",
+        "Disney Pixar": "is-primary",
+        "Scifi":"is-error",
         "General": "is-success"
     }
     $("#trackName").addClass(classes[track]);
@@ -83,9 +83,9 @@
     
     $(function() {
         const images = {
-        "Games": "/static/images/gameBack.gif",
-        "Art": "/static/images/artBack.gif",
-        "Crime": "/static/images/crimeBack.gif",
+        "Adverts": "/static/images/gameBack.gif",
+        "Disney Pixar": "/static/images/disneyPixarBack.gif",
+        "Scifi": "/static/images/scifiBack.gif",
         "General": "/static/images/gameBack.gif"
     }
      $("#mainContentContainer").css("background-image", "url('"+images[track]+"')");

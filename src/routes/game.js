@@ -140,18 +140,18 @@ router.post('/hint', async (req, res) => {
     if (!riddle) return res.render({ error: 'riddle not found' });
 
 
-    // stop if all hints are used up
+    //creating hint index
     const routeChar = currentUser.currentRiddle[0];
     const qno = currentUser.currentRiddle[1];
     let route;
     switch (routeChar) {
-    case 'A': route = 0;
-        break;
-    case 'B': route = 1;
-        break;
-    case 'C': route = 2;
-        break;
-    default: return res.render('error', { error: 'Invalid Riddle Id' });
+        case 'A': route = 0;
+            break;
+        case 'B': route = 1;
+            break;
+        case 'C': route = 2;
+            break;
+        default: return res.render('error', { error: 'Invalid Riddle Id' });
     }
     const hintIndex = currentUser.hintsUsed[route][qno];
 

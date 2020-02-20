@@ -47,14 +47,16 @@
                         <% } %>
                     </span>
                     <div id="content" align="center">
+                        <form id="answerForm">
                         <div id="ans">
                             <input style="border-radius:5px;" type="text" name="answer" id="error_field"
                                 class="nes-input" placeholder="Enter Your Answer">
                         </div>
                         <br>
-                        <button id="submitAnsBtn" type="button" class="nes-btn is-warning">Submit</button>
+                        <button id="submitAnsBtn" type="button" class="nes-btn is-warning" onclick="sendAns()">Submit</button>
                         <button type="button" id="hintBtn" class="nes-btn is-success"
                             onclick="$('#dialog-rounded')[0].showModal();">Hint</button>
+                        </form>
                         <br>
                     </div>
                 </div>
@@ -75,7 +77,7 @@
                     <% if (user.points >= 100) { %>
                     <button onclick="window.location.href='/game/hint'" class="nes-btn is-error" style="cursor: crosshair;">Show Hint</button>
                     <% } else { %>
-                        <button onclick="window.location.href='/gam/hint'" class="nes-btn is-error" disabled>Show Hint</button>
+                        <button onclick="window.location.href='/game/hint'" class="nes-btn is-error" disabled>Show Hint</button>
                     <% } %>
                 </menu>
             </form>

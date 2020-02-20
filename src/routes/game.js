@@ -115,7 +115,7 @@ router.post('/answer', async (req, res) => {
 
     const correct = riddle.answer.find((ele) => ele === userAnswer);
     if (!correct) {
-        return res.render({
+        return res.render('answer', {
             correct: false,
             trackAlreadyAnswered: false,
             coupon: false,
@@ -124,7 +124,6 @@ router.post('/answer', async (req, res) => {
     }
     const track = riddleId[0];
     let qno = parseInt(riddleId[1], 10);
-
     if (qno === 0) {
         const trackProgress = parseInt(currentUser.mainTracksProgress[m[track]][1], 10);
         if (trackProgress === 0) {
@@ -145,12 +144,14 @@ router.post('/answer', async (req, res) => {
 
     if (qno === 9) {
         currentUser.currentRiddle = '0';
+    } else {
+        currentUser.currentRiddle = newRiddleID;
     }
 
     currentUser.markModified('mainTracksProgress');
     currentUser.markModified('points');
     await currentUser.save();
-    return res.render({
+    return res.render('answer', {
         correct: true,
         trackAlreadyAnswered: false,
         coupon: false,

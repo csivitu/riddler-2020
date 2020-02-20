@@ -84,9 +84,8 @@ router.get('/leaderboard', async (req, res) => {
     try {
         const lb = await User.find({});
         lb.sort(GetSortOrder('points'));
-        const currentUser = await getCurrentRiddlerUser(req, res);
 
-        return res.render('leaderboard', { leaderboard: lb, user: currentUser });
+        return res.render('leaderboard', { leaderboard: lb, user: req.riddlerUser });
     } catch (err) {
         return res.render('error', { error: err });
     }

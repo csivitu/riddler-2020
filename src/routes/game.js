@@ -3,6 +3,7 @@ const Riddle = require('../models/Riddle');
 const verifyUser = require('../middlewares/verifyUser');
 const User = require('../models/User');
 const getCurrentRiddleId = require('../getCurrentRiddleID');
+const getCurrentRiddlerUser = require('../getCurrentRidderUser');
 
 // This handles Baseurl/maze
 // this handle Base url/maze/riddleId POST req from
@@ -30,20 +31,19 @@ router.get('/', (req, res) => {
 
 
 router.get('/question', async (req, res) => {
-    const currentUser = req.session.riddlerUser; // from middleware verifyUser
+    const currentUser = await getCurrentRiddlerUser(req, res); // from middleware verifyUser
     console.log('Current User', currentUser);
 
     // is starter or on the first question
-    if (!currentUser.riddleId || currentUser.riddleId.charAt(1) === '0') {
+    if (!currentUser.currentRiddle || currentUser.currentRiddle[1] === '0') {
         try {
             // find all riddleId that ends with 0
             const starterRiddles = await Riddle.find({ riddleId: /^.*0$/ });
             const questions = starterRiddles.map((riddle) => riddle.question);
-            console.log(questions);
             if (starterRiddles) return res.render('question', { question: questions });
         } catch (err) {
             console.log('starter ridle not found [game.js]');
-            res.render('error', { error: err });
+            return res.render('error', { error: err });
         }
     }
 
@@ -52,15 +52,22 @@ router.get('/question', async (req, res) => {
     try {
         const currentRiddleID = await getCurrentRiddleId(req, res);
         const currentRiddle = await Riddle.find({ riddleId: currentRiddleID });
-        if (currentRiddle) return res.render('question', { riddle: currentRiddle.question });
+        if (currentRiddle) {
+            return res.render(
+                'question',
+                { riddle: currentRiddle.question, riddleId: getCurrentRiddleId },
+            );
+        }
     } catch (err) {
         console.log('Riddle not found [game.js]');
-        res.render('error', { error: err });
+        return res.render('error', { error: err });
     }
 
     return true;
 });
 
+
+// for sorting the leaderboard
 function GetSortOrder(prop) {
     return (a, b) => {
         if (a[prop] > b[prop]) {
@@ -77,47 +84,47 @@ router.get('/leaderboard', async (req, res) => {
     try {
         const lb = await User.find({});
         lb.sort(GetSortOrder('points'));
-        res.render('leaderboard', { leaderboard: lb });
+        return res.render('leaderboard', { leaderboard: lb });
     } catch (err) {
-        res.render('error', { error: err });
+        return res.render('error', { error: err });
     }
-    return true;
 });
 
 router.post('/answer', async (req, res) => {
     const userAnswer = req.body.answer;
-    const currentUser = req.session.riddlerUser;
+    const userRiddle = req.body.riddleId;
+    const currentUser = await getCurrentRiddlerUser(req, res);
 
 
-    const rId = await getCurrentRiddleId(req, res);
-    if (rId !== currentUser.riddleId) return res.render('error', { error: 'trying to skip ahead are we ?' });
-
-    const riddle = await Riddle.findOne({ riddleId: rId });
+    const riddle = await Riddle.findOne({ riddleId: currentUser.riddleId });
     if (!riddle) return res.render({ error: 'riddle not found' });
 
     const correct = riddle.answer.find((ele) => ele === userAnswer);
-    if (!correct) return res.json({ correct: false, points: 0 });
+    if (!correct) return res.json({ success: true, correct: false, points: 0 });
 
 
-    // crreating the new riddleID
+    // if on the starter
+    if (!currentUser.riddleId) currentUser.riddleId = userRiddle;
+
+    // creating the new riddleID
     const track = currentUser.riddleId.charAt(0);
     let newQuestion = parseInt(currentUser.riddleId.charAt(1), 10) + 1;
     newQuestion = newQuestion.toString();
 
     // creating the query + new data
-    const query = { username: req.session.user.username };
+    const query = { username: currentUser.username };
     const newRiddleID = `${track}${newQuestion}`;
-    req.session.riddlerUser.riddleId = newRiddleID;
+    currentUser.riddleId = newRiddleID;
     const progressOverall = currentUser.mainTracksProgress;
     progressOverall.forEach((ele, index) => {
         if (ele.charAt(0) === newRiddleID.charAt(0)) {
-            req.session.riddlerUser.mainTracksProgress[index] = newRiddleID;
+            currentUser.mainTracksProgress[index] = newRiddleID;
         }
     });
-    req.session.riddlerUser.points += riddle.pointsForSuccess;
+    currentUser.points += riddle.pointsForSuccess;
 
     // updating the user database
-    User.findOneAndUpdate(query, req.session.riddlerUser, { upsert: true }, (err) => {
+    User.findOneAndUpdate(query, currentUser, { upsert: true }, (err) => {
         if (err) return res.render('error', { error: err });
         return res.json({ success: true, correct: true, points: riddle.pointsForSuccess });
     });
@@ -127,37 +134,45 @@ router.post('/answer', async (req, res) => {
 
 router.post('/hint', async (req, res) => {
     console.log(req, res);
-    const currentUser = req.session.riddlerUser;
+    const currentUser = await getCurrentRiddlerUser(req, res);
 
-
-    const rId = await getCurrentRiddleId(req, res);
-    if (rId !== currentUser.riddleId) return res.render('error', { error: 'trying to skip ahead are we ?' });
-
-    const riddle = await Riddle.findOne({ riddleId: rId });
+    const riddle = await Riddle.findOne({ riddleId: currentUser.currentRiddle });
     if (!riddle) return res.render({ error: 'riddle not found' });
 
 
-    // stop if all hints are used up
-    const hints = currentUser.hintsUsed
-        .map((used, index) => ((used === process.env.noOfQuestions) ? riddle.hints[index] : null))
-        .filter((hint) => hint != null);
-    if (hints.length === 0) return res.json({ success: true, message: 'used up all hints' });
+    // creating hint index
+    const routeChar = currentUser.currentRiddle[0];
+    const qno = currentUser.currentRiddle[1];
+    let route;
+    switch (routeChar) {
+    case 'A': route = 0;
+        break;
+    case 'B': route = 1;
+        break;
+    case 'C': route = 2;
+        break;
+    default: return res.render('error', { error: 'Invalid Riddle Id' });
+    }
+    const hintIndex = currentUser.hintsUsed[route][qno];
+
+    // invalid hintsUsed index detected
+    if (!hintIndex) return res.json({ sucess: true, message: 'no hint available' });
+
+    // user used up all hints
+    if (hintIndex === process.env.noOfHints) return res.json({ success: true, message: 'used up all hints' });
 
 
     // searches for the first unused hint and serves it
     // updated hintsused value from 0 to 1
-    const index = parseInt(rId[1], 10);
-    const servedHint = riddle.hint[index];
-    currentUser.hintsUsed[index] += 1;
 
-
-    req.session.riddlerUser.hintsUsed = currentUser.hintsUsed;
-    req.session.riddlerUser.points -= riddle.pointsDeductedPerHint;
+    const servedHint = riddle.hint[hintIndex];
+    currentUser.hintsUsed[route][qno] += 1;
+    currentUser.points -= riddle.pointsDeductedPerHint;
 
 
     // /update in dbs
     User.findOneAndUpdate({ username: currentUser.username },
-        req.session.riddlerUser, { upsert: true },
+        currentUser, { upsert: true },
         (err, doc) => {
             if (err) return res.render('error', { error: err });
             console.log('user saved successfully', doc);
@@ -165,7 +180,7 @@ router.post('/hint', async (req, res) => {
         });
 
 
-    Riddle.findOneAndUpdate({ riddleId: rId },
+    Riddle.findOneAndUpdate({ riddleId: currentUser.currentRiddle },
         riddle, { upsert: true },
         (err) => {
             if (err) return res.render('error', { error: err });
@@ -188,7 +203,8 @@ router.post('/hint', async (req, res) => {
 });
 
 router.get('/reset', async (req, res) => {
-    const progressOverall = req.riddleuser.mainTracksProgress;
+    const currentUser = await getCurrentRiddlerUser(req, res);
+    const progressOverall = currentUser.mainTracksProgress;
 
 
     // completed all tracks
@@ -211,17 +227,19 @@ router.get('/reset', async (req, res) => {
     const riddle = await Riddle.findOne({ riddleId: currentRI });
 
     for (let i = 1; i <= currentRI[1]; i += 1) {
-        req.session.riddlerUser.points -= riddle.pointsForSuccess;
+        currentUser.points -= riddle.pointsForSuccess;
     }
 
     progressOverall.forEach((ele, index) => {
         if (ele.charAt(0) === currentRI.charAt(0)) {
-            req.session.riddlerUser.mainTracksProgress[index] = `${currentRI[0]}0`;
+            currentUser.mainTracksProgress[index] = `${currentRI[0]}0`;
         }
     });
 
-    User.findOneAndUpdate({ username: req.session.riddlerUser.username },
-        req.session.riddlerUser, { upsert: true },
+    // reset hints
+
+    User.findOneAndUpdate({ username: currentUser.username },
+        currentUser, { upsert: true },
         (err) => {
             if (err) return res.render('error', { error: err });
             return res.send({ success: true, message: 'resetDone' });

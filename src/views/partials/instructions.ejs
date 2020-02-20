@@ -1,0 +1,38 @@
+<section>
+    <dialog class="nes-dialog is-rounded" id="helpPopup" style="width: 90%; height:90%;">
+        <form id="instructions" method="dialog" style="color: black;">
+            <p class="title">Instructions:</p>
+            <br>
+            <ol>
+                <li>
+                    The game consists of three tracks:
+                    <ol type="a">
+                        <li><span class="nes-text is-error" id="crime">Crime </span></li>
+                        <li><span class="nes-text is-primary" id="art">Art</span></li>
+                        <li><span class="nes-text is-warning" id="games">Games</span></li>
+                    </ol>
+                </li>
+                <li>Every player starts with a base score of 100 points.</li>
+                <li>After you answer Question 1, you're diverted to one of the three tracks of your choice. Every track
+                    has 7 questions each.</li>
+                <li>Getting an answer right, would win you 100 points where as seeking a hint would deduct 100 points
+                    from your total score at that instant and upon answering that question you shall be awarded 100.
+                </li>
+                <li>If you start a track and want to go back, your points would be deducted depending on the number of
+                    questions you are leaving unanswered.
+                    <br>Example: If you're on track 2 and have answered 3 questions but now you want to change tracks,
+                    half of
+                    the remaining points i.e (4*100)/2 would be deducted from your total score.</li>
+                <li>After completing one track you're directed back to the starting point where you can venture along
+                    the second track of your choice.</li>
+                <li>After the completion of all three tracks the remaining eight questions would be a combination of all
+                    three categories.</li>
+                <li>There is no negative score.</li>
+            </ol>
+            <br>
+            <menu class="dialog-menu" align="center">
+                <button class="nes-btn is-primary">Hide</button>
+            </menu>
+        </form>
+    </dialog>
+</section>

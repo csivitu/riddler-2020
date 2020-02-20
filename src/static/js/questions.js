@@ -1,24 +1,4 @@
 $(document).ready(() => {
-    const countDownDate = new Date('Feb 20, 2020 21:00:00').getTime();
-
-    const x = setInterval(() => {
-        const now = new Date().getTime();
-
-        const distance = countDownDate - now;
-
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        $('.timer').html(`${hours}h ${minutes}m ${seconds}s `);
-
-        if (distance < 0) {
-            clearInterval(x);
-            $('.timer').html('. 尺ﾉりりﾚ乇尺 .');
-        }
-    }, 1000);
-    $('[data-toggle="popover"]').popover();
-
     const backgroundMusic = new Audio('../static/audio/moosic.mp3');
     const clickMusic = new Audio('../static/audio/click.mp3');
 

@@ -11,6 +11,7 @@ const riddleSchema = new mongoose.Schema({
     },
     riddleId: {
         type: String,
+        required: true,
     },
     solvedBy: {
         type: Number,

@@ -5,6 +5,8 @@ require('./models/dbInit');
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo')(session);
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -22,6 +24,8 @@ app.use(
         secret: process.env.SESSION_SECRET || 'eiffel tower on steoroids',
         resave: false,
         saveUninitialized: true,
+        store: new MongoStore({ mongooseConnection: mongoose.connection }),
+        cookie: { maxAge: 12 * 60 * 60 * 100 },
     }),
 );
 

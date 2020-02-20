@@ -23,6 +23,7 @@
     "@types/csi-accounts-express": "^1.0.0",
     "atob": "^2.1.2",
     "body-parser": "^1.19.0",
+    "connect-mongo": "^3.2.0",
     "csi-accounts-express": "^2.4.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.0.1",

@@ -1,104 +1,211 @@
-</html>
 <!DOCTYPE html>
 <html lang="en">
-
-<!--Send the Riddle ID in the req.body along with answer-->
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/static/css/questionsPage.css">
-    <script src="https://kit.fontawesome.com/4f0a7ba7b8.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" inte
-        grity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/static/js/questions.js"></script>
-    <link rel="shortcut icon" type="image/ico" href="/static/images/favicon.ico" />
-
-    <title>. 尺ﾉりりﾚ乇尺 2020 .</title>
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="/static/images/favicon.png" />
+    <title>Question {{gameData.currentQuestion}}</title>
+    <style>
+        #bigText {
+            font-size: 30px !important;
+        }
+    </style>
 </head>
 
 <body>
+    <%- include('partials/navbar') %>
+    <div id="mainContentContainer">
+        <div id="mainContent">
+            <div style="height:100%;width:100%;" id="questionPanel" class="nes-container is-rounded is-dark question">
+                <div id="questionContainer" class="dontOverlap">
+                    <span id="justQuestion">
+                        <div id="qNo" style="font-size:40px; margin-bottom:10px;" class="nes-text is-warning">Question
+                            {{gameData.currentQuestion}}</div>
+                        <h2>
+                            {{{question}}}
+                        </h2>
+                        <div style="display:none;" id="firstQuestion">
+                            <h2>Choose your adventure:</h2>
+                            <br>
+                            <button
+                                onclick="$('.specialQ').fadeOut();$('#gameQ').fadeIn();questionScrollBar.recalculate()"
+                                class="nes-btn chooseBtn is-warning">Game</button>
+                            <button
+                                onclick="$('.specialQ').fadeOut();$('#artQ').fadeIn();questionScrollBar.recalculate();"
+                                class="nes-btn chooseBtn is-primary">Art</button>
+                            <button
+                                onclick="$('.specialQ').fadeOut();$('#crimeQ').fadeIn();questionScrollBar.recalculate();"
+                                class="nes-btn chooseBtn is-error">Crime</button>
+                            <br><br>
+                            <h3 style="display:none" class="specialQ" id="gameQ">
+                                - Your Bander-what?<br>
+                                - Bandersnatch.<br>
+                                - You're always flicking backwards<br>
+                                and forwards in that.<br>
+                                - It's a "Choose Your Own Adventure" book.<br>
+                                -So, Worth it?<br>
+                                -I wish I could say yes<br>
+                                but it's frustrating.<br>
+                                -It's as if the creator simply gave up<br>
+                                halfway through.<br>
+                                -If we had second chances in life,<br>
+                                I'd hope they'd choose differently<br>
+                                but, er, sadly we don't.<br>
+                                -And nor do they. If that makes sense?<br>
+                                - So your verdict?<br>
+                                - Two and a half stars out of five.<br>
+                                -Disappointing.<br>
 
-    <div class="pos-f-t">
-        <nav class="navbar navbar-dark bg">
-            <button class="navbar-toggler" type="button" data-toggle="collapse"
-                data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </nav>
-        <div class="collapse" id="navbarToggleExternalContent">
-            <div class="bg p-4 text-center">
-                <a class="text-white h5" href="">Dashboard</a></br>
-                <a class="text-white h5" href="">Instruction</a></br>
-                <a class="text-white h5" href="">Leaderboard</a></br>
-                <a class="text-white h5" href="">Logout</a></br>
-                <h5 class="text-white">Points: 0</span>
+                                Name the game's creator
+                            </h3>
+                            <h3 style="display:none" class="specialQ" id="artQ">
+                                - Your Bander-what?<br>
+                                - Bandersnatch.<br>
+                                - You're always flicking backwards<br>
+                                and forwards in that.<br>
+                                - It's a book about a writers’ group and their ingenious process in literature, you can
+                                get it on Amazon.<br>
+                                This is the same place where the group met.<br>
+                                - How about you decide<br>
+                                what you want for a drink?<br>
+                                Where are Stefan and his father?
+                            </h3>
+                            <h3 style="display:none" class="specialQ" id="crimeQ">
+                                - Your Bander-what?<br>
+                                - Bandersnatch.<br>
+                                - You're always flicking backwards<br>
+                                and forwards in that. <br>
+                                - It's a "Choose Your Own Adventure" book.<br>
+                                -Wasn’t the writer of the book psychotic?<br>
+                                -Towards the end of his life,<br>
+
+                                Davies was apparently self-administering<br>
+                                hallucinogens on a daily basis.<br>
+
+                                This, coupled with his attempts<br>
+
+                                to complete the complex multiple<br>
+                                narratives of Bandersnatch<br>
+
+                                was to prove the final straw.<br>
+
+                                He became obsessed<br>
+                                with bizarre symbols<br>
+
+                                and the limitations<br>
+                                of his own free will.<br>
+
+                                In his notes,<br>
+                                Davies repeatedly sketched a glyph<br>
+
+                                which to him represented multiple fates,<br>
+                                potential realities splitting in two.<br>
+
+                                It was the start<br>
+                                of his complete mental collapse.<br>
+
+                                Davies became convinced<br>
+                                he had no control over his fate<br>
+
+                                because his wife was spiking him<br>
+                                with psychoactive drugs<br>
+
+                                at behest of a demon called Pax,<br>
+                                a sort of lion figure<br>
+
+                                who he claimed he'd seen in a vision,<br>
+
+                                and who ended up<br>
+                                being incorporated into the book.<br>
+
+                                It was this that led him to kill her.<br>
+
+                                He decapitated her and daubed the<br>
+                                glyph symbol on the walls with her blood.<br>
+
+                                “who is Jerome F. Davies and is he a real author?”<br>
+                                He could be based on a sci-fi writer<br>
+                            </h3>
+                        </div>
+                        <br>
+                        {{#if hint}}
+                        <div id="hintDiv"><span class="nes-text is-success">Hint: <br></span
+                                style="color:white">{{{hint}}}</div>
+                        <br>
+                        {{/if}}
+                    </span>
+                    <div id="content" align="center">
+                        <form id="answerForm" action="/game/answer" method="POST">
+                            <div id="ans">
+                                <input style="border-radius:5px;" type="text" name="answer" id="error_field"
+                                    class="nes-input" placeholder="Enter Your Answer">
+                            </div>
+                            <br>
+                            <button id="submitAnsBtn" type="button" class="nes-btn is-warning">Submit</button>
+                            <button type="button" id="hintBtn" class="nes-btn is-success"
+                                onclick="$('#dialog-rounded')[0].showModal();">Hint</button>
+                            <br>
+                    </div>
+                </div>
             </div>
         </div>
-
+    </div>
     </div>
 
+    <section>
+        <dialog class="nes-dialog is-rounded" id="dialog-rounded" style="width:90%;">
+            <form method="dialog">
+                <p class="title nes-text is-error">WARNING</p>
+                <p>Taking a hint costs 100 points! You currently have <span class="nes-text is-error">{{points}}</span>
+                    points.</p>
+                <menu align="center" class="dialog-menu" style="padding-left: 0px;">
+                    <button class="nes-btn">Cancel</button>
+                    <button onclick="window.location.href='/game/hint'" class="nes-btn is-error">Show Hint</button>
+                </menu>
+            </form>
+        </dialog>
+    </section>
 
-    <div class="questionbox panel">
-        <div class="questionbox-header">
-            Question 0
-        </div>
-        <div class="questionbox-body">
-            <div class="question">
-                <p>
-                    <%if(Array.isArray(question)) {%>
-                    <%= question[0] %>
-                    <%= question[1] %>
-                    <%= question[2] %>
-                    <% } else {%>
-                    <%= question %>
-                    <%}%>
-                </p>            </div>
-            <div class="form-group">
-                <form method="POST" class="row" action="/game/answer">
-                    <input type="text" class="answer mr-2 mb-2">
-                    <button class="submitbtn"><i class="fas fa-chevron-right" id="submiticon"></i></button>
-                </form>
+    <section>
+        <dialog class="nes-dialog is-rounded" id="answerPopup" style="width:90%;">
+            <form id="answerResp" method="dialog">
+            </form>
+        </dialog>
+    </section>
 
-            </div>
-        </div>
-    </div>
-
-</div>
-</div>
-<div class="btn-group">
-<button type="button" class="controller" id="vol">
-    <i class="fas fa-volume-mute" id="vIcon"></i>
-</button>
-<button class="controller" type="button" id="info" data-toggle="popover" title=". 尺ﾉりりﾚ乇尺 ."
-    data-content="Riddler is CSI's online cryptic hunt, where you crack puzzles and ciphers with all you have. Prepare for an onslaught of challenges unsolved. Can you reach your final destination, without a hint involved?"
-    data-placement="top" style="font-family:BlenderPro;">
-    <i class="fas fa-info-circle"></i>
-</button>
-</div>
-
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" inte
-        grity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
-
-
+    <script>
+        var questionScrollBar;
+        $(function () {
+            questionScrollBar = new SimpleBar($("#questionContainer")[0], { autoHide: false });
+            const check = "{{check}}";
+            $("#submitAnsBtn").click(sendAns);
+            switch (check) {
+                case "2art":
+                    $("#justQuestion").css("color", "#b4d455");
+                    $("#questionPanel").css("background-color", "#b4d455").css("border-radius", "0px");
+                    $("#qNo").css("color", "#000000");
+                    $("#hintDiv").css("color", "#000000");
+                    break;
+                case "0":
+                    $("#firstQuestion").show();
+                    break;
+            }
+        })
+        function sendAns() {
+            $.ajax({
+                'url': '/game/answer',
+                'type': 'POST',
+                'data': $('#answerForm').serialize(),
+                'success': function (result) {
+                    $("#answerResp").html(result);
+                    $("#answerPopup")[0].showModal();
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

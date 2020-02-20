@@ -1,14 +1,14 @@
-const User = require("./models/User");
+const User = require('./models/User');
 
-const getCurrentRiddlerUser = async (req) => {
+const getCurrentRiddlerUser = async (req, res) => {
     try {
         const un = req.session.user.username;
-        let user = await User.find({ username: un });
+        const user = await User.find({ username: un });
         return user;
     } catch (err) {
         console.log('[getCurrentRiddlerUser.js] failed');
         return res.render('error', { error: 'Cannot get Riddler User' });
     }
-}
+};
 
 module.exports = getCurrentRiddlerUser;

@@ -98,7 +98,7 @@ router.post('/answer', async (req, res) => {
 
 
     const riddle = await Riddle.findOne({ riddleId: currentUser.riddleId });
-    if (!riddle) return res.render({ error: 'riddle not found' });
+    if (!riddle) return res.render("error", { error: 'riddle not found' });
 
     const correct = riddle.answer.find((ele) => ele === userAnswer);
     if (!correct) return res.json({ success: true, correct: false, points: 0 });

@@ -38,9 +38,7 @@ router.get('/question', async (req, res) => {
         try {
             // find all riddleId that ends with 0
             const starterRiddles = await Riddle.find({ riddleId: /^.*0$/ });
-            const questions = starterRiddles.map(riddle => {
-                return riddle.question;
-            });
+            const questions = starterRiddles.map((riddle) => riddle.question);
             console.log(questions);
             if (starterRiddles) return res.render('question', { question: questions });
         } catch (err) {

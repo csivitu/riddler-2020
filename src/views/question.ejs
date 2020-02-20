@@ -24,12 +24,23 @@
             <div style="height:100%;width:100%;" id="questionPanel" class="nes-container is-rounded is-dark question">
                 <div id="questionContainer" class="dontOverlap">
                     <span id="justQuestion">
+
                         <div id="qNo" style="font-size:40px; margin-bottom:10px;" class="nes-text is-warning">Question
                             <%= riddleId %></div>
-                        <h2>
-                            <%= riddle %>
-                        </h2>
                         <div id="firstQuestion">
+                            <div stlye="color:white;">
+                                I HELPED THE MORTALS<br>
+                                AND I’LL BE HELPFUL TO YOU<br>
+                                ONLY IF YOU KNOW WHO I AM<br><br>
+
+                                D3COD3 TH3 CIPH3R TO KNOW M3<br><br>
+
+                                “Rk, lw lv hdvb iru wkh rqh zkr vwdqgv rxwvlgh <br>
+                                wkh sulvrq-zdoo ri sdlq wr hakruw <br>
+                                dqg whdfk wkh rqh zkr<br>
+                                Vxiihuv”<br><br>
+                            </div>
+                            <img src="/static/images/q1hint.jpeg"> <br><br>
                             <h2>Choose your adventure:</h2>
                             <br>
                             <button onclick="window.location.href='/game/question?setTrack=A0'"
@@ -38,7 +49,10 @@
                                 class="nes-btn chooseBtn is-primary">Disney Pixar</button>
                             <button onclick="window.location.href='/game/question?setTrack=C0'"
                                 class="nes-btn chooseBtn is-error">Sci-fi</button>
-                        </div>
+                        </div><br>
+                        <h2>
+                            <%- riddle %>
+                        </h2>
                         <br>
                         <% if (hint) { %>
                         <div id="hintDiv"><span class="nes-text is-success">Hint: <br></span
@@ -73,9 +87,11 @@
                 <menu align="center" class="dialog-menu" style="padding-left: 0px;">
                     <button class="nes-btn">Cancel</button>
                     <% if (user.points >= 100) { %>
-                    <button onclick="window.location.href='/game/hint'" class="nes-btn is-error" style="cursor: crosshair;">Show Hint</button>
+                    <button onclick="window.location.href='/game/hint'" class="nes-btn is-error"
+                        style="cursor: crosshair;">Show Hint</button>
                     <% } else { %>
-                        <button onclick="window.location.href='/gam/hint'" class="nes-btn is-error" disabled>Show Hint</button>
+                    <button onclick="window.location.href='/gam/hint'" class="nes-btn is-error" disabled>Show
+                        Hint</button>
                     <% } %>
                 </menu>
             </form>

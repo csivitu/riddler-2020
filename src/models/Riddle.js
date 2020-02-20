@@ -16,8 +16,8 @@ const riddleSchema = new mongoose.Schema({
     solvedBy: {
         type: Number,
     },
-    hints: {
-        type: [String],
+    hint: {
+        type: String,
     },
     pointsForSuccess: {
         type: Number,

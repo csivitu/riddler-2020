@@ -2,7 +2,6 @@ const router = require('express').Router();
 const Riddle = require('../models/Riddle');
 const verifyUser = require('../middlewares/verifyUser');
 const User = require('../models/User');
-const getCurrentRiddleId = require('../getCurrentRiddleID');
 const getCurrentRiddlerUser = require('../getCurrentRidderUser');
 
 // This handles Baseurl/maze
@@ -26,24 +25,20 @@ router.use(verifyUser);
 
 
 router.get('/', async (req, res) => {
-    const currentUser = await getCurrentRiddlerUser(req, res);
-    const currentRiddleID = await getCurrentRiddleId(req, res);
-    const currentRiddle = await Riddle.findOne({ riddleId: currentRiddleID });
-    res.render('dashboard', { user: currentUser, currentRiddle });
+    const currentRiddle = await Riddle.findOne({ riddleId: req.riddlerUser.currentRiddle });
+    res.render('dashboard', { user: req.riddlerUser, currentRiddle });
 });
 
 
 router.get('/question', async (req, res) => {
-    const currentUser = await getCurrentRiddlerUser(req, res); // from middleware verifyUser
-    console.log('Current User', currentUser);
-
+    const riddleId = req.riddlerUser.currentRiddle;
+    const { hintsUsed } = req.riddlerUser;
     // is starter or on the first question
-    if (!currentUser.currentRiddle || currentUser.currentRiddle[1] === '0') {
+    if (!riddleId || riddleId === '0') {
         try {
             // find all riddleId that ends with 0
-            const starterRiddles = await Riddle.find({ riddleId: /^.*0$/ });
-            const questions = starterRiddles.map((riddle) => riddle.question);
-            if (starterRiddles) return res.render('question', { question: questions, user: req.session.user });
+            const riddles = (await Riddle.find({ riddleId: /^.*0$/ })).map((r) => r.question);
+            return res.render('question', { riddles, user: req.session.user, riddleId });
         } catch (err) {
             console.log('starter ridle not found [game.js]');
             return res.render('error', { error: err });
@@ -53,24 +48,22 @@ router.get('/question', async (req, res) => {
 
     // existing user
     try {
-        const currentRiddleID = await getCurrentRiddleId(req, res);
-        const currentRiddle = await Riddle.findOne({ riddleId: currentRiddleID });
-        if (currentRiddle) {
-            return res.render(
-                'question',
-                {
-                    riddle: currentRiddle.question,
-                    riddleId: getCurrentRiddleId,
-                    user: req.session.user,
-                },
-            );
-        }
+        const currentRiddle = await Riddle.findOne({ riddleId });
+        const hint = (hintsUsed.indexOf(riddleId) > -1)
+            ? currentRiddle.hint : undefined;
+        return res.render(
+            'question',
+            {
+                riddles: [currentRiddle.question],
+                riddleId,
+                user: req.session.user,
+                hint,
+            },
+        );
     } catch (err) {
         console.log('Riddle not found [game.js]');
         return res.render('error', { error: err });
     }
-
-    return true;
 });
 
 
@@ -212,7 +205,7 @@ router.post('/hint', async (req, res) => {
 });
 
 router.get('/reset', async (req, res) => {
-    const currentUser = await getCurrentRiddlerUser(req, res);
+    const currentUser = req.riddlerUser;
     const progressOverall = currentUser.mainTracksProgress;
 
 
@@ -232,7 +225,7 @@ router.get('/reset', async (req, res) => {
 
 
     // reset Current track progress
-    const currentRI = await getCurrentRiddleId(req, res);
+    const currentRI = req.riddlerUser.riddleId;
     const riddle = await Riddle.findOne({ riddleId: currentRI });
 
     for (let i = 1; i <= currentRI[1]; i += 1) {

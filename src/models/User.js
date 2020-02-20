@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
     hintsUsed: {
-        type: [Number],
+        type: [String],
     },
 });
 

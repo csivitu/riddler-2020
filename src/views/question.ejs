@@ -25,19 +25,16 @@
                         <div id="qNo" style="font-size:40px; margin-bottom:10px;" class="nes-text is-warning">Question
                             <%= riddleId %></div>
                         <h2>
-                            <%= riddle %>
+                            <%= riddles[0] %>
                         </h2>
                         <div id="firstQuestion">
                             <h2>Choose your adventure:</h2>
                             <br>
-                            <button
-                                onclick="window.location.href='/game/question?setTrack=A0'"
+                            <button onclick="window.location.href='/game/question?setTrack=A0'"
                                 class="nes-btn chooseBtn is-warning">Adverts</button>
-                            <button
-                                onclick="window.location.href='/game/question?setTrack=B0'"
+                            <button onclick="window.location.href='/game/question?setTrack=B0'"
                                 class="nes-btn chooseBtn is-primary">Disney Pixar</button>
-                            <button
-                                onclick="window.location.href='/game/question?setTrack=C0'"
+                            <button onclick="window.location.href='/game/question?setTrack=C0'"
                                 class="nes-btn chooseBtn is-error">Sci-fi</button>
                         </div>
                         <br>
@@ -89,14 +86,15 @@
     <script>
         var questionScrollBar;
         $(function () {
+            console.log("run")
+            $("#firstQuestion").hide();
+
             questionScrollBar = new SimpleBar($("#questionContainer")[0], { autoHide: false });
             let riddleId = "<%= riddleId %>";
             if (riddleId === '0' || riddleId === 'A0' || riddleId === 'B0' || riddleId === 'C0') {
                 $("#firstQuestion").show();
-            } else {
-                $("firstQuestion").hide();
             }
-        })
+        });
         function sendAns() {
             $.ajax({
                 'url': '/game/answer',

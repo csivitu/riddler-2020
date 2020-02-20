@@ -42,6 +42,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <script src="https://brandonlwhite.github.io/sevenSeg.js/sevenSeg.js"></script>
 <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.5.0/dialog-polyfill.min.js"></script>
 <script>
      const scrollBar2 = new SimpleBar($("#instructions")[0], {autoHide: false});
     $("#points").sevenSeg({
@@ -53,7 +54,6 @@
     let points = "<%= user.points %>";
     let riddleId = "<%= riddleId %>";
     let question = parseInt(riddleId.charAt(1));
-    console.log(riddleId)
     let track = 'General';
     switch (riddleId.charAt(0).toLowerCase()) {
         case 'a': track = 'Adverts'; break;

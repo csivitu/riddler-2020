@@ -2,7 +2,6 @@ const router = require('express').Router();
 const Riddle = require('../models/Riddle');
 const verifyUser = require('../middlewares/verifyUser');
 const User = require('../models/User');
-const getCurrentRiddlerUser = require('../getCurrentRidderUser');
 
 // This handles Baseurl/maze
 // this handle Base url/maze/riddleId POST req from
@@ -46,7 +45,7 @@ router.get('/question', async (req, res) => {
         return res.render('question', {
             riddle: '',
             riddleId,
-            user: req.session.user,
+            user: req.riddlerUser,
             hint: '',
         });
     }
@@ -60,7 +59,7 @@ router.get('/question', async (req, res) => {
             {
                 riddle: currentRiddle.question,
                 riddleId,
-                user: req.session.user,
+                user: req.riddlerUser,
                 hint,
             },
         );
@@ -75,9 +74,9 @@ router.get('/question', async (req, res) => {
 function GetSortOrder(prop) {
     return (a, b) => {
         if (a[prop] > b[prop]) {
-            return 1;
-        } if (a[prop] < b[prop]) {
             return -1;
+        } if (a[prop] < b[prop]) {
+            return 1;
         }
         return 0;
     };
@@ -99,22 +98,22 @@ router.get('/leaderboard', async (req, res) => {
 
 router.post('/answer', async (req, res) => {
     const userAnswer = req.body.answer;
-    const userRiddle = req.body.riddleId;
-    const currentUser = await getCurrentRiddlerUser(req, res);
+    const currentUser = req.riddlerUser;
 
-    // if on the starter
-    if (!currentUser.riddleId) currentUser.riddleId = userRiddle;
-
-
+    if (!userAnswer || currentUser.currentRiddle === '0') {
+        return res.status(401).json({
+            success: false,
+            message: 'invalidRequest',
+        });
+    }
     const riddle = await Riddle.findOne({ riddleId: currentUser.riddleId });
-    if (!riddle) return res.render('error', { error: 'riddle not found' });
 
     const correct = riddle.answer.find((ele) => ele === userAnswer);
     if (!correct) return res.json({ success: true, correct: false, points: 0 });
 
 
     // creating the new riddleID
-    const track = currentUser.riddleId.charAt(0);
+    const track = currentUser.riddleId[0];
     let newQuestion = parseInt(currentUser.riddleId.charAt(1), 10) + 1;
     newQuestion = newQuestion.toString();
 
@@ -139,13 +138,12 @@ router.post('/answer', async (req, res) => {
     return true;
 });
 
-router.post('/hint', async (req, res) => {
+router.get('/hint', async (req, res) => {
     const currentUser = req.riddlerUser;
     const riddleId = currentUser.currentRiddle;
 
     const riddle = await Riddle.findOne({ riddleId });
     if (!riddle) return res.render({ error: 'riddle not found' });
-
     if (currentUser.hintsUsed.indexOf(riddleId) === -1) {
         // TODO: For first question, there are 3 questions with hints
         if (currentUser.points >= 100) {
@@ -155,7 +153,7 @@ router.post('/hint', async (req, res) => {
         }
     }
 
-    return res.redirect('/question');
+    return res.redirect('/game/question');
 });
 
 router.get('/reset', async (req, res) => {

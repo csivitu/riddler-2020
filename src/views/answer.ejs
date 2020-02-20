@@ -1,8 +1,8 @@
-<% if(msg2) { %>
+<% if(trackAlreadyAnswered) { %>
 <div>You have already answered this track. Try answering the other ones.</div>
 <br>
 <% } else { %>
-<% if(msg) { %>
+<% if(!correct) { %>
 <div style="font-size:50px; color:yellow">Oops!</div>
 <div style="font-size:30px;">Your answer is incorrect! </div><br>
 <% if (solvedBy) %>

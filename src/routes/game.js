@@ -81,11 +81,13 @@ function GetSortOrder(prop) {
 
 
 router.get('/leaderboard', async (req, res) => {
+    const riddleId = req.riddlerUser.currentRiddle;
+
     try {
         const lb = await User.find({});
         lb.sort(GetSortOrder('points'));
 
-        return res.render('leaderboard', { leaderboard: lb, user: req.riddlerUser });
+        return res.render('leaderboard', { leaderboard: lb, user: req.riddlerUser, riddleId });
     } catch (err) {
         return res.render('error', { error: err });
     }

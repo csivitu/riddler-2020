@@ -10,7 +10,11 @@ html, body {
     font-family: FixedSys;
     font-size:30px;
     color: #FFF;
-    cursor: crosshair;
+    cursor: crosshair !important;
+}
+
+button {
+    cursor: crosshair !important;
 }
 
 #navbar {

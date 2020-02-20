@@ -1,28 +1,30 @@
-{{#if msg2}}
+<% if(trackAlreadyAnswered) { %>
 <div>You have already answered this track. Try answering the other ones.</div>
 <br>
-{{else}}
-{{#if msg}}
+<% } else { %>
+<% if(!correct) { %>
 <div style="font-size:50px; color:yellow">Oops!</div>
 <div style="font-size:30px;">Your answer is incorrect! </div><br>
-{{#if solvedBy}}
-<div class = "solvedByDiv" style="margin: 30px auto">This question has been solved by {{solvedBy}} people.</div>
-{{/if}}
+<% if (solvedBy) %>
+<div class="solvedByDiv" style="margin: 30px auto">This question has been solved by <% solvedBy %> people.</div>
+<% } %>
 <menu class="dialog-menu" align="center" style="padding-left: 0px;">
-        <button class="nes-btn is-error">Back to Question</button>
+    <button class="nes-btn is-error">Back to Question</button>
 </menu>
-{{else}}
-<div style="font-size:30px;" class="nes-text is-warning">Fabulous!</div>   
+<% else { %>
+<div style="font-size:30px;" class="nes-text is-warning">Fabulous!</div>
 <div style="font-size:20px;">You answered correct! </div>
 <div class="nes-text is-success" style="font-size:50px;">+100 Points!</div>
-{{#if coupon}}
-<div style="font-size:15px;" class="nes-text is-success">You have won a coupon! Look for the prize in your e-mail inbox.</div>   
-{{/if}}
-{{#if solvedBy}}
-<div class = "solvedByDiv" style="font-size:20px;">This question has been solved by {{solvedBy}} people.</div>
-{{/if}}
+<% if (coupon) { %>
+<div style="font-size:15px;" class="nes-text is-success">You have won a coupon! Look for the prize in your e-mail inbox.
+</div>
+<% } %>
+<% if (solvedBy) { %>
+<div class="solvedByDiv" style="font-size:20px;">This question has been solved by <% solvedBy %> people.</div>
+<% } %>
 <menu class="dialog-menu" align="center" style="padding-left: 0px;">
-    <button id="continueBtn" class="nes-btn is-success" onclick="window.location.href='/game/question'">Next Question</button>
+    <button id="continueBtn" class="nes-btn is-success" onclick="window.location.href='/game/question'">Next
+        Question</button>
 </menu>
-{{/if}}
-{{/if}}
+<% } %>
+<% } %>

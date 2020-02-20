@@ -50,9 +50,11 @@
         colorOn: "Lime",
         colorOff: "#003200"
     });
+    
     let points = "<%= user.points %>";
-    let riddleId = "<%= user.currentRiddle %>";
-    if (riddleId >= 9 || riddleId === 0) {
+    let riddleId = "<%= riddleId %>";
+    let question = parseInt(riddleId.charAt(1));
+    if (question >= 8 || question === 0) {
         $("#resetProgress").hide()
     }
     let track = 'General';
@@ -62,7 +64,7 @@
         case 'c': track = 'Scifi'; break;
         default: track = 'General';
     }
-    if(riddleId==0)
+    if(question2==0)
     {
         $("#message").text("You are already on the first question.");
         $("#continueBtn").hide();

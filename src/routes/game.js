@@ -27,8 +27,9 @@ router.use(verifyUser);
 
 router.get('/', async (req, res) => {
     const currentUser = await getCurrentRiddlerUser(req, res);
-    console.log(currentUser);
-    res.render('dashboard', { user: currentUser });
+    const currentRiddleID = await getCurrentRiddleId(req, res);
+    const currentRiddle = await Riddle.findOne({ riddleId: currentRiddleID });
+    res.render('dashboard', { user: currentUser, currentRiddle });
 });
 
 
@@ -53,7 +54,7 @@ router.get('/question', async (req, res) => {
     // existing user
     try {
         const currentRiddleID = await getCurrentRiddleId(req, res);
-        const currentRiddle = await Riddle.find({ riddleId: currentRiddleID });
+        const currentRiddle = await Riddle.findOne({ riddleId: currentRiddleID });
         if (currentRiddle) {
             return res.render(
                 'question',

@@ -50,11 +50,11 @@
         colorOn: "Lime",
         colorOff: "#003200"
     });
-    let question = parseInt("{{gameData.currentQuestion}}");
+    let question = parseInt("<%= //riddles[0] %>");
     if (question >= 8 || question === 0) {
         $("#resetProgress").hide()
     }
-    let question2 = parseInt("{{gameData.currentQuestion}}");
+    let question2 = parseInt("<%= //riddles[0] %>");
     let points = "<%= user.points %>";
     let riddleId = 'A0';
     let track = 'General';

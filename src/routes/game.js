@@ -33,9 +33,13 @@ router.get('/question', async (req, res) => {
     // is starter or on the first question
     if (riddleId === '0' || riddleId === 'A0' || riddleId === 'B0' || riddleId === 'C0') {
         if (req.query.setTrack) {
-            req.riddlerUser.currentRiddle = req.query.setTrack;
-            riddleId = req.query.setTrack;
-            await req.riddlerUser.save();
+            if (req.query.setTrack === 'A0' || req.query.setTrack === 'B0' || req.query.setTrack === 'C0') {
+                req.riddlerUser.currentRiddle = req.query.setTrack;
+                riddleId = req.query.setTrack;
+                await req.riddlerUser.save();
+            } else {
+                res.redirect('/game/question');
+            }
         }
     }
 

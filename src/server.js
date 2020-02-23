@@ -12,8 +12,9 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 const register = require('./routes/register.js');
-const callback = require('./routes/accountsCallback.js');
-const game = require('./routes/game.js');
+const leaderboard = require('./routes/leaderboad');
+// const callback = require('./routes/accountsCallback.js');
+// const game = require('./routes/game.js');
 // const admin = require('./routes/admin.js');
 
 app.use(express.json());
@@ -33,8 +34,9 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use('/', register);
-app.use('/oauth/redirect', callback);
-app.use('/game', game);
+app.use('/leaderboard', leaderboard);
+// app.use('/oauth/redirect', callback);
+// app.use('/game', game);
 // app.use('/admin', admin);
 
 app.use('*', (req, res) => {

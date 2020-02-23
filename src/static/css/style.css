@@ -582,6 +582,9 @@ input[type=number] {
   -moz-appearance:textfield;
 }
 
+.linkText:hover {
+    color: #B102B9;
+}
 /* h4{
     line-height: 0.76;
     letter-spacing: 4.63px;
